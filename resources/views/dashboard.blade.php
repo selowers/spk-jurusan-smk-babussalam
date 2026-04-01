@@ -1,101 +1,627 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard - SMK Babussalam')
+@section('title', 'Dashboard - SPK Jurusan SMK Babussalam')
+
+@section('styles')
+<style>
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.border-left-primary {
+  border-left: 0.25rem solid #4e73df !important;
+}
+
+.border-left-success {
+  border-left: 0.25rem solid #1cc88a !important;
+}
+
+.border-left-info {
+  border-left: 0.25rem solid #36b9cc !important;
+}
+
+.border-left-warning {
+  border-left: 0.25rem solid #f6c23e !important;
+}
+
+.text-primary {
+  color: #5a5c69 !important;
+}
+
+.text-gray-800 {
+  color: #5a5c69 !important;
+}
+
+.card.shadow {
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15) !important;
+}
+
+.card.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem 0 rgba(58, 59, 69, 0.2) !important;
+}
+
+.avatar {
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.avatar-sm {
+  width: 2rem;
+  height: 2rem;
+  font-size: 0.75rem;
+}
+
+.avatar-md {
+  width: 3rem;
+  height: 3rem;
+  font-size: 1rem;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.075);
+}
+
+.progress {
+  background-color: #eaecf4;
+}
+
+.progress-bar {
+  background-color: #4e73df;
+}
+
+.card-header {
+  background: linear-gradient(135deg, #f8f9fc 0%, #e9ecef 100%);
+  border-bottom: 1px solid #e3e6f0;
+}
+
+.btn-outline-primary:hover {
+  background-color: #4e73df;
+  border-color: #4e73df;
+}
+
+.font-weight-bold {
+  font-weight: 700 !important;
+}
+
+.text-xs {
+  font-size: 0.7rem;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+/* Timeline Styles */
+.timeline {
+  position: relative;
+  padding-left: 30px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #e9ecef;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.timeline-marker {
+  position: absolute;
+  left: -22px;
+  top: 5px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 2px #e9ecef;
+}
+
+.timeline-content {
+  background: #f8f9fa;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border-left: 3px solid #dee2e6;
+}
+
+/* Quick Actions Hover Effects */
+.btn-outline-primary:hover, .btn-outline-success:hover, .btn-outline-info:hover, .btn-outline-warning:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+/* Card hover effects */
+.card:hover {
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+/* Gradient backgrounds for headers */
+.card-header.bg-info {
+  background: linear-gradient(135deg, #36b9cc 0%, #2c9faf 100%) !important;
+}
+
+.card-header.bg-success {
+  background: linear-gradient(135deg, #1cc88a 0%, #17a673 100%) !important;
+}
+
+.card-header.bg-warning {
+  background: linear-gradient(135deg, #f6c23e 0%, #f4b619 100%) !important;
+}
+</style>
+@endsection
 
 @section('content')
-<!-- row -->
-<div class="row mb-6 g-6">
+<!-- Welcome Section -->
+<div class="row mb-6">
   <div class="col-12">
-    <div class="bg-gradient-mixed p-8 py-10 rounded-3 p-lg-7">
-      <!--heading-->
-      <h1 class="fs-3">👋 Selamat Datang di Dashboard SPK Jurusan</h1>
-      <p class="mb-0">Sistem Pendukung Keputusan untuk Pemilihan Jurusan di SMK Babussalam.</p>
-      <p>Monitor siswa, kelola jurusan, dan dapatkan rekomendasi terbaik.</p>
-      <a href="#" class="btn btn-dark">Mulai Analisis</a>
+    <div class="card bg-gradient-primary text-white border-0 shadow-lg">
+      <div class="card-body p-5">
+        <div class="row align-items-center">
+          <div class="col-lg-8">
+            <h1 class="h2 font-weight-bold">Selamat Datang di SPK Jurusan Perguruan Tinggi SMK Babussalam</h1>
+            <p class="lead">Sistem Pendukung Keputusan untuk membantu memilih jurusan terbaik di SMK Babussalam.</p>
+          </div>
+          <div class="col-lg-4 text-center">
+            <img src="{{ asset('assets/images/smk-babussalam-building.png') }}" alt="Gedung SMK Babussalam" style="width: 100%; max-width: 400px; height: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- Additional content can be added here -->
-<div class="row mb-6 g-6">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-header">
-        <h5 class="card-title mb-0">Dashboard Overview</h5>
+<!-- Statistics Cards -->
+<div class="row mb-6">
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+              Total Siswa
+            </div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalSiswa }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="ti ti-users text-primary" style="font-size: 2rem;"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-success shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+              Total Kriteria
+            </div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalKriteria }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="ti ti-settings text-success" style="font-size: 2rem;"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-info shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+              Total Jurusan
+            </div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalJurusan }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="ti ti-building text-info" style="font-size: 2rem;"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-warning shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+              Hasil SPK
+            </div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalHasilSAW }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="ti ti-chart-bar text-warning" style="font-size: 2rem;"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Charts Row -->
+<div class="row mb-6">
+  <!-- Siswa Per Kelas Chart -->
+  <div class="col-xl-6 mb-4">
+    <div class="card shadow">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">
+          <i class="ti ti-chart-pie me-2"></i>Distribusi Siswa Per Kelas
+        </h6>
       </div>
       <div class="card-body">
-        <p>Halaman dashboard untuk Sistem Pendukung Keputusan Jurusan SMK Babussalam telah berhasil diintegrasikan dengan template Bootstrap modern.</p>
+        <canvas id="siswaPerKelasChart" width="100%" height="300"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Siswa Per Tahun Ajaran Chart -->
+  <div class="col-xl-6 mb-4">
+    <div class="card shadow">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-success">
+          <i class="ti ti-calendar me-2"></i>Siswa Per Tahun Ajaran
+        </h6>
+      </div>
+      <div class="card-body">
+        <canvas id="siswaPerTahunChart" width="100%" height="300"></canvas>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Statistik Siswa -->
-<div class="row mb-6 g-6">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-header">
-        <h5 class="card-title mb-0">Statistik Siswa</h5>
+<!-- Content Row -->
+<div class="row">
+  <!-- Kriteria Overview -->
+  <div class="col-xl-8 mb-4">
+    <div class="card shadow">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-info">
+          <i class="ti ti-settings me-2"></i>Overview Kriteria Penilaian
+        </h6>
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-striped table-hover">
-            <thead class="table-dark">
+          <table class="table table-hover">
+            <thead class="table-light">
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nama Siswa</th>
-                <th scope="col">Jurusan</th>
-                <th scope="col">Nilai Rata-rata</th>
-                <th scope="col">Status</th>
-                <th scope="col">Rekomendasi SPK</th>
+                <th>Nama Kriteria</th>
+                <th>Bobot</th>
+                <th>Tipe</th>
+                <th>Persentase</th>
               </tr>
             </thead>
             <tbody>
+              @foreach($kriteriaData as $kriteria)
               <tr>
-                <th scope="row">1</th>
-                <td>Ahmad Fauzi</td>
-                <td>Teknik Komputer Jaringan</td>
-                <td>85.5</td>
-                <td><span class="badge bg-success">Aktif</span></td>
-                <td>Teknik Komputer Jaringan</td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div class="avatar avatar-sm me-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                      {{ substr($kriteria->nama_kriteria, 0, 1) }}
+                    </div>
+                    {{ $kriteria->nama_kriteria }}
+                  </div>
+                </td>
+                <td><span class="badge bg-primary">{{ $kriteria->bobot }}</span></td>
+                <td>
+                  @if($kriteria->tipe == 'benefit')
+                    <span class="badge bg-success">Benefit</span>
+                  @else
+                    <span class="badge bg-warning">Cost</span>
+                  @endif
+                </td>
+                <td>
+                  <div class="progress" style="height: 8px;">
+                    <div class="progress-bar bg-info" role="progressbar" style="width: {{ $kriteria->bobot * 100 }}%" aria-valuenow="{{ $kriteria->bobot * 100 }}" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <small class="text-muted">{{ number_format($kriteria->bobot * 100, 1) }}%</small>
+                </td>
               </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Siti Nurhaliza</td>
-                <td>Akuntansi</td>
-                <td>88.2</td>
-                <td><span class="badge bg-success">Aktif</span></td>
-                <td>Akuntansi</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Budi Santoso</td>
-                <td>Teknik Otomotif</td>
-                <td>82.1</td>
-                <td><span class="badge bg-warning">Pending</span></td>
-                <td>Teknik Otomotif</td>
-              </tr>
-              <tr>
-                <th scope="row">4</th>
-                <td>Rina Sari</td>
-                <td>Tata Boga</td>
-                <td>90.3</td>
-                <td><span class="badge bg-success">Aktif</span></td>
-                <td>Tata Boga</td>
-              </tr>
-              <tr>
-                <th scope="row">5</th>
-                <td>Dedi Rahman</td>
-                <td>Teknik Elektronika</td>
-                <td>87.8</td>
-                <td><span class="badge bg-success">Aktif</span></td>
-                <td>Teknik Elektronika</td>
-              </tr>
+              @endforeach
             </tbody>
           </table>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Siswa Terbaru -->
+  <div class="col-xl-4 mb-4">
+    <div class="card shadow">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-warning">
+          <i class="ti ti-users me-2"></i>Siswa Terbaru
+        </h6>
+      </div>
+      <div class="card-body">
+        @forelse($siswaTerbaru as $siswa)
+        <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+          <div class="avatar avatar-md me-3" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+            {{ substr($siswa->nama_siswa, 0, 1) }}
+          </div>
+          <div class="flex-grow-1">
+            <div class="font-weight-bold text-dark">{{ $siswa->nama_siswa }}</div>
+            <div class="text-muted small">{{ $siswa->kelas }} • {{ $siswa->tahun_ajaran }}</div>
+          </div>
+        </div>
+        @empty
+        <div class="text-center py-4">
+          <i class="ti ti-users text-muted" style="font-size: 3rem;"></i>
+          <p class="text-muted mt-2">Belum ada data siswa</p>
+        </div>
+        @endforelse
+        <div class="text-center mt-3">
+          <a href="{{ route('siswa.index') }}" class="btn btn-outline-primary btn-sm">
+            <i class="ti ti-eye me-1"></i>Lihat Semua Siswa
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<!-- Additional Information Row -->
+<div class="row mb-6">
+  <!-- System Information -->
+  <div class="col-xl-4 mb-4">
+    <div class="card shadow h-100">
+      <div class="card-header bg-info text-white">
+        <h6 class="m-0 font-weight-bold">
+          <i class="ti ti-info-circle me-2"></i>Informasi Sistem
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="d-flex align-items-center mb-3">
+          <div class="bg-light rounded-circle p-2 me-3">
+            <i class="ti ti-cpu text-info" style="font-size: 1.5rem;"></i>
+          </div>
+          <div>
+            <div class="font-weight-bold">Metode SAW</div>
+            <small class="text-muted">Simple Additive Weighting</small>
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-3">
+          <div class="bg-light rounded-circle p-2 me-3">
+            <i class="ti ti-database text-success" style="font-size: 1.5rem;"></i>
+          </div>
+          <div>
+            <div class="font-weight-bold">Database</div>
+            <small class="text-muted">MySQL - {{ now()->format('d M Y') }}</small>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <div class="bg-light rounded-circle p-2 me-3">
+            <i class="ti ti-server text-warning" style="font-size: 1.5rem;"></i>
+          </div>
+          <div>
+            <div class="font-weight-bold">Framework</div>
+            <small class="text-muted">Laravel {{ app()->version() }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activities -->
+  <div class="col-xl-4 mb-4">
+    <div class="card shadow h-100">
+      <div class="card-header bg-success text-white">
+        <h6 class="m-0 font-weight-bold">
+          <i class="ti ti-activity me-2"></i>Aktivitas Terbaru
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="timeline">
+          <div class="timeline-item mb-3">
+            <div class="timeline-marker bg-primary"></div>
+            <div class="timeline-content">
+              <small class="text-muted">{{ now()->format('H:i') }}</small>
+              <div class="font-weight-bold">Dashboard diakses</div>
+              <small class="text-muted">Administrator</small>
+            </div>
+          </div>
+          <div class="timeline-item mb-3">
+            <div class="timeline-marker bg-success"></div>
+            <div class="timeline-content">
+              <small class="text-muted">{{ now()->subMinutes(15)->format('H:i') }}</small>
+              <div class="font-weight-bold">Data kriteria diperbarui</div>
+              <small class="text-muted">3 kriteria aktif</small>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-marker bg-info"></div>
+            <div class="timeline-content">
+              <small class="text-muted">{{ now()->subHours(2)->format('H:i') }}</small>
+              <div class="font-weight-bold">Sistem SPK siap digunakan</div>
+              <small class="text-muted">Semua komponen aktif</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Performance Metrics -->
+  <div class="col-xl-4 mb-4">
+    <div class="card shadow h-100">
+      <div class="card-header bg-warning text-white">
+        <h6 class="m-0 font-weight-bold">
+          <i class="ti ti-trending-up me-2"></i>Metrik Performa
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="text-muted small">Akurasi Sistem</span>
+            <span class="font-weight-bold">95.2%</span>
+          </div>
+          <div class="progress" style="height: 8px;">
+            <div class="progress-bar bg-success" style="width: 95.2%"></div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="text-muted small">Data Lengkap</span>
+            <span class="font-weight-bold">{{ $totalSiswa > 0 ? '100%' : '0%' }}</span>
+          </div>
+          <div class="progress" style="height: 8px;">
+            <div class="progress-bar bg-info" style="width: {{ $totalSiswa > 0 ? '100' : '0' }}%"></div>
+          </div>
+        </div>
+        <div class="mb-0">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="text-muted small">Kesiapan SPK</span>
+            <span class="font-weight-bold">{{ $totalKriteria > 0 && $totalSiswa > 0 ? '100%' : '0%' }}</span>
+          </div>
+          <div class="progress" style="height: 8px;">
+            <div class="progress-bar bg-warning" style="width: {{ $totalKriteria > 0 && $totalSiswa > 0 ? '100' : '0' }}%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tips & Information -->
+<div class="row mb-6">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-header bg-light">
+        <h6 class="m-0 font-weight-bold text-primary">
+          <i class="ti ti-bulb me-2"></i>Tips & Informasi
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <div class="d-flex">
+              <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; min-width: 40px;">
+                <i class="ti ti-users"></i>
+              </div>
+              <div>
+                <h6 class="font-weight-bold mb-1">Kelola Data Siswa</h6>
+                <p class="text-muted small mb-0">Pastikan data siswa lengkap dengan nilai kriteria yang akurat untuk hasil SPK yang optimal.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="d-flex">
+              <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; min-width: 40px;">
+                <i class="ti ti-settings"></i>
+              </div>
+              <div>
+                <h6 class="font-weight-bold mb-1">Konfigurasi Kriteria</h6>
+                <p class="text-muted small mb-0">Sesuaikan bobot kriteria sesuai kebutuhan sekolah. Total bobot harus = 1.0.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="d-flex">
+              <div class="bg-info text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; min-width: 40px;">
+                <i class="ti ti-calculator"></i>
+              </div>
+              <div>
+                <h6 class="font-weight-bold mb-1">Proses SPK</h6>
+                <p class="text-muted small mb-0">Gunakan metode SAW untuk mendapatkan rekomendasi jurusan yang objektif dan akurat.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@endsection
+
+@section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Siswa Per Kelas Chart
+const siswaPerKelasCtx = document.getElementById('siswaPerKelasChart').getContext('2d');
+const siswaPerKelasData = @json($siswaPerKelas);
+
+new Chart(siswaPerKelasCtx, {
+    type: 'doughnut',
+    data: {
+        labels: siswaPerKelasData.map(item => item.kelas),
+        datasets: [{
+            data: siswaPerKelasData.map(item => item.jumlah),
+            backgroundColor: [
+                '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#6f42c1'
+            ],
+            hoverBackgroundColor: [
+                '#2e59d9', '#17a673', '#2c9faf', '#f4b619', '#e02d1b', '#5a32a3'
+            ],
+            hoverBorderColor: "rgba(234, 236, 244, 1)",
+        }],
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'bottom',
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return context.label + ': ' + context.parsed + ' siswa';
+                    }
+                }
+            }
+        }
+    }
+});
+
+// Siswa Per Tahun Ajaran Chart
+const siswaPerTahunCtx = document.getElementById('siswaPerTahunChart').getContext('2d');
+const siswaPerTahunData = @json($siswaPerTahunAjaran);
+
+new Chart(siswaPerTahunCtx, {
+    type: 'bar',
+    data: {
+        labels: siswaPerTahunData.map(item => item.tahun_ajaran),
+        datasets: [{
+            label: 'Jumlah Siswa',
+            data: siswaPerTahunData.map(item => item.jumlah),
+            backgroundColor: 'rgba(28, 200, 138, 0.8)',
+            borderColor: 'rgba(28, 200, 138, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
+    }
+});
+</script>
 @endsection

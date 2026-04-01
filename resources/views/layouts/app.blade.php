@@ -159,6 +159,12 @@
         </div>
 
         <div class="ms-auto d-flex align-items-center gap-3">
+          <!-- SMK Babussalam Text and Logo -->
+          <div class="d-flex align-items-center gap-2">
+            <span class="fw-bold text-primary fs-5 d-none d-lg-block">SMK Babussalam</span>
+            <img src="{{ asset('assets/images/logo-smk-babussalam.png') }}" alt="Logo SMK Babussalam" style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #e9ecef;">
+          </div>
+
           <!-- User dropdown -->
           <div class="dropdown">
             <a class="d-flex align-items-center text-reset text-decoration-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
