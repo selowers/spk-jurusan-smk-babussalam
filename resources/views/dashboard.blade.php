@@ -58,16 +58,11 @@
       </a>
     </div>
     <ul class="navbar-nav flex-column">
-      <!-- Nav item -->
+      <!-- Nav item: Login -->
       <li class="nav-item">
-        <a class="nav-link active" href="/"><span class="nav-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-home">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
-            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-          </svg>
-        </span> <span class="text">Dashboard</span></a>
+        <a class="nav-link active" href="#"><span class="nav-icon">
+          <i class="ti ti-login"></i>
+        </span> <span class="text">Login</span></a>
       </li>
 
       <li class="nav-item">
@@ -75,49 +70,46 @@
         <hr class="mx-5 nav-line mb-1" />
       </li>
 
-      <!-- Nav item -->
+      <!-- Nav item: Mengelola Data Siswa -->
       <li class="nav-item">
         <a class="nav-link" href="#"><span class="nav-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-users">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
-            <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-            <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
-          </svg>
-        </span> <span class="text">Siswa</span></a>
+          <i class="ti ti-users"></i>
+        </span> <span class="text">Mengelola Data Siswa</span></a>
       </li>
 
+      <!-- Nav item: Mengelola Data Kriteria -->
       <li class="nav-item">
         <a class="nav-link" href="#"><span class="nav-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-school">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" />
-            <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" />
-          </svg>
-        </span> <span class="text">Jurusan</span></a>
+          <i class="ti ti-list-details"></i>
+        </span> <span class="text">Mengelola Data Kriteria</span></a>
       </li>
 
+      <!-- Nav item: Mengelola Data Jurusan -->
       <li class="nav-item">
         <a class="nav-link" href="#"><span class="nav-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-chart-bar">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M3 12m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-            <path d="M9 8m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-            <path d="M15 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-            <path d="M4 20l14 0" />
-          </svg>
-        </span> <span class="text">SPK</span></a>
+          <i class="ti ti-school"></i>
+        </span> <span class="text">Mengelola Data Jurusan</span></a>
       </li>
 
+      <!-- Nav item: Proses Perhitungan SAW -->
       <li class="nav-item">
         <a class="nav-link" href="#"><span class="nav-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-settings">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c.996 .608 2.296 .07 2.572 -1.065z" />
-            <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-          </svg>
-        </span> <span class="text">Pengaturan</span></a>
+          <i class="ti ti-calculator"></i>
+        </span> <span class="text">Proses Perhitungan SAW</span></a>
+      </li>
+
+      <!-- Nav item: Melihat Hasil Rekomendasi -->
+      <li class="nav-item">
+        <a class="nav-link" href="#"><span class="nav-icon">
+          <i class="ti ti-eye"></i>
+        </span> <span class="text">Melihat Hasil Rekomendasi</span></a>
+      </li>
+
+      <!-- Nav item: Cetak/Simpan Hasil -->
+      <li class="nav-item">
+        <a class="nav-link" href="#"><span class="nav-icon">
+          <i class="ti ti-printer"></i>
+        </span> <span class="text">Cetak/Simpan Hasil</span></a>
       </li>
     </ul>
   </div>
