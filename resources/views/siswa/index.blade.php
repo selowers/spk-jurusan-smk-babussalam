@@ -3,71 +3,271 @@
 @section('title', 'Kelola Data Siswa')
 
 @section('content')
-<!-- row -->
-<div class="row mb-6 g-6">
+<!-- Statistics Row -->
+<div class="row mb-4">
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+              Total Siswa
+            </div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $siswa->total() }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="ti ti-users fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-success shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+              Aktif
+            </div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $siswa->count() }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="ti ti-check-circle fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-info shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+              Kelas
+            </div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $siswa->unique('kelas')->count() }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="ti ti-school fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-warning shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+              Tahun Ajaran
+            </div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $siswa->unique('tahun_ajaran')->count() }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="ti ti-calendar fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Header with Add Button -->
+<div class="row mb-4">
   <div class="col-12">
-    <div class="card">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="card-title mb-0">Data Siswa</h5>
-        <a href="{{ route('siswa.create') }}" class="btn btn-primary">
-          <i class="ti ti-plus me-2"></i>Tambah Siswa
-        </a>
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h4 class="mb-0 text-primary">
+          <i class="ti ti-users me-2"></i>Data Siswa
+        </h4>
+        <p class="text-muted mb-0">Kelola data siswa SMK Babussalam</p>
+      </div>
+      <a href="{{ route('siswa.create') }}" class="btn btn-primary btn-lg shadow-sm">
+        <i class="ti ti-plus me-2"></i>Tambah Siswa Baru
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Success Message -->
+@if(session('success'))
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="ti ti-check-circle me-2"></i>{{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+@endif
+
+<!-- Siswa Table -->
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+        <h5 class="card-title mb-0">
+          <i class="ti ti-table me-2"></i>Daftar Siswa
+        </h5>
       </div>
       <div class="card-body">
-        @if(session('success'))
-          <div class="alert alert-success">
-            {{ session('success') }}
-          </div>
-        @endif
         <div class="table-responsive">
-          <table class="table table-striped table-hover">
+          <table class="table table-hover align-middle">
             <thead class="table-dark">
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nama Siswa</th>
-                <th scope="col">Kelas</th>
-                <th scope="col">Jurusan Sekolah</th>
-                <th scope="col">Tahun Ajaran</th>
-                <th scope="col">User</th>
-                <th scope="col">Aksi</th>
+                <th class="text-center">#</th>
+                <th>Nama Siswa</th>
+                <th><i class="ti ti-school me-1"></i>Kelas</th>
+                <th><i class="ti ti-building me-1"></i>Jurusan Sekolah</th>
+                <th><i class="ti ti-calendar me-1"></i>Tahun Ajaran</th>
+                <th><i class="ti ti-user me-1"></i>User</th>
+                <th class="text-center">Aksi</th>
               </tr>
             </thead>
             <tbody>
-              @forelse($siswa as $item)
-                <tr>
-                  <th scope="row">{{ $loop->iteration }}</th>
-                  <td>{{ $item->nama_siswa }}</td>
-                  <td>{{ $item->kelas }}</td>
+              @forelse($siswa as $index => $item)
+                <tr class="table-row-hover">
+                  <td class="text-center fw-bold">{{ $siswa->firstItem() + $index }}</td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="avatar avatar-sm me-3">
+                        <div class="avatar-initial bg-primary text-white rounded-circle">
+                          {{ strtoupper(substr($item->nama_siswa, 0, 1)) }}
+                        </div>
+                      </div>
+                      <div>
+                        <div class="fw-semibold">{{ $item->nama_siswa }}</div>
+                        <small class="text-muted">ID: {{ $item->id_siswa }}</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge bg-info">{{ $item->kelas }}</span>
+                  </td>
                   <td>{{ $item->jurusan_sekolah }}</td>
                   <td>{{ $item->tahun_ajaran }}</td>
                   <td>{{ $item->user->name ?? 'N/A' }}</td>
-                  <td>
-                    <a href="{{ route('siswa.show', $item->id_siswa) }}" class="btn btn-sm btn-info">
-                      <i class="ti ti-eye"></i>
-                    </a>
-                    <a href="{{ route('siswa.edit', $item->id_siswa) }}" class="btn btn-sm btn-warning">
-                      <i class="ti ti-edit"></i>
-                    </a>
-                    <form action="{{ route('siswa.destroy', $item->id_siswa) }}" method="POST" class="d-inline">
-                      @csrf
-                      @method('DELETE')
-                      <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
-                        <i class="ti ti-trash"></i>
-                      </button>
-                    </form>
+                  <td class="text-center">
+                    <div class="btn-group" role="group">
+                      <a href="{{ route('siswa.show', $item->id_siswa) }}" class="btn btn-sm btn-outline-info" title="Lihat Detail">
+                        <i class="ti ti-eye"></i>
+                      </a>
+                      <a href="{{ route('siswa.edit', $item->id_siswa) }}" class="btn btn-sm btn-outline-warning" title="Edit Data">
+                        <i class="ti ti-edit"></i>
+                      </a>
+                      <form action="{{ route('siswa.destroy', $item->id_siswa) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus Data"
+                                onclick="return confirm('Apakah Anda yakin ingin menghapus data siswa {{ $item->nama_siswa }}?')">
+                          <i class="ti ti-trash"></i>
+                        </button>
+                      </form>
+                    </div>
                   </td>
                 </tr>
               @empty
                 <tr>
-                  <td colspan="7" class="text-center">Tidak ada data siswa.</td>
+                  <td colspan="7" class="text-center py-5">
+                    <div class="empty-state">
+                      <i class="ti ti-users display-4 text-muted mb-3"></i>
+                      <h5 class="text-muted">Belum ada data siswa</h5>
+                      <p class="text-muted mb-4">Mulai tambahkan data siswa pertama Anda</p>
+                      <a href="{{ route('siswa.create') }}" class="btn btn-primary">
+                        <i class="ti ti-plus me-2"></i>Tambah Siswa Pertama
+                      </a>
+                    </div>
+                  </td>
                 </tr>
               @endforelse
             </tbody>
           </table>
         </div>
-        {{ $siswa->links() }}
       </div>
     </div>
   </div>
 </div>
+
+<!-- Pagination -->
+@if($siswa->hasPages())
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-center">
+        {{ $siswa->links() }}
+      </div>
+    </div>
+  </div>
+@endif
+
+<style>
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.table-row-hover:hover {
+  background-color: #f8f9fa !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.2s ease;
+}
+
+.avatar-initial {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.btn-group .btn {
+  border-radius: 0.375rem !important;
+  margin: 0 1px;
+}
+
+.btn-group .btn:first-child {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.btn-group .btn:last-child {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.btn-group .btn:not(:first-child):not(:last-child) {
+  border-radius: 0 !important;
+}
+
+.card-header {
+  border-bottom: none;
+}
+
+.table th {
+  border-top: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  letter-spacing: 0.5px;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.empty-state {
+  padding: 3rem 0;
+}
+
+@media (max-width: 768px) {
+  .btn-group {
+    flex-direction: column;
+  }
+
+  .btn-group .btn {
+    margin: 1px 0;
+    border-radius: 0.375rem !important;
+  }
+}
+</style>
 @endsection

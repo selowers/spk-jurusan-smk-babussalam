@@ -20,4 +20,16 @@ class Siswa extends Model
     {
         return $this->belongsTo(User::class, 'id_user');
     }
+
+    // Relasi dengan nilai
+    public function nilai()
+    {
+        return $this->hasMany(Nilai::class, 'id_siswa', 'id_siswa');
+    }
+
+    // Relasi dengan hasil SAW
+    public function hasilSAW()
+    {
+        return $this->hasMany(HasilSAW::class, 'id_siswa', 'id_siswa');
+    }
 }

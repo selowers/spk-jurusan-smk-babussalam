@@ -79,7 +79,7 @@
 
       <!-- Nav item: Mengelola Data Kriteria -->
       <li class="nav-item">
-        <a class="nav-link" href="#"><span class="nav-icon">
+        <a class="nav-link @if(request()->routeIs('kriteria*')) active @endif" href="{{ route('kriteria.index') }}"><span class="nav-icon">
           <i class="ti ti-list-details"></i>
         </span> <span class="text">Mengelola Data Kriteria</span></a>
       </li>
