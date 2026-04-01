@@ -25,6 +25,9 @@
   <meta name="msapplication-TileImage" content="/assets/images/favicon/ms-icon-144x144.png" />
   <meta name="theme-color" content="#ffffff" />
 
+  <!-- CSRF Token -->
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
   <!-- Color modes -->
   <script src="/assets/js/vendors/color-modes.js"></script>
   <script>
@@ -86,7 +89,7 @@
 
       <!-- Nav item: Mengelola Data Jurusan -->
       <li class="nav-item">
-        <a class="nav-link" href="#"><span class="nav-icon">
+        <a class="nav-link @if(request()->routeIs('jurusan*')) active @endif" href="{{ route('jurusan.index') }}"><span class="nav-icon">
           <i class="ti ti-school"></i>
         </span> <span class="text">Mengelola Data Jurusan</span></a>
       </li>
