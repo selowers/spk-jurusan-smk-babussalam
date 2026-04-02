@@ -95,15 +95,26 @@
       </li>
 
       <!-- Nav item: Proses Perhitungan SAW -->
-      <li class="nav-item">
-        <a class="nav-link" href="#"><span class="nav-icon">
-          <i class="ti ti-calculator"></i>
-        </span> <span class="text">Proses Perhitungan SAW</span></a>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle @if(request()->routeIs('saw*')) active @endif" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+          <span class="nav-icon">
+            <i class="ti ti-calculator"></i>
+          </span>
+          <span class="text">Proses Perhitungan SAW</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item @if(request()->routeIs('saw.index')) active @endif" href="{{ route('saw.index') }}">
+            <i class="ti ti-list me-2"></i>Daftar Proses SAW
+          </a></li>
+          <li><a class="dropdown-item @if(request()->routeIs('saw.create')) active @endif" href="{{ route('saw.create') }}">
+            <i class="ti ti-plus me-2"></i>Buat Proses Baru
+          </a></li>
+        </ul>
       </li>
 
       <!-- Nav item: Melihat Hasil Rekomendasi -->
       <li class="nav-item">
-        <a class="nav-link" href="#"><span class="nav-icon">
+        <a class="nav-link @if(request()->routeIs('saw.hasil')) active @endif" href="{{ route('saw.hasil') }}"><span class="nav-icon">
           <i class="ti ti-eye"></i>
         </span> <span class="text">Melihat Hasil Rekomendasi</span></a>
       </li>
