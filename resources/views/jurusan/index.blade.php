@@ -40,26 +40,6 @@
   box-shadow: 0 0.125rem 0.25rem 0 rgba(58, 59, 69, 0.2) !important;
 }
 
-.avatar {
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-}
-
-.avatar-sm {
-  width: 2rem;
-  height: 2rem;
-  font-size: 0.75rem;
-}
-
-.avatar-md {
-  width: 3rem;
-  height: 3rem;
-  font-size: 1rem;
-}
-
 .table-hover tbody tr:hover {
   background-color: rgba(0, 0, 0, 0.075);
 }
@@ -104,16 +84,6 @@
 .jurusan-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
-}
-
-.avatar-initial {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 1.2rem;
 }
 
 /* Action buttons styling */
@@ -236,14 +206,12 @@
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-              Fakultas Teknik
+              Total Fakultas
             </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">
-              {{ $jurusanPerFakultas->where('fakultas', 'Fakultas Teknik')->first()->jumlah ?? 0 }}
-            </div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalFakultas }}</div>
           </div>
           <div class="col-auto">
-            <i class="ti ti-cpu text-success" style="font-size: 2rem;"></i>
+            <i class="ti ti-building-bank text-success" style="font-size: 2rem;"></i>
           </div>
         </div>
       </div>
@@ -256,34 +224,12 @@
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-              Fakultas Ekonomi
+              Total Kampus
             </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">
-              {{ $jurusanPerFakultas->where('fakultas', 'Fakultas Ekonomi')->first()->jumlah ?? 0 }}
-            </div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalKampus }}</div>
           </div>
           <div class="col-auto">
-            <i class="ti ti-cash text-info" style="font-size: 2rem;"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-warning shadow h-100 py-2">
-      <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
-            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-              Fakultas Lainnya
-            </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">
-              {{ $totalJurusan - ($jurusanPerFakultas->where('fakultas', 'Fakultas Teknik')->first()->jumlah ?? 0) - ($jurusanPerFakultas->where('fakultas', 'Fakultas Ekonomi')->first()->jumlah ?? 0) }}
-            </div>
-          </div>
-          <div class="col-auto">
-            <i class="ti ti-school text-warning" style="font-size: 2rem;"></i>
+            <i class="ti ti-school text-info" style="font-size: 2rem;"></i>
           </div>
         </div>
       </div>
@@ -334,9 +280,6 @@
                 <td>{{ $jurusan->firstItem() + $index }}</td>
                 <td>
                   <div class="d-flex align-items-center">
-                    <div class="avatar avatar-md me-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-                      {{ substr($item->nama_jurusan, 0, 1) }}
-                    </div>
                     <div>
                       <div class="font-weight-bold text-dark">{{ $item->nama_jurusan }}</div>
                     </div>

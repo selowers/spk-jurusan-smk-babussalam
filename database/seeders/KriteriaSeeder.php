@@ -16,17 +16,17 @@ class KriteriaSeeder extends Seeder
         $kriterias = [
             [
                 'nama_kriteria' => 'Nilai Kognitif',
-                'bobot' => 0.4,
+                'bobot' => 0.42,
                 'tipe' => 'benefit',
             ],
             [
                 'nama_kriteria' => 'Minat dan Bakat',
-                'bobot' => 0.3,
+                'bobot' => 0.33,
                 'tipe' => 'benefit',
             ],
             [
                 'nama_kriteria' => 'Psikotes',
-                'bobot' => 0.3,
+                'bobot' => 0.25,
                 'tipe' => 'benefit',
             ],
         ];

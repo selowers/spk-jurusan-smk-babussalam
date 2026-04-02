@@ -12,11 +12,10 @@ class JurusanController extends Controller
     {
         $jurusan = Jurusan::paginate(10);
         $totalJurusan = Jurusan::count();
-        $jurusanPerFakultas = Jurusan::selectRaw('fakultas, COUNT(*) as jumlah')
-            ->groupBy('fakultas')
-            ->get();
+        $totalFakultas = Jurusan::distinct('fakultas')->count('fakultas');
+        $totalKampus = Jurusan::distinct('perguruan_tinggi')->count('perguruan_tinggi');
 
-        return view('jurusan.index', compact('jurusan', 'totalJurusan', 'jurusanPerFakultas'));
+        return view('jurusan.index', compact('jurusan', 'totalJurusan', 'totalFakultas', 'totalKampus'));
     }
 
     public function create()
