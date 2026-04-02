@@ -52,14 +52,19 @@
 </head>
 
 <body>
-  <!-- Vertical Sidebar -->
-  <div id="miniSidebar">
-    <div class="brand-logo">
-      <a class="d-none d-md-flex align-items-center gap-2" href="/">
-        <img src="/assets/images/brand/logo/logo-icon.svg" alt="Logo SMK Babussalam" />
-        <span class="fw-bold fs-4 site-logo-text">SMK Babussalam</span>
-      </a>
+  @guest
+    <div class="container mt-5">
+      @yield('content')
     </div>
+  @else
+    <!-- Vertical Sidebar -->
+    <div id="miniSidebar">
+      <div class="brand-logo">
+        <a class="d-none d-md-flex align-items-center gap-2" href="/">
+          <img src="/assets/images/brand/logo/logo-icon.svg" alt="Logo SMK Babussalam" />
+          <span class="fw-bold fs-4 site-logo-text">SMK Babussalam</span>
+        </a>
+      </div>
     <ul class="navbar-nav flex-column">
       <!-- Nav item: Dashboard -->
       <li class="nav-item">
@@ -186,14 +191,18 @@
                 <img src="/assets/images/avatar/avatar-1.jpg" alt="Avatar" class="avatar-img rounded-circle">
               </div>
               <div class="ms-2 d-none d-lg-block">
-                <span class="text-body-secondary fw-medium fs-sm">Admin</span>
+                <span class="text-body-secondary fw-medium fs-sm">{{ Auth::user()->name ?? 'Guru BK' }}</span>
               </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="#"><i class="ti ti-user me-2"></i>Profile</a></li>
-              <li><a class="dropdown-item" href="#"><i class="ti ti-settings me-2"></i>Settings</a></li>
+              <li><a class="dropdown-item" href="{{ route('password.change') }}"><i class="ti ti-lock me-2"></i>Ubah Kata Sandi</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#"><i class="ti ti-logout me-2"></i>Logout</a></li>
+              <li>
+                <form method="POST" action="{{ route('logout') }}">
+                  @csrf
+                  <button type="submit" class="dropdown-item"><i class="ti ti-logout me-2"></i>Logout</button>
+                </form>
+              </li>
             </ul>
           </div>
         </div>
@@ -205,6 +214,7 @@
       @yield('content')
     </div>
   </div>
+  @endguest
 
   <!-- Libs JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

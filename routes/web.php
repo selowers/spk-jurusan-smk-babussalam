@@ -6,8 +6,16 @@ use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\SAWController;
+use App\Http\Controllers\AuthController;
 
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/password/change', [AuthController::class, 'showChangePasswordForm'])->name('password.change');
+Route::post('/password/change', [AuthController::class, 'changePassword'])->name('password.change.post');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 Route::resource('siswa', SiswaController::class);
 Route::resource('kriteria', KriteriaController::class);
 Route::resource('jurusan', JurusanController::class);
@@ -23,3 +31,4 @@ Route::put('saw/{id}', [SAWController::class, 'update'])->name('saw.update');
 Route::get('saw-hasil', [SAWController::class, 'hasil'])->name('saw.hasil');
 Route::post('saw/proses', [SAWController::class, 'proses'])->name('saw.proses');
 Route::post('saw/simpan', [SAWController::class, 'simpan'])->name('saw.simpan');
+});
