@@ -22,8 +22,8 @@ class SiswaController extends Controller
      */
     public function create()
     {
-        $users = User::all();
-        return view('siswa.create', compact('users'));
+        // Tidak perlu mengambil users karena hanya ada 1 user (guru BK)
+        return view('siswa.create');
     }
 
     /**
@@ -36,10 +36,13 @@ class SiswaController extends Controller
             'kelas' => 'required|string|max:50',
             'jurusan_sekolah' => 'required|string|max:100',
             'tahun_ajaran' => 'required|string|max:20',
-            'id_user' => 'required|exists:users,id',
         ]);
 
-        Siswa::create($request->all());
+        // Otomatis set id_user ke 1 (guru BK) karena hanya ada 1 user
+        $data = $request->all();
+        $data['id_user'] = 1;
+
+        Siswa::create($data);
 
         return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil ditambahkan.');
     }
@@ -59,8 +62,8 @@ class SiswaController extends Controller
     public function edit(string $id)
     {
         $siswa = Siswa::findOrFail($id);
-        $users = User::all();
-        return view('siswa.edit', compact('siswa', 'users'));
+        // Tidak perlu mengambil users karena hanya ada 1 user (guru BK)
+        return view('siswa.edit', compact('siswa'));
     }
 
     /**
@@ -73,11 +76,13 @@ class SiswaController extends Controller
             'kelas' => 'required|string|max:50',
             'jurusan_sekolah' => 'required|string|max:100',
             'tahun_ajaran' => 'required|string|max:20',
-            'id_user' => 'required|exists:users,id',
         ]);
 
         $siswa = Siswa::findOrFail($id);
-        $siswa->update($request->all());
+        // Otomatis set id_user ke 1 (guru BK) karena hanya ada 1 user
+        $data = $request->all();
+        $data['id_user'] = 1;
+        $siswa->update($data);
 
         return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil diperbarui.');
     }

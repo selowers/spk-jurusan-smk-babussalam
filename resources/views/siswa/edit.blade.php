@@ -43,18 +43,6 @@
                 <div class="invalid-feedback">{{ $message }}</div>
               @enderror
             </div>
-            <div class="col-md-6 mb-3">
-              <label for="id_user" class="form-label">User</label>
-              <select class="form-select @error('id_user') is-invalid @enderror" id="id_user" name="id_user" required>
-                <option value="">Pilih User</option>
-                @foreach($users as $user)
-                  <option value="{{ $user->id }}" {{ old('id_user', $siswa->id_user) == $user->id ? 'selected' : '' }}>{{ $user->name }} ({{ $user->email }})</option>
-                @endforeach
-              </select>
-              @error('id_user')
-                <div class="invalid-feedback">{{ $message }}</div>
-              @enderror
-            </div>
           </div>
           <button type="submit" class="btn btn-primary">Update</button>
           <a href="{{ route('siswa.index') }}" class="btn btn-secondary">Kembali</a>

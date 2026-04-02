@@ -119,7 +119,6 @@
                 <th><i class="ti ti-school me-1"></i>Kelas</th>
                 <th><i class="ti ti-building me-1"></i>Jurusan Sekolah</th>
                 <th><i class="ti ti-calendar me-1"></i>Tahun Ajaran</th>
-                <th><i class="ti ti-user me-1"></i>User</th>
                 <th class="text-center">Aksi</th>
               </tr>
             </thead>

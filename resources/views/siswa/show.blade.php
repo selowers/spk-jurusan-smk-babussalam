@@ -20,7 +20,6 @@
             <p><strong>Kelas:</strong> {{ $siswa->kelas }}</p>
             <p><strong>Jurusan Sekolah:</strong> {{ $siswa->jurusan_sekolah }}</p>
             <p><strong>Tahun Ajaran:</strong> {{ $siswa->tahun_ajaran }}</p>
-            <p><strong>User:</strong> {{ $siswa->user->name ?? 'N/A' }} ({{ $siswa->user->email ?? 'N/A' }})</p>
           </div>
         </div>
         <div class="mt-3">

@@ -18,7 +18,7 @@ class SiswaSeeder extends Seeder
             'kelas' => 'XII RPL',
             'jurusan_sekolah' => 'Rekayasa Perangkat Lunak',
             'tahun_ajaran' => '2023/2024',
-            'id_user' => 1, // Admin
+            'id_user' => 1, // Guru BK
         ]);
 
         Siswa::create([
@@ -26,7 +26,7 @@ class SiswaSeeder extends Seeder
             'kelas' => 'XII TKJ',
             'jurusan_sekolah' => 'Teknik Komputer Jaringan',
             'tahun_ajaran' => '2023/2024',
-            'id_user' => 2, // Guru
+            'id_user' => 1, // Guru BK
         ]);
 
         Siswa::create([
@@ -34,7 +34,7 @@ class SiswaSeeder extends Seeder
             'kelas' => 'XII MM',
             'jurusan_sekolah' => 'Multimedia',
             'tahun_ajaran' => '2023/2024',
-            'id_user' => 1, // Admin
+            'id_user' => 1, // Guru BK
         ]);
     }
 }
