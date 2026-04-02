@@ -51,6 +51,7 @@ class AuthController extends Controller
 
     public function changePassword(Request $request)
     {
+        /** @var User $user */
         $user = Auth::user();
 
         $request->validate([
