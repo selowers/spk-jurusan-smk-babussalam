@@ -20,7 +20,10 @@ class JurusanController extends Controller
 
     public function create()
     {
-        return view('jurusan.create');
+        $fakultas = Jurusan::distinct('fakultas')->pluck('fakultas')->sort();
+        $perguruanTinggi = Jurusan::distinct('perguruan_tinggi')->pluck('perguruan_tinggi')->sort();
+
+        return view('jurusan.create', compact('fakultas', 'perguruanTinggi'));
     }
 
     public function store(Request $request)
@@ -57,7 +60,10 @@ class JurusanController extends Controller
     public function edit($id)
     {
         $jurusan = Jurusan::findOrFail($id);
-        return view('jurusan.edit', compact('jurusan'));
+        $fakultas = Jurusan::distinct('fakultas')->pluck('fakultas')->sort();
+        $perguruanTinggi = Jurusan::distinct('perguruan_tinggi')->pluck('perguruan_tinggi')->sort();
+
+        return view('jurusan.edit', compact('jurusan', 'fakultas', 'perguruanTinggi'));
     }
 
     public function update(Request $request, $id)

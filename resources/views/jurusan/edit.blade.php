@@ -86,15 +86,9 @@
               <select class="form-select @error('fakultas') is-invalid @enderror"
                       id="fakultas" name="fakultas" required>
                 <option value="">Pilih Fakultas</option>
-                <option value="Fakultas Teknik" {{ old('fakultas', $jurusan->fakultas) == 'Fakultas Teknik' ? 'selected' : '' }}>Fakultas Teknik</option>
-                <option value="Fakultas Ekonomi" {{ old('fakultas', $jurusan->fakultas) == 'Fakultas Ekonomi' ? 'selected' : '' }}>Fakultas Ekonomi</option>
-                <option value="Fakultas Kedokteran" {{ old('fakultas', $jurusan->fakultas) == 'Fakultas Kedokteran' ? 'selected' : '' }}>Fakultas Kedokteran</option>
-                <option value="Fakultas Hukum" {{ old('fakultas', $jurusan->fakultas) == 'Fakultas Hukum' ? 'selected' : '' }}>Fakultas Hukum</option>
-                <option value="Fakultas Pertanian" {{ old('fakultas', $jurusan->fakultas) == 'Fakultas Pertanian' ? 'selected' : '' }}>Fakultas Pertanian</option>
-                <option value="Fakultas Ilmu Komputer" {{ old('fakultas', $jurusan->fakultas) == 'Fakultas Ilmu Komputer' ? 'selected' : '' }}>Fakultas Ilmu Komputer</option>
-                <option value="Fakultas MIPA" {{ old('fakultas', $jurusan->fakultas) == 'Fakultas MIPA' ? 'selected' : '' }}>Fakultas MIPA</option>
-                <option value="Fakultas Sastra" {{ old('fakultas', $jurusan->fakultas) == 'Fakultas Sastra' ? 'selected' : '' }}>Fakultas Sastra</option>
-                <option value="Fakultas Psikologi" {{ old('fakultas', $jurusan->fakultas) == 'Fakultas Psikologi' ? 'selected' : '' }}>Fakultas Psikologi</option>
+                @foreach($fakultas as $f)
+                <option value="{{ $f }}" {{ old('fakultas', $jurusan->fakultas) == $f ? 'selected' : '' }}>{{ $f }}</option>
+                @endforeach
               </select>
               <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addFakultasModal" title="Tambah Fakultas Baru">
                 <i class="ti ti-plus"></i>
@@ -115,14 +109,9 @@
               <select class="form-select @error('perguruan_tinggi') is-invalid @enderror"
                       id="perguruan_tinggi" name="perguruan_tinggi" required>
                 <option value="">Pilih Perguruan Tinggi</option>
-                <option value="Universitas Indonesia" {{ old('perguruan_tinggi', $jurusan->perguruan_tinggi) == 'Universitas Indonesia' ? 'selected' : '' }}>Universitas Indonesia</option>
-                <option value="Institut Teknologi Bandung" {{ old('perguruan_tinggi', $jurusan->perguruan_tinggi) == 'Institut Teknologi Bandung' ? 'selected' : '' }}>Institut Teknologi Bandung</option>
-                <option value="Universitas Gadjah Mada" {{ old('perguruan_tinggi', $jurusan->perguruan_tinggi) == 'Universitas Gadjah Mada' ? 'selected' : '' }}>Universitas Gadjah Mada</option>
-                <option value="Institut Pertanian Bogor" {{ old('perguruan_tinggi', $jurusan->perguruan_tinggi) == 'Institut Pertanian Bogor' ? 'selected' : '' }}>Institut Pertanian Bogor</option>
-                <option value="Universitas Airlangga" {{ old('perguruan_tinggi', $jurusan->perguruan_tinggi) == 'Universitas Airlangga' ? 'selected' : '' }}>Universitas Airlangga</option>
-                <option value="Universitas Diponegoro" {{ old('perguruan_tinggi', $jurusan->perguruan_tinggi) == 'Universitas Diponegoro' ? 'selected' : '' }}>Universitas Diponegoro</option>
-                <option value="Universitas Brawijaya" {{ old('perguruan_tinggi', $jurusan->perguruan_tinggi) == 'Universitas Brawijaya' ? 'selected' : '' }}>Universitas Brawijaya</option>
-                <option value="Universitas Sebelas Maret" {{ old('perguruan_tinggi', $jurusan->perguruan_tinggi) == 'Universitas Sebelas Maret' ? 'selected' : '' }}>Universitas Sebelas Maret</option>
+                @foreach($perguruanTinggi as $pt)
+                <option value="{{ $pt }}" {{ old('perguruan_tinggi', $jurusan->perguruan_tinggi) == $pt ? 'selected' : '' }}>{{ $pt }}</option>
+                @endforeach
               </select>
               <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#addPerguruanTinggiModal" title="Tambah Perguruan Tinggi Baru">
                 <i class="ti ti-plus"></i>
