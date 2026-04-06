@@ -267,7 +267,7 @@
           <table class="table table-hover">
             <thead class="table-light">
               <tr>
-                <th>#</th>
+                <th>No</th>
                 <th>Nama Jurusan</th>
                 <th>Fakultas</th>
                 <th>Perguruan Tinggi</th>

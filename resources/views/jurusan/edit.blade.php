@@ -239,117 +239,151 @@ document.getElementById('nama_jurusan').addEventListener('input', function() {
 })()
 
 // Tambah Fakultas
-document.getElementById('saveFakultasBtn').addEventListener('click', function() {
-    const namaFakultas = document.getElementById('nama_fakultas').value.trim();
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, setting up fakultas button...');
+    const saveFakultasBtn = document.getElementById('saveFakultasBtn');
+    console.log('saveFakultasBtn element:', saveFakultasBtn);
 
-    if (!namaFakultas) {
-        alert('Nama fakultas tidak boleh kosong!');
-        return;
+    if (saveFakultasBtn) {
+        console.log('Adding event listener to saveFakultasBtn');
+        saveFakultasBtn.addEventListener('click', function() {
+            console.log('saveFakultasBtn clicked!');
+            const namaFakultas = document.getElementById('nama_fakultas').value.trim();
+            console.log('namaFakultas value:', namaFakultas);
+
+            if (!namaFakultas) {
+                alert('Nama fakultas tidak boleh kosong!');
+                return;
+            }
+
+            // Disable button
+            this.disabled = true;
+            this.innerHTML = '<i class="ti ti-loader me-1"></i>Menyimpan...';
+
+            // AJAX request
+            fetch('{{ route("jurusan.addFakultas") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    nama_fakultas: namaFakultas
+                })
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response data:', data);
+                if (data.success) {
+                    // Add to dropdown
+                    const select = document.getElementById('fakultas');
+                    const option = new Option(namaFakultas, namaFakultas);
+                    select.appendChild(option);
+                    select.value = namaFakultas;
+
+                    // Close modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addFakultasModal'));
+                    modal.hide();
+
+                    // Reset form
+                    document.getElementById('nama_fakultas').value = '';
+
+                    // Show success message
+                    showAlert('Fakultas berhasil ditambahkan!', 'success');
+                } else {
+                    alert(data.message || 'Terjadi kesalahan saat menambah fakultas');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat menambah fakultas');
+            })
+            .finally(() => {
+                // Re-enable button
+                this.disabled = false;
+                this.innerHTML = '<i class="ti ti-device-floppy me-1"></i>Simpan Fakultas';
+            });
+        });
+    } else {
+        console.error('saveFakultasBtn not found!');
     }
-
-    // Disable button
-    this.disabled = true;
-    this.innerHTML = '<i class="ti ti-loader me-1"></i>Menyimpan...';
-
-    // AJAX request
-    fetch('{{ route("jurusan.addFakultas") }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({
-            nama_fakultas: namaFakultas
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Add to dropdown
-            const select = document.getElementById('fakultas');
-            const option = new Option(namaFakultas, namaFakultas);
-            select.appendChild(option);
-            select.value = namaFakultas;
-
-            // Close modal
-            const modal = bootstrap.Modal.getInstance(document.getElementById('addFakultasModal'));
-            modal.hide();
-
-            // Reset form
-            document.getElementById('nama_fakultas').value = '';
-
-            // Show success message
-            showAlert('Fakultas berhasil ditambahkan!', 'success');
-        } else {
-            alert(data.message || 'Terjadi kesalahan saat menambah fakultas');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Terjadi kesalahan saat menambah fakultas');
-    })
-    .finally(() => {
-        // Re-enable button
-        this.disabled = false;
-        this.innerHTML = '<i class="ti ti-device-floppy me-1"></i>Simpan Fakultas';
-    });
 });
 
 // Tambah Perguruan Tinggi
-document.getElementById('savePerguruanTinggiBtn').addEventListener('click', function() {
-    const namaPerguruanTinggi = document.getElementById('nama_perguruan_tinggi').value.trim();
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, setting up perguruan tinggi button...');
+    const savePerguruanTinggiBtn = document.getElementById('savePerguruanTinggiBtn');
+    console.log('savePerguruanTinggiBtn element:', savePerguruanTinggiBtn);
 
-    if (!namaPerguruanTinggi) {
-        alert('Nama perguruan tinggi tidak boleh kosong!');
-        return;
+    if (savePerguruanTinggiBtn) {
+        console.log('Adding event listener to savePerguruanTinggiBtn');
+        savePerguruanTinggiBtn.addEventListener('click', function() {
+            console.log('savePerguruanTinggiBtn clicked!');
+            const namaPerguruanTinggi = document.getElementById('nama_perguruan_tinggi').value.trim();
+            console.log('namaPerguruanTinggi value:', namaPerguruanTinggi);
+
+            if (!namaPerguruanTinggi) {
+                alert('Nama perguruan tinggi tidak boleh kosong!');
+                return;
+            }
+
+            // Disable button
+            this.disabled = true;
+            this.innerHTML = '<i class="ti ti-loader me-1"></i>Menyimpan...';
+
+            // AJAX request
+            fetch('{{ route("jurusan.addPerguruanTinggi") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    nama_perguruan_tinggi: namaPerguruanTinggi
+                })
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response data:', data);
+                if (data.success) {
+                    // Add to dropdown
+                    const select = document.getElementById('perguruan_tinggi');
+                    const option = new Option(namaPerguruanTinggi, namaPerguruanTinggi);
+                    select.appendChild(option);
+                    select.value = namaPerguruanTinggi;
+
+                    // Close modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addPerguruanTinggiModal'));
+                    modal.hide();
+
+                    // Reset form
+                    document.getElementById('nama_perguruan_tinggi').value = '';
+
+                    // Show success message
+                    showAlert('Perguruan tinggi berhasil ditambahkan!', 'success');
+                } else {
+                    alert(data.message || 'Terjadi kesalahan saat menambah perguruan tinggi');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat menambah perguruan tinggi');
+            })
+            .finally(() => {
+                // Re-enable button
+                this.disabled = false;
+                this.innerHTML = '<i class="ti ti-device-floppy me-1"></i>Simpan Perguruan Tinggi';
+            });
+        });
+    } else {
+        console.error('savePerguruanTinggiBtn not found!');
     }
-
-    // Disable button
-    this.disabled = true;
-    this.innerHTML = '<i class="ti ti-loader me-1"></i>Menyimpan...';
-
-    // AJAX request
-    fetch('{{ route("jurusan.addPerguruanTinggi") }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({
-            nama_perguruan_tinggi: namaPerguruanTinggi
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Add to dropdown
-            const select = document.getElementById('perguruan_tinggi');
-            const option = new Option(namaPerguruanTinggi, namaPerguruanTinggi);
-            select.appendChild(option);
-            select.value = namaPerguruanTinggi;
-
-            // Close modal
-            const modal = bootstrap.Modal.getInstance(document.getElementById('addPerguruanTinggiModal'));
-            modal.hide();
-
-            // Reset form
-            document.getElementById('nama_perguruan_tinggi').value = '';
-
-            // Show success message
-            showAlert('Perguruan tinggi berhasil ditambahkan!', 'success');
-        } else {
-            alert(data.message || 'Terjadi kesalahan saat menambah perguruan tinggi');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Terjadi kesalahan saat menambah perguruan tinggi');
-    })
-    .finally(() => {
-        // Re-enable button
-        this.disabled = false;
-        this.innerHTML = '<i class="ti ti-device-floppy me-1"></i>Simpan Perguruan Tinggi';
-    });
 });
 
 // Function to show alert

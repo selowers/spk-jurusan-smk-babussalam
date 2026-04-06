@@ -21,9 +21,6 @@
             <p class="mb-0">Daftar rekomendasi jurusan untuk semua siswa</p>
         </div>
         <div>
-            <a href="{{ route('saw.index') }}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
-                <i class="fas fa-calculator fa-sm text-white-50"></i> Proses Perhitungan SAW
-            </a>
             <a href="{{ route('saw.index') }}" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
                 <i class="fas fa-arrow-left fa-sm text-white-50"></i> Kembali
             </a>

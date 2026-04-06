@@ -106,10 +106,9 @@ class JurusanController extends Controller
     public function addFakultas(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama_fakultas' => 'required|string|max:150|unique:jurusan,fakultas',
+            'nama_fakultas' => 'required|string|max:150',
         ], [
             'nama_fakultas.required' => 'Nama fakultas wajib diisi.',
-            'nama_fakultas.unique' => 'Fakultas sudah ada.',
         ]);
 
         if ($validator->fails()) {
@@ -132,10 +131,9 @@ class JurusanController extends Controller
     public function addPerguruanTinggi(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama_perguruan_tinggi' => 'required|string|max:150|unique:jurusan,perguruan_tinggi',
+            'nama_perguruan_tinggi' => 'required|string|max:150',
         ], [
             'nama_perguruan_tinggi.required' => 'Nama perguruan tinggi wajib diisi.',
-            'nama_perguruan_tinggi.unique' => 'Perguruan tinggi sudah ada.',
         ]);
 
         if ($validator->fails()) {

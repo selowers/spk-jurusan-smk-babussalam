@@ -218,6 +218,7 @@
 
   <!-- Theme JS -->
   <script src="/assets/js/main.js"></script>
+  @yield('scripts')
 </body>
 
 </html>

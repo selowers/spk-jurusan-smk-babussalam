@@ -116,7 +116,7 @@
             <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
                 <thead class="table-dark">
                     <tr>
-                        <th>#</th>
+                        <th>No</th>
                         <th>Nama Kriteria</th>
                         <th>Bobot</th>
                         <th>Tipe</th>
@@ -154,28 +154,20 @@
                         </td>
                         <td>{{ $kriteria->created_at->format('d/m/Y') }}</td>
                         <td class="text-center text-nowrap">
-                            <div class="dropdown">
-                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-three-dots"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{{ route('kriteria.show', $kriteria) }}">
-                                        <i class="bi bi-eye me-2"></i>Lihat Detail
-                                    </a></li>
-                                    <li><a class="dropdown-item" href="{{ route('kriteria.edit', $kriteria) }}">
-                                        <i class="bi bi-pencil me-2"></i>Edit
-                                    </a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li>
-                                        <form action="{{ route('kriteria.destroy', $kriteria) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kriteria ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="dropdown-item text-danger">
-                                                <i class="bi bi-trash me-2"></i>Hapus
-                                            </button>
-                                        </form>
-                                    </li>
-                                </ul>
+                            <div class="d-flex justify-content-center gap-1 flex-wrap">
+                                <a href="{{ route('kriteria.show', $kriteria) }}" class="btn btn-sm btn-primary d-flex align-items-center" title="Lihat Detail">
+                                    <i class="bi bi-eye me-1"></i>Detail
+                                </a>
+                                <a href="{{ route('kriteria.edit', $kriteria) }}" class="btn btn-sm btn-warning d-flex align-items-center" title="Edit">
+                                    <i class="bi bi-pencil me-1"></i>Edit
+                                </a>
+                                <form action="{{ route('kriteria.destroy', $kriteria) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger d-flex align-items-center" title="Hapus" onclick="return confirm('Apakah Anda yakin ingin menghapus kriteria ini?')">
+                                        <i class="bi bi-trash me-1"></i>Hapus
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>
