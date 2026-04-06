@@ -1,109 +1,112 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Hasil SAW - SPK Jurusan SMK Babussalam')
-
 @section('content')
-<div class="container-fluid">
-    <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <div>
-            <h1 class="h3 mb-0 text-gray-800">Detail Hasil SAW</h1>
-            <p class="mb-0">Detail rekomendasi jurusan untuk siswa: <strong>{{ $siswa->nama_siswa }}</strong></p>
-        </div>
-        <div>
-            <a href="{{ route('saw.edit', $siswa->id_siswa) }}" class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm">
-                <i class="fas fa-edit fa-sm text-white-50"></i> Edit Nilai
-            </a>
-            <a href="{{ route('saw.index') }}" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
-                <i class="fas fa-arrow-left fa-sm text-white-50"></i> Kembali
-            </a>
-        </div>
-    </div>
-
-    <!-- Siswa Information -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card shadow">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Informasi Siswa</h6>
+<div class="content-wrapper">
+    <!-- Content Header -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Detail Perhitungan SAW</h1>
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <table class="table table-borderless">
-                                <tr>
-                                    <td width="150"><strong>Nama Siswa</strong></td>
-                                    <td>: {{ $siswa->nama_siswa }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Kelas</strong></td>
-                                    <td>: {{ $siswa->kelas }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Jurusan Sekolah</strong></td>
-                                    <td>: {{ $siswa->jurusan_sekolah }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Tahun Ajaran</strong></td>
-                                    <td>: {{ $siswa->tahun_ajaran }}</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="text-center">
-                                <div class="avatar-circle mx-auto mb-3" style="width: 80px; height: 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: bold;">
-                                    {{ strtoupper(substr($siswa->nama_siswa, 0, 1)) }}
-                                </div>
-                                <p class="text-muted">Avatar Siswa</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('saw.index') }}">SAW</a></li>
+                        <li class="breadcrumb-item active">Detail Perhitungan</li>
+                    </ol>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Nilai Siswa -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card shadow">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-success">Nilai Siswa</h6>
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Informasi Siswa -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Informasi Siswa</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>Nama Siswa</th>
+                                    <td>{{ $siswa->nama_siswa }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Kelas</th>
+                                    <td>{{ $siswa->kelas }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Jurusan Sekolah</th>
+                                    <td>{{ $siswa->jurusan_sekolah }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Tahun Ajaran</th>
+                                    <td>{{ $siswa->tahun_ajaran }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nilai Siswa per Kriteria -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Nilai Siswa per Kriteria</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Kriteria</th>
+                                <th>Bobot</th>
+                                <th>Nilai Siswa (0-100)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($kriteria as $k)
+                            <tr>
+                                <td>{{ $k->nama_kriteria }}</td>
+                                <td>{{ $k->bobot }}</td>
+                                <td>{{ number_format($langkahPerhitungan['nilai_siswa'][$k->id_kriteria] ?? 0, 2) }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- STEP 1: Matriks Keputusan -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">STEP 1: Matriks Keputusan X[i][j]</h3>
+                    <div class="card-tools">
+                        <small class="text-muted">X[i][j] = (nilai_siswa[j] + profil_jurusan[i][j]) / 2</small>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Kriteria</th>
-                                    <th>Bobot</th>
-                                    <th>Tipe</th>
-                                    <th>Nilai</th>
-                                    <th>Status</th>
+                                    <th>Jurusan</th>
+                                    @foreach($kriteria as $k)
+                                    <th>{{ $k->nama_kriteria }}</th>
+                                    @endforeach
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($nilaiSiswa as $nilai)
+                                @foreach($jurusan as $j)
                                 <tr>
-                                    <td>{{ $nilai->kriteria->nama_kriteria }}</td>
-                                    <td>{{ $nilai->kriteria->bobot }}</td>
-                                    <td>
-                                        <span class="badge badge-{{ $nilai->kriteria->tipe == 'benefit' ? 'success' : 'warning' }}">
-                                            {{ ucfirst($nilai->kriteria->tipe) }}
-                                        </span>
-                                    </td>
-                                    <td><strong>{{ $nilai->nilai }}</strong></td>
-                                    <td>
-                                        @if($nilai->nilai >= 80)
-                                            <span class="badge badge-success">Sangat Baik</span>
-                                        @elseif($nilai->nilai >= 70)
-                                            <span class="badge badge-info">Baik</span>
-                                        @elseif($nilai->nilai >= 60)
-                                            <span class="badge badge-warning">Cukup</span>
-                                        @else
-                                            <span class="badge badge-danger">Perlu Ditingkatkan</span>
-                                        @endif
-                                    </td>
+                                    <td>{{ $j->nama_jurusan }}</td>
+                                    @foreach($kriteria as $k)
+                                    <td>{{ number_format($langkahPerhitungan['matriks_keputusan'][$j->id_jurusan][$k->id_kriteria] ?? 0, 4) }}</td>
+                                    @endforeach
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -111,50 +114,148 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Hasil Rekomendasi SAW -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card shadow">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-info">Hasil Rekomendasi SAW</h6>
+            <!-- STEP 2: Max per Kolom -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">STEP 2: Nilai Maximum per Kolom</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Kriteria</th>
+                                <th>Max Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($kriteria as $k)
+                            <tr>
+                                <td>{{ $k->nama_kriteria }}</td>
+                                <td>{{ number_format($langkahPerhitungan['max_per_kolom'][$k->id_kriteria] ?? 0, 4) }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- STEP 3: Matriks Normalisasi -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">STEP 3: Matriks Normalisasi R[i][j]</h3>
+                    <div class="card-tools">
+                        <small class="text-muted">R[i][j] = X[i][j] / max(X[*][j])</small>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Jurusan</th>
+                                    @foreach($kriteria as $k)
+                                    <th>{{ $k->nama_kriteria }}</th>
+                                    @endforeach
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($jurusan as $j)
+                                <tr>
+                                    <td>{{ $j->nama_jurusan }}</td>
+                                    @foreach($kriteria as $k)
+                                    <td>{{ number_format($langkahPerhitungan['matriks_normalisasi'][$j->id_jurusan][$k->id_kriteria] ?? 0, 4) }}</td>
+                                    @endforeach
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 4: Nilai Preferensi -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">STEP 4: Nilai Preferensi V[i]</h3>
+                    <div class="card-tools">
+                        <small class="text-muted">V[i] = Σ(W[j] × R[i][j])</small>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Jurusan</th>
+                                    @foreach($kriteria as $k)
+                                    <th>{{ $k->nama_kriteria }}<br><small>(W={{ $k->bobot }})</small></th>
+                                    @endforeach
+                                    <th>Nilai Preferensi V[i]</th>
+                                    <th>Perhitungan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($jurusan as $j)
+                                <tr>
+                                    <td>{{ $j->nama_jurusan }}</td>
+                                    @php
+                                        $perhitungan = [];
+                                    @endphp
+                                    @foreach($kriteria as $k)
+                                    <td>
+                                        {{ number_format($langkahPerhitungan['matriks_normalisasi'][$j->id_jurusan][$k->id_kriteria] ?? 0, 4) }}
+                                        @php
+                                            $perhitungan[] = number_format($k->bobot, 2) . '×' . number_format($langkahPerhitungan['matriks_normalisasi'][$j->id_jurusan][$k->id_kriteria] ?? 0, 4) . '=' . number_format($k->bobot * ($langkahPerhitungan['matriks_normalisasi'][$j->id_jurusan][$k->id_kriteria] ?? 0), 4);
+                                        @endphp
+                                    </td>
+                                    @endforeach
+                                    <td><strong>{{ number_format($langkahPerhitungan['nilai_preferensi'][$j->id_jurusan] ?? 0, 4) }}</strong></td>
+                                    <td><small>{{ implode(' + ', $perhitungan) }}</small></td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 5: Ranking Akhir -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">STEP 5: Ranking Akhir</h3>
+                    <div class="card-tools">
+                        <small class="text-muted">Urutkan berdasarkan V[i] tertinggi</small>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>Peringkat</th>
                                     <th>Jurusan</th>
-                                    <th>Fakultas</th>
-                                    <th>Perguruan Tinggi</th>
                                     <th>Nilai Preferensi</th>
                                     <th>Rekomendasi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($hasilSAW->sortBy('peringkat') as $hasil)
-                                <tr class="{{ $hasil->peringkat == 1 ? 'table-success' : '' }}">
+                                @foreach($langkahPerhitungan['rekomendasi'] as $rek)
+                                <tr class="{{ $rek['peringkat'] == 1 ? 'table-success' : '' }}">
                                     <td>
-                                        <span class="badge badge-{{ $hasil->peringkat == 1 ? 'success' : 'secondary' }} badge-lg">
-                                            #{{ $hasil->peringkat }}
-                                        </span>
-                                    </td>
-                                    <td><strong>{{ $hasil->jurusan->nama_jurusan }}</strong></td>
-                                    <td>{{ $hasil->jurusan->fakultas }}</td>
-                                    <td>{{ $hasil->jurusan->perguruan_tinggi }}</td>
-                                    <td><strong>{{ number_format($hasil->nilai_preferensi, 4) }}</strong></td>
-                                    <td>
-                                        @if($hasil->peringkat == 1)
-                                            <span class="badge badge-success badge-lg">
-                                                <i class="fas fa-star"></i> Rekomendasi Utama
-                                            </span>
+                                        @if($rek['peringkat'] == 1)
+                                            <span class="badge badge-success">🥇 #{{ $rek['peringkat'] }}</span>
                                         @else
-                                            <span class="badge badge-secondary">
-                                                Alternatif {{ $hasil->peringkat }}
-                                            </span>
+                                            #{{ $rek['peringkat'] }}
+                                        @endif
+                                    </td>
+                                    <td><strong>{{ $rek['nama_jurusan'] }}</strong></td>
+                                    <td><strong>{{ number_format($rek['nilai_preferensi'], 4) }}</strong></td>
+                                    <td>
+                                        @if($rek['peringkat'] == 1)
+                                            <span class="badge badge-success">REKOMENDASI UTAMA</span>
+                                        @else
+                                            Alternatif {{ $rek['peringkat'] }}
                                         @endif
                                     </td>
                                 </tr>
@@ -163,15 +264,23 @@
                         </table>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle"></i>
-                        <strong>Rekomendasi Utama:</strong> {{ $hasilSAW->where('peringkat', 1)->first()->jurusan->nama_jurusan }}
-                        (Nilai Preferensi: {{ number_format($hasilSAW->where('peringkat', 1)->first()->nilai_preferensi, 4) }})
-                    </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="card">
+                <div class="card-body">
+                    <a href="{{ route('saw.index') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Kembali ke SAW
+                    </a>
+                    <a href="{{ route('saw.edit', $siswa->id_siswa) }}" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Edit Nilai Siswa
+                    </a>
+                    <button onclick="window.print()" class="btn btn-info">
+                        <i class="fas fa-print"></i> Print
+                    </button>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </div>
 @endsection

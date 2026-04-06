@@ -8,6 +8,7 @@ use App\Models\Kriteria;
 use App\Models\Nilai;
 use App\Models\HasilSAW;
 use App\Models\Jurusan;
+use App\Models\JurusanKriteria;
 
 class SAWController extends Controller
 {
@@ -60,54 +61,81 @@ class SAWController extends Controller
         $hasil = [];
 
         foreach ($siswa as $s) {
-            $nilaiPreferensi = [];
-
-            foreach ($jurusan as $j) {
-                // Hitung nilai preferensi untuk setiap jurusan
-                $preferensi = 0;
-
-                foreach ($kriteria as $k) {
-                    // Ambil nilai siswa untuk kriteria ini
-                    $nilaiSiswa = $s->nilai->where('id_kriteria', $k->id_kriteria)->first();
-
-                    if ($nilaiSiswa) {
-                        // Normalisasi (untuk benefit criteria: nilai/max)
-                        $maxNilai = $siswa->max(function($sis) use ($k) {
-                            $nilai = $sis->nilai->where('id_kriteria', $k->id_kriteria)->first();
-                            return $nilai ? $nilai->nilai : 0;
-                        });
-
-                        if ($maxNilai > 0) {
-                            $nilaiNormalisasi = $nilaiSiswa->nilai / $maxNilai;
-                        } else {
-                            $nilaiNormalisasi = 0;
-                        }
-
-                        // Kalikan dengan bobot
-                        $preferensi += $nilaiNormalisasi * $k->bobot;
-                    }
-                }
-
-                $nilaiPreferensi[] = [
-                    'id_jurusan' => $j->id_jurusan,
-                    'nama_jurusan' => $j->nama_jurusan,
-                    'nilai_preferensi' => round($preferensi, 4)
-                ];
+            // STEP 1: Ambil nilai siswa per kriteria
+            $nilaiSiswa = [];
+            foreach ($kriteria as $k) {
+                $nilai = $s->nilai->where('id_kriteria', $k->id_kriteria)->first();
+                $nilaiSiswa[$k->id_kriteria] = $nilai ? $nilai->nilai : 0;
             }
 
-            // Urutkan berdasarkan nilai preferensi tertinggi
-            usort($nilaiPreferensi, function($a, $b) {
-                return $b['nilai_preferensi'] <=> $a['nilai_preferensi'];
-            });
+            // STEP 2: Matriks Keputusan X[i][j] = (nilai_siswa[j] + profil_jurusan[i][j]) / 2
+            $matriksX = [];
+            $maxPerKolom = array_fill_keys($kriteria->pluck('id_kriteria')->toArray(), 0);
 
-            // Tambahkan ranking
-            foreach ($nilaiPreferensi as $index => &$np) {
-                $np['peringkat'] = $index + 1;
+            foreach ($jurusan as $j) {
+                $matriksX[$j->id_jurusan] = [];
+                foreach ($kriteria as $k) {
+                    // Ambil profil nilai jurusan untuk kriteria ini
+                    $profil = JurusanKriteria::where('id_jurusan', $j->id_jurusan)
+                                            ->where('id_kriteria', $k->id_kriteria)
+                                            ->first();
+                    $nilaiProfil = $profil ? $profil->nilai : 0;
+
+                    // Hitung X[i][j] = (nilai_siswa + nilai_profil) / 2
+                    $xij = ($nilaiSiswa[$k->id_kriteria] + $nilaiProfil) / 2;
+                    $matriksX[$j->id_jurusan][$k->id_kriteria] = $xij;
+
+                    // Simpan max per kolom
+                    if ($xij > $maxPerKolom[$k->id_kriteria]) {
+                        $maxPerKolom[$k->id_kriteria] = $xij;
+                    }
+                }
+            }
+
+            // STEP 3: Normalisasi R[i][j] = X[i][j] / max(X[*][j])
+            $matriksR = [];
+            foreach ($jurusan as $j) {
+                $matriksR[$j->id_jurusan] = [];
+                foreach ($kriteria as $k) {
+                    $maxKolom = $maxPerKolom[$k->id_kriteria];
+                    $rij = $maxKolom > 0 ? $matriksX[$j->id_jurusan][$k->id_kriteria] / $maxKolom : 0;
+                    $matriksR[$j->id_jurusan][$k->id_kriteria] = round($rij, 4);
+                }
+            }
+
+            // STEP 4: Nilai Preferensi V[i] = Σ(Wj × R[i][j])
+            $nilaiPreferensi = [];
+            foreach ($jurusan as $j) {
+                $vi = 0;
+                foreach ($kriteria as $k) {
+                    $vi += $k->bobot * $matriksR[$j->id_jurusan][$k->id_kriteria];
+                }
+                $nilaiPreferensi[$j->id_jurusan] = round($vi, 4);
+            }
+
+            // STEP 5: Ranking berdasarkan V tertinggi
+            arsort($nilaiPreferensi);
+            $peringkat = 1;
+            $rekomendasi = [];
+            foreach ($nilaiPreferensi as $id_jurusan => $vi) {
+                $jurusanData = $jurusan->where('id_jurusan', $id_jurusan)->first();
+                $rekomendasi[] = [
+                    'id_jurusan' => $id_jurusan,
+                    'nama_jurusan' => $jurusanData->nama_jurusan,
+                    'nilai_preferensi' => $vi,
+                    'peringkat' => $peringkat
+                ];
+                $peringkat++;
             }
 
             $hasil[] = [
                 'siswa' => $s,
-                'rekomendasi' => $nilaiPreferensi
+                'nilai_siswa' => $nilaiSiswa,
+                'matriks_keputusan' => $matriksX,
+                'max_per_kolom' => $maxPerKolom,
+                'matriks_normalisasi' => $matriksR,
+                'nilai_preferensi' => $nilaiPreferensi,
+                'rekomendasi' => $rekomendasi
             ];
         }
 
@@ -179,18 +207,24 @@ class SAWController extends Controller
 
     public function show($id)
     {
-        // Cari hasil SAW berdasarkan id_siswa
-        $hasilSAW = HasilSAW::where('id_siswa', $id)->with(['siswa', 'jurusan'])->get();
-
-        if ($hasilSAW->isEmpty()) {
-            return redirect()->route('saw.index')->with('error', 'Data hasil SAW tidak ditemukan!');
+        // Ambil data siswa
+        $siswa = Siswa::where('id_siswa', $id)->with(['nilai.kriteria'])->first();
+        if (!$siswa) {
+            return redirect()->route('saw.index')->with('error', 'Data siswa tidak ditemukan!');
         }
 
-        $siswa = $hasilSAW->first()->siswa;
+        // Ambil data pendukung
         $kriteria = Kriteria::all();
-        $nilaiSiswa = Nilai::where('id_siswa', $id)->with('kriteria')->get();
+        $jurusan = Jurusan::all();
 
-        return view('saw.show', compact('hasilSAW', 'siswa', 'kriteria', 'nilaiSiswa'));
+        // Hitung SAW dengan detail langkah
+        $hasilSAW = $this->hitungSAW(collect([$siswa]), $kriteria, $jurusan);
+        $langkahPerhitungan = $hasilSAW[0];
+
+        // Ambil hasil SAW dari database untuk perbandingan
+        $hasilDatabase = HasilSAW::where('id_siswa', $id)->with('jurusan')->orderBy('peringkat')->get();
+
+        return view('saw.show', compact('siswa', 'kriteria', 'jurusan', 'langkahPerhitungan', 'hasilDatabase'));
     }
 
     public function edit($id)
@@ -265,5 +299,36 @@ class SAWController extends Controller
         }
 
         return redirect()->route('saw.show', $id)->with('success', 'Nilai siswa berhasil diperbarui dan SAW dihitung ulang!');
+    }
+
+    public function simpanNilaiKuesioner(Request $request, $id_siswa)
+    {
+        $request->validate([
+            'skor_c1' => 'required|numeric|min:0|max:60', // 12 soal × 5 = 60
+            'skor_c2' => 'required|numeric|min:0|max:35', // 7 soal × 5 = 35
+            'skor_c3' => 'required|numeric|min:0|max:45', // 9 soal × 5 = 45
+        ]);
+
+        // Konversi skor kuesioner ke nilai 0-100
+        $nilai_c1 = round(($request->skor_c1 / 60) * 100, 2);
+        $nilai_c2 = round(($request->skor_c2 / 35) * 100, 2);
+        $nilai_c3 = round(($request->skor_c3 / 45) * 100, 2);
+
+        // Simpan nilai ke database
+        $kriteria = Kriteria::all();
+        $nilaiData = [
+            ['id_kriteria' => $kriteria->where('nama_kriteria', 'Pengetahuan Kognitif')->first()->id_kriteria, 'nilai' => $nilai_c1],
+            ['id_kriteria' => $kriteria->where('nama_kriteria', 'Minat dan Bakat')->first()->id_kriteria, 'nilai' => $nilai_c2],
+            ['id_kriteria' => $kriteria->where('nama_kriteria', 'Psikotes')->first()->id_kriteria, 'nilai' => $nilai_c3],
+        ];
+
+        foreach ($nilaiData as $data) {
+            Nilai::updateOrCreate(
+                ['id_siswa' => $id_siswa, 'id_kriteria' => $data['id_kriteria']],
+                ['nilai' => $data['nilai']]
+            );
+        }
+
+        return redirect()->route('nilai.index')->with('success', 'Nilai kuesioner berhasil disimpan!');
     }
 }

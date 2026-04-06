@@ -21,8 +21,8 @@
             <p class="mb-0">Daftar rekomendasi jurusan untuk semua siswa</p>
         </div>
         <div>
-            <a href="{{ route('saw.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
-                <i class="fas fa-plus fa-sm text-white-50"></i> Proses Baru
+            <a href="{{ route('saw.index') }}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
+                <i class="fas fa-calculator fa-sm text-white-50"></i> Proses Perhitungan SAW
             </a>
             <a href="{{ route('saw.index') }}" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
                 <i class="fas fa-arrow-left fa-sm text-white-50"></i> Kembali
@@ -232,8 +232,8 @@
                             <i class="fas fa-inbox fa-3x text-gray-300 mb-3"></i>
                             <h5 class="text-gray-500">Belum ada hasil rekomendasi</h5>
                             <p class="text-gray-400">Silakan lakukan proses perhitungan SAW terlebih dahulu.</p>
-                            <a href="{{ route('saw.create') }}" class="btn btn-primary">
-                                <i class="fas fa-plus"></i> Buat Proses SAW
+                            <a href="{{ route('saw.index') }}" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Proses SAW
                             </a>
                         </div>
                     @endif

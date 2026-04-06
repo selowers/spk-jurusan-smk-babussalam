@@ -99,22 +99,18 @@
         </span> <span class="text">Mengelola Data Jurusan</span></a>
       </li>
 
+      <!-- Nav item: Input Nilai Kuesioner -->
+      <li class="nav-item">
+        <a class="nav-link @if(request()->routeIs('nilai*')) active @endif" href="{{ route('nilai.index') }}"><span class="nav-icon">
+          <i class="ti ti-clipboard-list"></i>
+        </span> <span class="text">Input Nilai Kuesioner</span></a>
+      </li>
+
       <!-- Nav item: Proses Perhitungan SAW -->
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle @if(request()->routeIs('saw*')) active @endif" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-          <span class="nav-icon">
-            <i class="ti ti-calculator"></i>
-          </span>
-          <span class="text">Proses Perhitungan SAW</span>
-        </a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item @if(request()->routeIs('saw.index')) active @endif" href="{{ route('saw.index') }}">
-            <i class="ti ti-list me-2"></i>Daftar Proses SAW
-          </a></li>
-          <li><a class="dropdown-item @if(request()->routeIs('saw.create')) active @endif" href="{{ route('saw.create') }}">
-            <i class="ti ti-plus me-2"></i>Buat Proses Baru
-          </a></li>
-        </ul>
+      <li class="nav-item">
+        <a class="nav-link @if(request()->routeIs('saw.index') || request()->routeIs('saw.show') || request()->routeIs('saw.edit')) active @endif" href="{{ route('saw.index') }}"><span class="nav-icon">
+          <i class="ti ti-calculator"></i>
+        </span> <span class="text">Proses Perhitungan SAW</span></a>
       </li>
 
       <!-- Nav item: Melihat Hasil Rekomendasi -->

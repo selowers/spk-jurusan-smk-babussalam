@@ -23,4 +23,10 @@ class Jurusan extends Model
     {
         return $this->hasMany(HasilSAW::class, 'id_jurusan', 'id_jurusan');
     }
+
+    // Relasi dengan jurusan kriteria
+    public function jurusanKriteria()
+    {
+        return $this->hasMany(JurusanKriteria::class, 'id_jurusan', 'id_jurusan');
+    }
 }
