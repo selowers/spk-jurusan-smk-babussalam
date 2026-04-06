@@ -19,6 +19,9 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             SiswaSeeder::class,
             KriteriaSeeder::class,
+            JurusanSeeder::class,
+            JurusanKriteriaSeeder::class,
+            NilaiSeeder::class,
         ]);
     }
 }

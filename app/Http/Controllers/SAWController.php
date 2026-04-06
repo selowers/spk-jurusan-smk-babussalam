@@ -82,7 +82,10 @@ class SAWController extends Controller
                     $nilaiProfil = $profil ? $profil->nilai : 0;
 
                     // Hitung X[i][j] = (nilai_siswa + nilai_profil) / 2
-                    $xij = ($nilaiSiswa[$k->id_kriteria] + $nilaiProfil) / 2;
+                    $nilaiSkala5 = ($nilaiSiswa[$k->id_kriteria] / 100) * 5;
+                    // Kecocokan = 5 - |selisih|, makin kecil gap makin cocok
+$gap = abs($nilaiSkala5 - $nilaiProfil);
+$xij = 5 - $gap; // nilai antara 0-5
                     $matriksX[$j->id_jurusan][$k->id_kriteria] = $xij;
 
                     // Simpan max per kolom
@@ -144,21 +147,20 @@ class SAWController extends Controller
 
     private function simpanHasil($hasil)
     {
-        // Hapus hasil sebelumnya untuk siswa yang diproses
-        $siswaIds = array_column($hasil, 'siswa');
-        $siswaIds = array_map(function($s) {
-            return $s['id_siswa'];
-        }, $siswaIds);
+        // Kumpulkan id siswa yang diproses
+        $siswaIds = array_map(fn($h) => $h['siswa']->id_siswa, $hasil);
+
+        // Hapus hasil lama untuk siswa-siswa tersebut
         HasilSAW::whereIn('id_siswa', $siswaIds)->delete();
 
         // Simpan hasil baru
         foreach ($hasil as $h) {
             foreach ($h['rekomendasi'] as $rek) {
                 HasilSAW::create([
-                    'id_siswa' => $h['siswa']['id_siswa'],
-                    'id_jurusan' => $rek['id_jurusan'],
+                    'id_siswa'         => $h['siswa']->id_siswa,
+                    'id_jurusan'       => $rek['id_jurusan'],
                     'nilai_preferensi' => $rek['nilai_preferensi'],
-                    'peringkat' => $rek['peringkat']
+                    'peringkat'        => $rek['peringkat']
                 ]);
             }
         }

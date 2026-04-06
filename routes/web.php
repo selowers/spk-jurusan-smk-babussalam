@@ -25,6 +25,8 @@ Route::post('jurusan/add-perguruan-tinggi', [JurusanController::class, 'addPergu
 
 // Routes untuk SAW
 Route::get('saw', [SAWController::class, 'index'])->name('saw.index');
+// Tambahkan di web.php SEBELUM route saw/{id}
+Route::get('saw/create', [SAWController::class, 'create'])->name('saw.create');
 Route::get('saw/{id}', [SAWController::class, 'show'])->name('saw.show');
 Route::get('saw/{id}/edit', [SAWController::class, 'edit'])->name('saw.edit');
 Route::put('saw/{id}', [SAWController::class, 'update'])->name('saw.update');

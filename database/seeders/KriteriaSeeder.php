@@ -15,7 +15,7 @@ class KriteriaSeeder extends Seeder
     {
         $kriterias = [
             [
-                'nama_kriteria' => 'Nilai Kognitif',
+                'nama_kriteria' => 'Pengetahuan Kognitif',
                 'bobot' => 0.42,
                 'tipe' => 'benefit',
             ],
