@@ -27,6 +27,21 @@ class DashboardController extends Controller
             ->groupBy('tahun_ajaran')
             ->get();
 
+        // Data jurusan rekomendasi terbanyak
+        $jurusanRekomendasi = HasilSAW::selectRaw('id_jurusan, COUNT(*) as jumlah_rekomendasi')
+            ->where('peringkat', 1)
+            ->with('jurusan')
+            ->groupBy('id_jurusan')
+            ->orderBy('jumlah_rekomendasi', 'desc')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'nama_jurusan' => $item->jurusan->nama_jurusan,
+                    'fakultas' => $item->jurusan->fakultas,
+                    'jumlah' => $item->jumlah_rekomendasi
+                ];
+            });
+
         // Data siswa terbaru (5 terakhir)
         $siswaTerbaru = Siswa::with('user')
             ->latest()
@@ -43,6 +58,7 @@ class DashboardController extends Controller
             'totalHasilSAW',
             'siswaPerKelas',
             'siswaPerTahunAjaran',
+            'jurusanRekomendasi',
             'siswaTerbaru',
             'kriteriaData'
         ));

@@ -146,10 +146,17 @@
   transition: all 0.3s ease;
 }
 
-/* Gradient backgrounds for headers */
-.card-header.bg-info {
-  background: linear-gradient(135deg, #36b9cc 0%, #2c9faf 100%) !important;
+.compact-chart-card {
+  max-width: 320px;
+  margin: 0 auto;
 }
+
+.compact-chart-card .card-body {
+  padding: 0.7rem 0.8rem 0.6rem;
+}
+
+.compact-chart-card canvas {
+  max-height: 150px !important;
 
 .card-header.bg-success {
   background: linear-gradient(135deg, #1cc88a 0%, #17a673 100%) !important;
@@ -257,31 +264,45 @@
 </div>
 
 <!-- Charts Row -->
-<div class="row mb-6">
+<div class="row mb-4 gx-4 gy-4 justify-content-center">
   <!-- Siswa Per Kelas Chart -->
-  <div class="col-xl-6 mb-4">
-    <div class="card shadow">
+  <div class="col-xl-4 col-lg-6 col-md-6 mb-4">
+    <div class="card shadow compact-chart-card">
       <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">
-          <i class="ti ti-chart-pie me-2"></i>Distribusi Siswa Per Kelas
+          <i class="ti ti-chart-bar me-2"></i>Distribusi Siswa Per Kelas
         </h6>
       </div>
       <div class="card-body">
-        <canvas id="siswaPerKelasChart" width="100%" height="300"></canvas>
+        <canvas id="siswaPerKelasChart" width="100%" height="150"></canvas>
       </div>
     </div>
   </div>
 
   <!-- Siswa Per Tahun Ajaran Chart -->
-  <div class="col-xl-6 mb-4">
-    <div class="card shadow">
+  <div class="col-xl-4 col-lg-6 col-md-6 mb-4">
+    <div class="card shadow compact-chart-card">
       <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-success">
           <i class="ti ti-calendar me-2"></i>Siswa Per Tahun Ajaran
         </h6>
       </div>
       <div class="card-body">
-        <canvas id="siswaPerTahunChart" width="100%" height="300"></canvas>
+        <canvas id="siswaPerTahunChart" width="100%" height="170"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Jurusan Rekomendasi Chart -->
+  <div class="col-xl-4 col-lg-6 col-md-6 mb-4">
+    <div class="card shadow compact-chart-card">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-warning">
+          <i class="ti ti-trophy me-2"></i>Jurusan Rekomendasi Terbanyak
+        </h6>
+      </div>
+      <div class="card-body">
+        <canvas id="jurusanRekomendasiChart" width="100%" height="180"></canvas>
       </div>
     </div>
   </div>
@@ -437,30 +458,49 @@ const siswaPerKelasCtx = document.getElementById('siswaPerKelasChart').getContex
 const siswaPerKelasData = @json($siswaPerKelas);
 
 new Chart(siswaPerKelasCtx, {
-    type: 'doughnut',
+    type: 'bar',
     data: {
         labels: siswaPerKelasData.map(item => item.kelas),
         datasets: [{
+            label: 'Jumlah Siswa',
             data: siswaPerKelasData.map(item => item.jumlah),
             backgroundColor: [
                 '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#6f42c1'
             ],
-            hoverBackgroundColor: [
+            borderColor: [
                 '#2e59d9', '#17a673', '#2c9faf', '#f4b619', '#e02d1b', '#5a32a3'
             ],
-            hoverBorderColor: "rgba(234, 236, 244, 1)",
+            borderWidth: 1,
+            borderRadius: 4,
+            maxBarThickness: 28,
         }],
     },
     options: {
         responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+                ticks: {
+                    autoSkip: false,
+                    maxRotation: 0,
+                    minRotation: 0
+                }
+            },
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        },
         plugins: {
             legend: {
-                position: 'bottom',
+                display: false
             },
             tooltip: {
                 callbacks: {
                     label: function(context) {
-                        return context.label + ': ' + context.parsed + ' siswa';
+                        return context.dataset.label + ': ' + context.parsed.y + ' siswa';
                     }
                 }
             }
@@ -481,12 +521,22 @@ new Chart(siswaPerTahunCtx, {
             data: siswaPerTahunData.map(item => item.jumlah),
             backgroundColor: 'rgba(28, 200, 138, 0.8)',
             borderColor: 'rgba(28, 200, 138, 1)',
-            borderWidth: 1
+            borderWidth: 1,
+            borderRadius: 4,
         }]
     },
     options: {
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
+            x: {
+                beginAtZero: true,
+                ticks: {
+                    autoSkip: false,
+                    maxRotation: 0,
+                    minRotation: 0
+                }
+            },
             y: {
                 beginAtZero: true,
                 ticks: {
@@ -497,6 +547,57 @@ new Chart(siswaPerTahunCtx, {
         plugins: {
             legend: {
                 display: false
+            }
+        }
+    }
+});
+
+// Jurusan Rekomendasi Chart
+const jurusanRekomendasiCtx = document.getElementById('jurusanRekomendasiChart').getContext('2d');
+const jurusanRekomendasiData = @json($jurusanRekomendasi);
+
+new Chart(jurusanRekomendasiCtx, {
+    type: 'bar',
+    data: {
+        labels: jurusanRekomendasiData.map(item => item.nama_jurusan),
+        datasets: [{
+            label: 'Jumlah Siswa',
+            data: jurusanRekomendasiData.map(item => item.jumlah),
+            backgroundColor: 'rgba(246, 194, 62, 0.8)',
+            borderColor: 'rgba(246, 194, 62, 1)',
+            borderWidth: 1,
+            borderRadius: 4,
+            maxBarThickness: 32,
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1
+                }
+            },
+            y: {
+                ticks: {
+                    autoSkip: false,
+                    maxRotation: 45,
+                    minRotation: 0
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return context.dataset.label + ': ' + context.parsed.y + ' siswa';
+                    }
+                }
             }
         }
     }
