@@ -339,7 +339,6 @@ $xij = 5 - $gap; // nilai antara 0-5
 
 public function exportPDF()
 {
-    // Ambil semua hasil SAW yang sudah disimpan
     $hasilSAW = HasilSAW::with(['siswa', 'jurusan'])
                        ->orderBy('id_siswa')
                        ->orderBy('peringkat')
@@ -351,15 +350,17 @@ public function exportPDF()
         'tanggalCetak' => now()
     ];
 
-    // DomPDF: margin dalam satuan pt  (1 cm = 28.35 pt)
-    // top=3cm, right=3cm, bottom=3cm, left=4cm
+    /*
+     * PENTING: margin diatur lewat padding di .halaman pada blade,
+     * bukan lewat setOption. Semua margin di sini dibuat 0.
+     */
     $pdf = Pdf::loadView('rekomendasi.pdf', $data)
                ->setPaper('a4', 'landscape')
-               ->setOption('margin-top',    84.94)   // 3  cm → pt
-               ->setOption('margin-right',  84.94)   // 3  cm → pt
-               ->setOption('margin-bottom', 84.94)   // 3  cm → pt
-               ->setOption('margin-left',  113.39)   // 4  cm → pt
-               ->setOption('dpi', 150)
+               ->setOption('margin-top',    0)
+               ->setOption('margin-right',  0)
+               ->setOption('margin-bottom', 0)
+               ->setOption('margin-left',   0)
+               ->setOption('dpi', 96)
                ->setOption('isHtml5ParserEnabled', true)
                ->setOption('isRemoteEnabled', true);
 
