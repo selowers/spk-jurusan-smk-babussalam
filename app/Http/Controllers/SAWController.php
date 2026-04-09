@@ -9,6 +9,7 @@ use App\Models\Nilai;
 use App\Models\HasilSAW;
 use App\Models\Jurusan;
 use App\Models\JurusanKriteria;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SAWController extends Controller
 {
@@ -333,4 +334,35 @@ $xij = 5 - $gap; // nilai antara 0-5
 
         return redirect()->route('nilai.index')->with('success', 'Nilai kuesioner berhasil disimpan!');
     }
+
+    // Ganti method exportPDF() di SAWController.php dengan kode berikut:
+
+public function exportPDF()
+{
+    // Ambil semua hasil SAW yang sudah disimpan
+    $hasilSAW = HasilSAW::with(['siswa', 'jurusan'])
+                       ->orderBy('id_siswa')
+                       ->orderBy('peringkat')
+                       ->get()
+                       ->groupBy('id_siswa');
+
+    $data = [
+        'hasilSAW'     => $hasilSAW,
+        'tanggalCetak' => now()
+    ];
+
+    // DomPDF: margin dalam satuan pt  (1 cm = 28.35 pt)
+    // top=3cm, right=3cm, bottom=3cm, left=4cm
+    $pdf = Pdf::loadView('rekomendasi.pdf', $data)
+               ->setPaper('a4', 'landscape')
+               ->setOption('margin-top',    84.94)   // 3  cm → pt
+               ->setOption('margin-right',  84.94)   // 3  cm → pt
+               ->setOption('margin-bottom', 84.94)   // 3  cm → pt
+               ->setOption('margin-left',  113.39)   // 4  cm → pt
+               ->setOption('dpi', 150)
+               ->setOption('isHtml5ParserEnabled', true)
+               ->setOption('isRemoteEnabled', true);
+
+    return $pdf->download('Hasil_Rekomendasi_SPK_Jurusan_' . date('Y-m-d_H-i-s') . '.pdf');
+}
 }
