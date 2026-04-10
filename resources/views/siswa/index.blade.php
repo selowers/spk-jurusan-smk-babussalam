@@ -110,44 +110,68 @@
         </h5>
       </div>
       <div class="card-body">
+        <div class="row align-items-center mb-3">
+          <div class="col-md-8">
+            <form action="{{ route('siswa.index') }}" method="GET" class="row g-2 align-items-center">
+              <div class="col-md-8">
+                <div class="input-group">
+                  <span class="input-group-text bg-white border-end-0"><i class="ti ti-search"></i></span>
+                  <input type="search" name="search" value="{{ request('search') }}" class="form-control border-start-0" placeholder="Cari nama, kelas, jurusan, atau tahun ajaran">
+                </div>
+              </div>
+              <div class="col-auto">
+                <button type="submit" class="btn btn-primary">
+                  <i class="ti ti-filter me-1"></i>Cari
+                </button>
+              </div>
+              @if(request('search'))
+                <div class="col-auto">
+                  <a href="{{ route('siswa.index') }}" class="btn btn-outline-secondary">
+                    <i class="ti ti-arrow-back-up"></i> Reset
+                  </a>
+                </div>
+              @endif
+            </form>
+          </div>
+          <div class="col-md-4 text-md-end mt-2 mt-md-0">
+            <span class="text-muted">Menampilkan <strong>{{ $siswa->count() }}</strong> dari <strong>{{ $siswa->total() }}</strong> siswa</span>
+          </div>
+        </div>
+
         <div class="table-responsive">
-          <table class="table table-hover align-middle">
-            <thead class="table-dark">
+          <table class="table table-hover table-borderless align-middle">
+            <thead class="table-primary-header text-uppercase small">
               <tr>
                 <th class="text-center">No</th>
-                <th>Nama Siswa</th>
-                <th><i class="ti ti-school me-1"></i>Kelas</th>
-                <th><i class="ti ti-building me-1"></i>Jurusan Sekolah</th>
-                <th><i class="ti ti-calendar me-1"></i>Tahun Ajaran</th>
-                <th><i class="ti ti-user me-1"></i>User</th>
+                <th>Data Siswa</th>
+                <th class="text-center">Kelas</th>
+                <th>Jurusan Sekolah</th>
+                <th class="text-center">Tahun</th>
+                <th>Dibuat Oleh</th>
                 <th class="text-center">Aksi</th>
               </tr>
             </thead>
             <tbody>
               @forelse($siswa as $index => $item)
                 <tr class="table-row-hover">
-                  <td class="text-center fw-bold">{{ $siswa->firstItem() + $index }}</td>
+                  <td class="text-center fw-semibold">{{ $siswa->firstItem() + $index }}</td>
                   <td>
-                    <div class="d-flex align-items-center">
-                      <div class="avatar avatar-sm me-3">
-                        <div class="avatar-initial bg-primary text-white rounded-circle">
-                          {{ strtoupper(substr($item->nama_siswa, 0, 1)) }}
-                        </div>
-                      </div>
-                      <div>
-                        <div class="fw-semibold">{{ $item->nama_siswa }}</div>
-                        <small class="text-muted">ID: {{ $item->id_siswa }}</small>
-                      </div>
+                    <div>
+                      <div class="fw-semibold mb-1">{{ $item->nama_siswa }}</div>
+                      <div class="text-muted small">ID: {{ $item->id_siswa }}</div>
                     </div>
                   </td>
-                  <td>
-                    <span class="badge bg-info">{{ $item->kelas }}</span>
+                  <td class="text-center">
+                    <span class="badge bg-info text-dark px-3 py-2">{{ $item->kelas }}</span>
                   </td>
-                  <td>{{ $item->jurusan_sekolah }}</td>
-                  <td>{{ $item->tahun_ajaran }}</td>
+                  <td>
+                    <div class="fw-semibold">{{ $item->jurusan_sekolah }}</div>
+                    <div class="text-muted small">{{ $item->kelas }} • {{ $item->tahun_ajaran }}</div>
+                  </td>
+                  <td class="text-center">{{ $item->tahun_ajaran }}</td>
                   <td>{{ $item->user->name ?? 'N/A' }}</td>
                   <td class="text-center">
-                    <div class="btn-group" role="group">
+                    <div class="btn-group" role="group" aria-label="Aksi siswa">
                       <a href="{{ route('siswa.show', $item->id_siswa) }}" class="btn btn-sm btn-outline-info" title="Lihat Detail">
                         <i class="ti ti-eye"></i>
                       </a>
@@ -204,12 +228,19 @@
 }
 
 .table-row-hover:hover {
-  background-color: #f8f9fa !important;
+  background-color: #0f78e0 !important;
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   transition: all 0.2s ease;
 }
+..table-primary-header {
+  background-color: #0d6efd;
+}
 
+.table-primary-header th {
+  color: #000000;
+  border-bottom: none;
+}
 .avatar-initial {
   width: 40px;
   height: 40px;
