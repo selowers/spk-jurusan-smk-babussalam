@@ -54,8 +54,8 @@
             </div>
 
             <!-- Form Edit Nilai -->
-            <div class="card">
-                <div class="card-header">
+            <div class="card border-warning shadow-sm">
+                <div class="card-header bg-warning text-dark">
                     <h3 class="card-title">Edit Skor Kuesioner</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -66,8 +66,8 @@
                 <form action="{{ route('nilai.update', $siswa->id_siswa) }}" method="POST">
                     @csrf
                     @method('PUT')
-                    <div class="card-body">
-                        <div class="alert alert-info">
+                    <div class="card-body bg-warning bg-opacity-10">
+                        <div class="alert alert-warning">
                             <i class="fas fa-info-circle"></i>
                             <strong>Petunjuk:</strong> Edit skor mentah dari kuesioner siswa untuk setiap kriteria.
                             Sistem akan otomatis mengkonversi ke skala 0-100.

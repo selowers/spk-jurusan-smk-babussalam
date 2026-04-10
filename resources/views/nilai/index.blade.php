@@ -4,29 +4,10 @@
 
 @section('content')
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Input Nilai Kuesioner Siswa</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Nilai Kuesioner</li>
-                    </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
             @if(session('success'))
-                <div class="alert alert-success alert-dismissible">
+                <div class="alert alert-success alert-dismissible fade show">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <h5><i class="icon fas fa-check"></i> Berhasil!</h5>
                     {{ session('success') }}
@@ -34,7 +15,7 @@
             @endif
 
             @if(session('error'))
-                <div class="alert alert-danger alert-dismissible">
+                <div class="alert alert-danger alert-dismissible fade show">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <h5><i class="icon fas fa-ban"></i> Error!</h5>
                     {{ session('error') }}
@@ -42,73 +23,99 @@
             @endif
 
             @if(session('warning'))
-                <div class="alert alert-warning alert-dismissible">
+                <div class="alert alert-warning alert-dismissible fade show">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <h5><i class="icon fas fa-exclamation-triangle"></i> Peringatan!</h5>
                     {{ session('warning') }}
                 </div>
             @endif
 
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Daftar Siswa</h3>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body py-4">
+                            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+                                <div>
+                                    <h1 class="h3 mb-1">Input Nilai Kuesioner Siswa</h1>
+                                    <p class="text-muted mb-0">Pilih siswa untuk melakukan input atau perbaikan nilai kuesioner dengan cepat.</p>
+                                </div>
+                                <div class="text-md-end">
+                                    <span class="badge bg-primary rounded-pill px-3 py-2">Total Siswa: {{ $siswa->count() }}</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="card-body">
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row gap-2">
+                        <div>
+                            <h3 class="card-title mb-1">Daftar Siswa</h3>
+                            <small class="text-white-75">Tabel menampilkan status lengkap nilai kuesioner siswa untuk memudahkan input.</small>
+                        </div>
+                        <div>
+                            <span class="badge bg-light text-primary">Lengkap: {{ $siswa->where('status_lengkap', true)->count() }}</span>
+                            <span class="badge bg-white text-warning ms-2">Belum lengkap: {{ $siswa->where('status_lengkap', false)->count() }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="siswaTable">
-                            <thead>
+                        <table class="table table-hover table-striped mb-0" id="siswaTable">
+                            <thead class="bg-primary" style="color: #ffffff;">
                                 <tr>
-                                    <th>No</th>
-                                    <th>Nama Siswa</th>
-                                    <th>Kelas</th>
-                                    <th>Jurusan Sekolah</th>
-                                    <th>Tahun Ajaran</th>
-                                    <th>Status Nilai</th>
-                                    <th>Aksi</th>
+                                    <th class="py-3" style="color: #ffffff;">No</th>
+                                    <th class="py-3" style="color: #ffffff;">Nama Siswa</th>
+                                    <th class="py-3" style="color: #ffffff;">Kelas</th>
+                                    <th class="py-3" style="color: #ffffff;">Jurusan Sekolah</th>
+                                    <th class="py-3" style="color: #ffffff;">Tahun Ajaran</th>
+                                    <th class="py-3 text-center" style="color: #ffffff;">Status Nilai</th>
+                                    <th class="py-3 text-center" style="color: #ffffff;">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($siswa as $index => $s)
-                                    <tr class="{{ $s->status_lengkap ? 'table-success' : 'table-warning' }}">
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $s->nama_siswa }}</td>
+                                    <tr class="align-middle">
+                                        <td class="fw-semibold">{{ $index + 1 }}</td>
+                                        <td>
+                                            <div class="fw-semibold">{{ $s->nama_siswa }}</div>
+                                            <div class="text-muted small">ID: {{ $s->id_siswa }}</div>
+                                        </td>
                                         <td>{{ $s->kelas }}</td>
                                         <td>{{ $s->jurusan_sekolah }}</td>
                                         <td>{{ $s->tahun_ajaran }}</td>
-                                        <td>
+                                        <td class="text-center">
                                             @if($s->status_lengkap)
-                                                <span class="badge badge-success">
-                                                    <i class="fas fa-check-circle"></i> Lengkap
+                                                <span class="badge bg-success rounded-pill px-3 py-2">
+                                                    <i class="fas fa-check-circle me-1"></i> Lengkap
                                                 </span>
                                             @else
-                                                <span class="badge badge-warning">
-                                                    <i class="fas fa-exclamation-triangle"></i> Belum Lengkap
+                                                <span class="badge bg-warning text-dark rounded-pill px-3 py-2">
+                                                    <i class="fas fa-exclamation-triangle me-1"></i> Belum Lengkap
                                                 </span>
                                             @endif
                                         </td>
-                                        <td>
+                                        <td class="text-center">
                                             @if($s->status_lengkap)
-                                                <a href="{{ route('nilai.edit', $s->id_siswa) }}" class="btn btn-sm btn-primary">
-                                                    <i class="fas fa-edit"></i> Edit Nilai
+                                                <a href="{{ route('nilai.edit', $s->id_siswa) }}" class="btn btn-sm btn-outline-light text-primary border-white">
+                                                    <i class="fas fa-edit me-1"></i>Edit Nilai
                                                 </a>
                                             @else
-                                                <a href="{{ route('nilai.create', $s->id_siswa) }}" class="btn btn-sm btn-success">
-                                                    <i class="fas fa-plus"></i> Input Nilai
+                                                <a href="{{ route('nilai.create', $s->id_siswa) }}" class="btn btn-sm btn-light text-success">
+                                                    <i class="fas fa-plus me-1"></i>Input Nilai
                                                 </a>
                                             @endif
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="7" class="text-center">
-                                            <div class="alert alert-info">
-                                                <i class="fas fa-info-circle"></i> Belum ada data siswa.
-                                                <a href="{{ route('siswa.create') }}" class="alert-link">Tambah siswa</a> terlebih dahulu.
+                                        <td colspan="7" class="text-center py-4">
+                                            <div class="text-muted">
+                                                <i class="fas fa-info-circle fa-2x mb-2"></i>
+                                                <div class="fw-semibold">Belum ada data siswa.</div>
+                                                <div>Tambahkan siswa terlebih dahulu agar nilai kuesioner dapat diinput.</div>
                                             </div>
                                         </td>
                                     </tr>
@@ -118,45 +125,24 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Informasi Kriteria -->
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Informasi Kriteria & Konfigurasi Kuesioner</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        @foreach($kriteria as $k)
-                            <div class="col-md-4">
-                                <div class="info-box">
-                                    <span class="info-box-icon bg-info">
-                                        <i class="fas fa-clipboard-check"></i>
-                                    </span>
-                                    <div class="info-box-content">
-                                        <span class="info-box-text">{{ $k->nama_kriteria }}</span>
-                                        <span class="info-box-number">Bobot: {{ $k->bobot }}</span>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-info" style="width: {{ $k->bobot * 100 }}%"></div>
-                                        </div>
-                                        <span class="progress-description">
-                                            @if($k->nama_kriteria == 'Pengetahuan Kognitif')
-                                                12 soal, skor maks: 60
-                                            @elseif($k->nama_kriteria == 'Minat dan Bakat')
-                                                7 soal, skor maks: 35
-                                            @elseif($k->nama_kriteria == 'Psikotes')
-                                                9 soal, skor maks: 45
-                                            @endif
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 </div>
+
+<style>
+    #siswaTable thead th {
+        border-bottom: 2px solid rgba(255,255,255,0.3);
+    }
+    #siswaTable tbody tr:hover {
+        background-color: rgba(13, 110, 253, 0.08);
+    }
+    .btn-outline-light {
+        background-color: rgba(255,255,255,0.92);
+    }
+    .btn-outline-light:hover {
+        background-color: white;
+    }
+</style>
 @endsection
 
 @section('scripts')

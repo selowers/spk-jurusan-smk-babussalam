@@ -114,14 +114,14 @@
         @if($kriterias->count() > 0)
         <div class="table-responsive">
             <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
-                <thead class="table-dark">
+                <thead style="background-color: #0d6efd; color: #ffffff;">
                     <tr>
-                        <th>No</th>
-                        <th>Nama Kriteria</th>
-                        <th>Bobot</th>
-                        <th>Tipe</th>
-                        <th>Dibuat</th>
-                        <th class="text-center">Aksi</th>
+                        <th style="color: #ffffff;">No</th>
+                        <th style="color: #ffffff;">Nama Kriteria</th>
+                        <th style="color: #ffffff;">Bobot</th>
+                        <th style="color: #ffffff;">Tipe</th>
+                        <th style="color: #ffffff;">Dibuat</th>
+                        <th class="text-center" style="color: #ffffff;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -129,14 +129,7 @@
                     <tr>
                         <td>{{ $kriterias->firstItem() + $index }}</td>
                         <td>
-                            <div class="d-flex align-items-center">
-                                <div class="avatar-initial bg-primary text-white rounded-circle me-3" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                                    {{ strtoupper(substr($kriteria->nama_kriteria, 0, 1)) }}
-                                </div>
-                                <div>
-                                    <div class="fw-bold">{{ $kriteria->nama_kriteria }}</div>
-                                </div>
-                            </div>
+                            <div class="fw-bold">{{ $kriteria->nama_kriteria }}</div>
                         </td>
                         <td>
                             <span class="badge bg-warning text-dark">{{ number_format($kriteria->bobot, 3) }}</span>
