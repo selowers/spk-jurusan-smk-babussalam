@@ -7,95 +7,67 @@
   body {
     margin: 0;
     padding: 0;
+    background: #0f172a;
   }
 
-  .login-section {
+  .login-shell {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 2rem 1rem;
     position: relative;
     overflow: hidden;
   }
 
-  /* Animated Background */
-  .login-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: linear-gradient(-45deg, #1e3c72, #2a5298, #3b5998, #5f7df8);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
-  }
-
-  @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  /* Floating Shapes */
-  .shape-1, .shape-2, .shape-3 {
+  .login-shell::before,
+  .login-shell::after {
+    content: '';
     position: absolute;
     border-radius: 50%;
-    opacity: 0.1;
-    animation: float 20s ease-in-out infinite;
+    background: rgba(99, 102, 241, 0.18);
+    filter: blur(36px);
+    z-index: 1;
   }
 
-  .shape-1 {
-    width: 300px;
-    height: 300px;
-    background: white;
-    top: -100px;
-    left: 10%;
-    animation: float 25s ease-in-out infinite;
+  .login-shell::before {
+    width: 320px;
+    height: 320px;
+    top: -80px;
+    right: -80px;
   }
 
-  .shape-2 {
-    width: 200px;
-    height: 200px;
-    background: white;
-    bottom: -50px;
-    right: 15%;
-    animation: float 30s ease-in-out infinite;
+  .login-shell::after {
+    width: 240px;
+    height: 240px;
+    bottom: -60px;
+    left: 50px;
   }
 
-  .shape-3 {
-    width: 150px;
-    height: 150px;
-    background: white;
-    top: 50%;
-    right: 5%;
-    animation: float 20s ease-in-out infinite;
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0px) translateX(0px); }
-    25% { transform: translateY(-30px) translateX(15px); }
-    50% { transform: translateY(-60px) translateX(-15px); }
-    75% { transform: translateY(-30px) translateX(15px); }
-  }
-
-  /* Login Card */
-  .login-card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    padding: 50px;
-    max-width: 450px;
+  .login-panel {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
     width: 100%;
-    animation: slideUp 0.8s ease-out;
+    max-width: 980px;
+  }
+
+  .login-card {
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(18px);
+    border-radius: 28px;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    box-shadow: 0 30px 90px rgba(15, 23, 42, 0.2);
+    padding: 2rem;
+    animation: slideUp 0.9s ease-out;
   }
 
   @keyframes slideUp {
     from {
       opacity: 0;
-      transform: translateY(40px);
+      transform: translateY(36px);
     }
     to {
       opacity: 1;
@@ -103,93 +75,162 @@
     }
   }
 
-  /* Logo Section */
+  .login-side {
+    display: none;
+    position: relative;
+    overflow: hidden;
+    border-radius: 28px;
+    background: linear-gradient(180deg, #312e81 0%, #4338ca 100%);
+    color: #f8fafc;
+    padding: 2.5rem;
+    min-height: 520px;
+    box-shadow: 0 30px 90px rgba(15, 23, 42, 0.25);
+  }
+
+  .login-side::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 220px;
+    height: 220px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+  }
+
+  .login-side::after {
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    left: -40px;
+    width: 160px;
+    height: 160px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+  }
+
+  .login-side h3 {
+    font-size: 32px;
+    line-height: 1.1;
+    margin-bottom: 18px;
+  }
+
+  .login-side p {
+    color: rgba(248, 250, 252, 0.8);
+    line-height: 1.8;
+    margin-bottom: 28px;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .feature-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .feature-icon i {
+    font-size: 1.1rem;
+    color: #fff;
+  }
+
+  .feature-text {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
   .login-logo-section {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 2rem;
   }
 
   .login-logo {
-    width: 80px;
-    height: 80px;
+    width: 86px;
+    height: 86px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    display: flex;
+    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 15px;
-    box-shadow: 0 10px 25px rgba(30, 60, 114, 0.2);
+    margin-bottom: 18px;
+    box-shadow: 0 24px 60px rgba(37, 99, 235, 0.2);
   }
 
   .login-logo i {
     color: white;
-    font-size: 40px;
+    font-size: 36px;
   }
 
   .login-title {
-    font-size: 28px;
-    font-weight: 700;
-    color: #1e3c72;
+    font-size: 30px;
+    font-weight: 800;
+    color: #0f172a;
     margin-bottom: 10px;
+    letter-spacing: -0.04em;
   }
 
   .login-subtitle {
-    font-size: 14px;
-    color: #7a8fa9;
+    font-size: 15px;
+    color: #475569;
   }
 
-  /* Form Inputs */
   .login-form .form-group {
-    margin-bottom: 20px;
-    position: relative;
+    margin-bottom: 18px;
   }
 
   .login-form label {
     display: block;
-    font-weight: 600;
-    color: #2c3e50;
+    font-weight: 700;
+    color: #334155;
     margin-bottom: 8px;
     font-size: 14px;
   }
 
   .login-form .form-control {
     width: 100%;
-    padding: 12px 16px;
-    border: 2px solid #e0e6f2;
-    border-radius: 10px;
-    font-size: 14px;
+    padding: 14px 18px;
+    border: 1px solid rgba(148, 163, 184, 0.38);
+    border-radius: 16px;
+    font-size: 15px;
     transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.94);
   }
 
   .login-form .form-control:focus {
-    border-color: #1e3c72;
-    box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.1);
+    border-color: #4338ca;
+    box-shadow: 0 0 0 4px rgba(67, 56, 202, 0.12);
     outline: none;
     background: white;
   }
 
   .login-form .form-control::placeholder {
-    color: #a0adc7;
+    color: #94a3b8;
   }
 
   .login-form .form-control.is-invalid {
-    border-color: #dc3545;
+    border-color: #ef4444;
   }
 
   .login-form .form-control.is-invalid:focus {
-    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.14);
   }
 
-  /* Error Message */
   .invalid-feedback {
-    color: #dc3545;
-    font-size: 12px;
-    margin-top: 5px;
+    color: #dc2626;
+    font-size: 13px;
+    margin-top: 6px;
     display: block;
   }
 
-  /* Checkbox */
   .form-check {
     display: flex;
     align-items: center;
@@ -199,45 +240,44 @@
   .form-check-input {
     width: 18px;
     height: 18px;
-    margin-right: 8px;
+    margin-right: 10px;
     cursor: pointer;
-    border: 2px solid #e0e6f2;
-    border-radius: 5px;
+    border: 2px solid rgba(148, 163, 184, 0.6);
+    border-radius: 6px;
     transition: all 0.3s ease;
   }
 
   .form-check-input:checked {
-    background-color: #1e3c72;
-    border-color: #1e3c72;
+    background-color: #2563eb;
+    border-color: #2563eb;
   }
 
   .form-check-label {
-    color: #2c3e50;
+    color: #334155;
     cursor: pointer;
     margin: 0;
     font-size: 14px;
   }
 
-  /* Login Button */
   .btn-login {
     width: 100%;
-    padding: 12px 20px;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    padding: 14px 18px;
+    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 16px;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 10px 25px rgba(30, 60, 114, 0.2);
+    box-shadow: 0 18px 40px rgba(37, 99, 235, 0.22);
   }
 
   .btn-login:hover {
     transform: translateY(-2px);
-    box-shadow: 0 15px 35px rgba(30, 60, 114, 0.3);
+    box-shadow: 0 22px 48px rgba(37, 99, 235, 0.26);
   }
 
   .btn-login:active {
@@ -245,20 +285,19 @@
   }
 
   .btn-login:disabled {
-    opacity: 0.7;
+    opacity: 0.75;
     cursor: not-allowed;
   }
 
-  /* Loading Spinner */
   .btn-login .spinner {
     display: none;
     width: 16px;
     height: 16px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.35);
     border-top-color: white;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
-    margin-right: 8px;
+    margin-right: 10px;
     vertical-align: middle;
   }
 
@@ -274,32 +313,30 @@
     to { transform: rotate(360deg); }
   }
 
-  /* Footer Links */
   .login-footer {
     text-align: center;
     margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #e0e6f2;
+    padding-top: 18px;
+    border-top: 1px solid rgba(148, 163, 184, 0.2);
   }
 
   .login-footer a {
-    color: #1e3c72;
+    color: #3730a3;
     text-decoration: none;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     transition: all 0.3s ease;
   }
 
   .login-footer a:hover {
-    color: #2a5298;
+    color: #4f46e5;
     text-decoration: underline;
   }
 
-  /* Alert Messages */
   .alert-login {
-    border-radius: 10px;
+    border-radius: 14px;
     border: none;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
     animation: slideDown 0.5s ease-out;
   }
 
@@ -315,128 +352,151 @@
   }
 
   .alert-success {
-    background-color: #d4edda;
-    color: #155724;
+    background-color: #dcfce7;
+    color: #166534;
   }
 
   .alert-danger {
-    background-color: #f8d7da;
-    color: #721c24;
+    background-color: #fee2e2;
+    color: #991b1b;
   }
 
-  /* Responsive */
+  @media (min-width: 992px) {
+    .login-panel {
+      grid-template-columns: 1.05fr 0.95fr;
+    }
+
+    .login-side {
+      display: block;
+    }
+  }
+
   @media (max-width: 768px) {
     .login-card {
-      padding: 30px;
-      margin: 20px;
+      padding: 1.75rem;
     }
 
     .login-title {
-      font-size: 24px;
+      font-size: 26px;
     }
 
-    .shape-1, .shape-2, .shape-3 {
+    .login-shell::before,
+    .login-shell::after {
       display: none;
     }
   }
 </style>
 
-<div class="login-background">
-  <div class="shape-1"></div>
-  <div class="shape-2"></div>
-  <div class="shape-3"></div>
-</div>
-
-<section class="login-section">
-  <div class="login-card">
-    <!-- Logo Section -->
-    <div class="login-logo-section">
-      <div class="login-logo">
-        <i class="bi bi-shield-check"></i>
+<div class="login-shell">
+  <div class="login-panel">
+    <div class="login-side">
+      <div>
+        <h3>Selamat datang di SPK Jurusan</h3>
+        <p>Gabung sebagai Guru BK untuk mengatur siswa, kriteria, jurusan, dan melihat hasil rekomendasi dengan mudah.</p>
       </div>
-      <h2 class="login-title">SPK Jurusan</h2>
-      <p class="login-subtitle">SMK Babussalam</p>
+      <div class="feature-item">
+        <span class="feature-icon"><i class="ti ti-users"></i></span>
+        <span class="feature-text">Kelola data siswa profesional</span>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon"><i class="ti ti-list-details"></i></span>
+        <span class="feature-text">Atur kriteria dengan bobot akurat</span>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon"><i class="ti ti-printer"></i></span>
+        <span class="feature-text">Cetak hasil rekomendasi kapanpun</span>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon"><i class="ti ti-shield-check"></i></span>
+        <span class="feature-text">Akses aman hanya untuk Guru BK</span>
+      </div>
     </div>
 
-    <!-- Alert Messages -->
-    @if($errors->any())
-      <div class="alert alert-danger alert-login">
-        <strong>Login Gagal!</strong>
-        <ul style="margin-bottom: 0; padding-left: 20px;">
-          @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-          @endforeach
-        </ul>
-      </div>
-    @endif
-
-    @if(session('success'))
-      <div class="alert alert-success alert-login">
-        {{ session('success') }}
-      </div>
-    @endif
-
-    <!-- Login Form -->
-    <form method="POST" action="{{ route('login.post') }}" class="login-form" id="loginForm">
-      @csrf
-
-      <div class="form-group">
-        <label for="email">Email Guru BK</label>
-        <input 
-          type="email" 
-          name="email" 
-          class="form-control @error('email') is-invalid @enderror" 
-          id="email" 
-          value="{{ old('email') }}" 
-          placeholder="guru_bk@smkbabussalam.sch.id"
-          required 
-          autofocus>
-        @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
+    <div class="login-card">
+      <div class="login-logo-section">
+        <div class="login-logo">
+          <i class="ti ti-shield-check"></i>
+        </div>
+        <h2 class="login-title">Masuk ke Akun</h2>
+        <p class="login-subtitle">Gunakan email Guru BK dan kata sandi untuk melanjutkan.</p>
       </div>
 
-      <div class="form-group">
-        <label for="password">Kata Sandi</label>
-        <input 
-          type="password" 
-          name="password" 
-          class="form-control @error('password') is-invalid @enderror" 
-          id="password" 
-          placeholder="Masukkan kata sandi Anda"
-          required>
-        @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
-      </div>
+      @if($errors->any())
+        <div class="alert alert-danger alert-login">
+          <strong>Login Gagal!</strong>
+          <ul style="margin-bottom: 0; padding-left: 20px;">
+            @foreach($errors->all() as $error)
+              <li>{{ $error }}</li>
+            @endforeach
+          </ul>
+        </div>
+      @endif
 
-      <div class="form-check">
-        <input 
-          type="checkbox" 
-          name="remember" 
-          class="form-check-input" 
-          id="remember" 
-          {{ old('remember') ? 'checked' : '' }}>
-        <label class="form-check-label" for="remember">Ingat saya</label>
-      </div>
+      @if(session('success'))
+        <div class="alert alert-success alert-login">
+          {{ session('success') }}
+        </div>
+      @endif
 
-      <button type="submit" class="btn-login" id="loginBtn">
-        <span class="spinner"></span>
-        <span>Login</span>
-      </button>
+      <form method="POST" action="{{ route('login.post') }}" class="login-form" id="loginForm">
+        @csrf
 
-      <div class="login-footer">
-        <a href="{{ route('password.change') }}">Lupa Kata Sandi?</a>
-      </div>
-    </form>
+        <div class="form-group">
+          <label for="email">Email Guru BK</label>
+          <input
+            type="email"
+            name="email"
+            class="form-control @error('email') is-invalid @enderror"
+            id="email"
+            value="{{ old('email') }}"
+            placeholder="guru_bk@smkbabussalam.sch.id"
+            required
+            autofocus>
+          @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
+        </div>
+
+        <div class="form-group">
+          <label for="password">Kata Sandi</label>
+          <input
+            type="password"
+            name="password"
+            class="form-control @error('password') is-invalid @enderror"
+            id="password"
+            placeholder="Masukkan kata sandi Anda"
+            required>
+          @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
+        </div>
+
+        <div class="form-check">
+          <input
+            type="checkbox"
+            name="remember"
+            class="form-check-input"
+            id="remember"
+            {{ old('remember') ? 'checked' : '' }}>
+          <label class="form-check-label" for="remember">Ingat saya</label>
+        </div>
+
+        <button type="submit" class="btn-login" id="loginBtn">
+          <span class="spinner"></span>
+          <span>Login</span>
+        </button>
+
+        <div class="login-footer">
+          <a href="{{ route('password.change') }}">Lupa Kata Sandi?</a>
+        </div>
+      </form>
+    </div>
   </div>
-</section>
+</div>
 
 <script>
-  // Form submission handling
   document.getElementById('loginForm').addEventListener('submit', function() {
     const btn = document.getElementById('loginBtn');
     btn.classList.add('loading');
     btn.disabled = true;
   });
 
-  // Auto-clear error messages after 5 seconds
   const alerts = document.querySelectorAll('.alert-login');
   alerts.forEach(alert => {
     setTimeout(() => {
