@@ -1,8 +1,9 @@
-
-<?php 
+<?php
 
 namespace App\Models;
 
+use App\Models\Jurusan;
+use App\Models\Kriteria;
 use Illuminate\Database\Eloquent\Model;
 
 class JurusanKriteria extends Model
