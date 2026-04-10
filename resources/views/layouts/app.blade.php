@@ -49,6 +49,57 @@
 
   <!-- Theme CSS -->
   <link rel="stylesheet" href="/assets/css/theme.css" />
+  <style>
+    @media (max-width: 990px) {
+      html.collapsed #miniSidebar,
+      html.expanded #miniSidebar {
+        display: block !important;
+        position: fixed !important;
+        width: 220px !important;
+        height: 100vh !important;
+        top: 0;
+        left: 0;
+        z-index: 1050;
+        overflow-y: auto !important;
+        background-color: var(--bs-body-bg, #ffffff) !important;
+      }
+
+      html.collapsed #miniSidebar .site-logo-text,
+      html.expanded #miniSidebar .site-logo-text {
+        display: inline !important;
+      }
+
+      html.collapsed #content,
+      html.expanded #content {
+        margin-left: 220px !important;
+        width: calc(100% - 220px) !important;
+        padding: 80px 16px 20px !important;
+      }
+
+      html.expanded #content .navbar-glass,
+      html.collapsed #content .navbar-glass {
+        width: calc(100% - 220px) !important;
+      }
+
+      #miniSidebar .navbar-nav {
+        max-height: calc(100vh - 72px);
+      }
+
+      #miniSidebar .brand-logo {
+        padding: 0.75rem 1rem;
+      }
+
+      #miniSidebar .nav-link {
+        justify-content: flex-start;
+        padding: 10px 1rem !important;
+      }
+
+      #miniSidebar .nav-icon {
+        display: inline-flex;
+        margin-right: 0.75rem;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -144,31 +195,6 @@
                 <path d="M4 12l16 0" />
                 <path d="M4 18l16 0" />
               </svg>
-            </a>
-          </div>
-          <div class="d-none d-lg-block">
-            <a class="sidebar-toggle d-flex texttooltip p-3" href="javascript:void(0)" data-template="collapseMessage">
-              <span class="collapse-mini">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-bar-left text-secondary">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <path d="M4 12l10 0" />
-                  <path d="M4 12l4 4" />
-                  <path d="M4 12l4 -4" />
-                  <path d="M20 4l0 16" />
-                </svg>
-              </span>
-              <span class="collapse-expanded">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-bar-right text-secondary">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <path d="M20 12l-10 0" />
-                  <path d="M20 12l-4 4" />
-                  <path d="M20 12l-4 -4" />
-                  <path d="M4 4l0 16" />
-                </svg>
-                <div id="collapseMessage" class="d-none">
-                  <span class="small">Collapse</span>
-                </div>
-              </span>
             </a>
           </div>
         </div>
