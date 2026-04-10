@@ -41,13 +41,12 @@
 
         .halaman {
             width: 210mm;
-            height: 210mm;
             padding-top: 10mm;
             padding-right: 30mm;
             padding-bottom: 10mm;
             padding-left: 40mm;
-            page-break-after: always;
-            overflow: hidden;
+            page-break-after: auto;
+            overflow: visible;
         }
 
         .halaman:last-child {
@@ -273,9 +272,11 @@
             @foreach($chunk as $idSiswa => $hasil)
                 @foreach($hasil as $index => $h)
                 <tr class="{{ $index === 0 ? 'baris-pertama' : '' }}">
-                    <td class="c-no">@if($index === 0){{ $noCounter }}@else &nbsp; @endif</td>
-                    <td>@if($index === 0){{ $h->siswa->nama_siswa ?? '-' }}@else &nbsp; @endif</td>
-                    <td class="c-kelas">@if($index === 0){{ $h->siswa->kelas ?? '-' }}@else &nbsp; @endif</td>
+                    @if($index === 0)
+                        <td class="c-no" rowspan="5">{{ $noCounter }}</td>
+                        <td rowspan="5">{{ $h->siswa->nama_siswa ?? '-' }}</td>
+                        <td class="c-kelas" rowspan="5">{{ $h->siswa->kelas ?? '-' }}</td>
+                    @endif
                     <td>{{ $h->jurusan->nama_jurusan ?? '-' }}</td>
                     <td class="c-pering">{{ $h->peringkat }}</td>
                     <td class="c-nilai">{{ number_format($h->nilai_preferensi, 4) }}</td>

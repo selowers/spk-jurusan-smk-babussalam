@@ -173,7 +173,7 @@
 
       <!-- Nav item: Cetak/Simpan Hasil -->
       <li class="nav-item">
-        <a class="nav-link @if(request()->routeIs('saw.hasil.exportPDF')) active @endif" href="{{ route('saw.hasil.exportPDF') }}" target="_blank" onclick="return confirm('Apakah kamu yakin ingin mencetak hasil ini?');"><span class="nav-icon">
+        <a class="nav-link @if(request()->routeIs('saw.hasil.exportPDF')) active @endif" href="#" data-bs-toggle="modal" data-bs-target="#confirmExportModal"><span class="nav-icon">
           <i class="ti ti-printer"></i>
         </span> <span class="text">Cetak/Simpan Hasil</span></a>
       </li>
@@ -246,6 +246,33 @@
   <!-- Theme JS -->
   <script src="/assets/js/main.js"></script>
   @yield('scripts')
+
+  <script>
+    function closeModalAndExport() {
+      const modal = bootstrap.Modal.getInstance(document.getElementById('confirmExportModal'));
+      modal.hide();
+      window.open("{{ route('saw.hasil.exportPDF') }}", '_blank');
+    }
+  </script>
+
+  <!-- Modal Konfirmasi Export PDF -->
+  <div class="modal fade" id="confirmExportModal" tabindex="-1" aria-labelledby="confirmExportLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="confirmExportLabel">Konfirmasi</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Apakah kamu yakin ingin mencetak hasil ini?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-primary" onclick="closeModalAndExport()">Ya, Lanjutkan</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
