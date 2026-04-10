@@ -122,7 +122,7 @@
 
       <!-- Nav item: Cetak/Simpan Hasil -->
       <li class="nav-item">
-        <a class="nav-link" href="#"><span class="nav-icon">
+        <a class="nav-link @if(request()->routeIs('saw.hasil.exportPDF')) active @endif" href="{{ route('saw.hasil.exportPDF') }}" target="_blank" onclick="return confirm('Apakah kamu yakin ingin mencetak hasil ini?');"><span class="nav-icon">
           <i class="ti ti-printer"></i>
         </span> <span class="text">Cetak/Simpan Hasil</span></a>
       </li>

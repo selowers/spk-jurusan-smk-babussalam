@@ -42,13 +42,13 @@
         background: rgba(25, 135, 84, 0.12);
         color: #0f5132;
     }
-    .table-custom tbody tr.table-dark td {
-        background: #212529;
-        color: #ffffff;
+    .table-custom tbody tr.recommended td {
+        background: rgba(13, 110, 253, 0.12);
+        color: #0d6efd;
     }
-    .table-custom tbody tr.table-light td,
+    .table-custom tbody tr.standard td,
     .table-custom tbody tr:nth-of-type(even) td {
-        background: #f8f9fa;
+        background: #ffffff;
         color: #212529;
     }
     .table-custom td,
@@ -78,6 +78,18 @@
         background: #e7f1ff;
         color: #0d6efd;
         box-shadow: none;
+    }
+    .accordion-button .student-summary {
+        flex: 1;
+    }
+    .accordion-button .student-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #0d3b71;
+    }
+    .accordion-button .student-meta {
+        color: #6c757d;
+        font-size: 0.9rem;
     }
     .rekomendasi-title {
         color: #0d6efd;
@@ -136,7 +148,7 @@
             <p class="mb-0">Daftar rekomendasi jurusan untuk semua siswa</p>
         </div>
         <div>
-            <a href="{{ route('saw.hasil.exportPDF') }}" target="_blank" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mr-2">
+            <a href="{{ route('saw.hasil.exportPDF') }}" target="_blank" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mr-2" onclick="return confirm('Apakah kamu yakin ingin mencetak hasil ini?');">
                 <i class="fas fa-file-pdf fa-sm text-white-50"></i> Cetak PDF
             </a>
             <a href="{{ route('saw.index') }}" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
@@ -168,16 +180,16 @@
     <div class="row mb-4">
         <!-- Total Siswa dengan Hasil -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
+            <div class="card border-left-primary shadow h-100 py-1">
+                <div class="card-body py-2">
+                    <div class="row gx-0 align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            <div class="text-xxs font-weight-bold text-primary text-uppercase mb-1">
                                 Siswa dengan Hasil</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $hasilSAW->count() }}</div>
+                            <div class="h6 mb-0 font-weight-bold text-gray-800">{{ $hasilSAW->count() }}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                            <i class="fas fa-users fa-lg text-gray-300"></i>
                         </div>
                     </div>
                 </div>
@@ -186,16 +198,16 @@
 
         <!-- Total Rekomendasi -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
+            <div class="card border-left-success shadow h-100 py-1">
+                <div class="card-body py-2">
+                    <div class="row gx-0 align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            <div class="text-xxs font-weight-bold text-success text-uppercase mb-1">
                                 Total Rekomendasi</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $hasilSAW->sum(function($hasil) { return $hasil->count(); }) }}</div>
+                            <div class="h6 mb-0 font-weight-bold text-gray-800">{{ $hasilSAW->sum(function($hasil) { return $hasil->count(); }) }}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-graduation-cap fa-2x text-gray-300"></i>
+                            <i class="fas fa-graduation-cap fa-lg text-gray-300"></i>
                         </div>
                     </div>
                 </div>
@@ -203,14 +215,14 @@
         </div>
 
         <!-- Jurusan Paling Populer -->
-        <div class="col-xl-3 col-md-6 mb-4">
+        <div class="col-xl-4 col-md-6 mb-4">
             <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="me-3">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                 Jurusan Terpopuler</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <div class="h6 mb-1 font-weight-bold text-gray-800">
                                 @php
                                     $jurusanCount = [];
                                     foreach($hasilSAW as $hasil) {
@@ -223,11 +235,12 @@
                                     arsort($jurusanCount);
                                     $topJurusan = key($jurusanCount) ?? 'Belum ada';
                                 @endphp
-                                {{ Str::limit($topJurusan, 15) }}
+                                {{ $topJurusan }}
                             </div>
+                            <div class="text-muted small">Jurusan dengan rekomendasi utama terbanyak</div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-trophy fa-2x text-gray-300"></i>
+                        <div class="text-end">
+                            <i class="fas fa-trophy fa-2x text-info"></i>
                         </div>
                     </div>
                 </div>
@@ -235,21 +248,22 @@
         </div>
 
         <!-- Status Sistem -->
-        <div class="col-xl-3 col-md-6 mb-4">
+        <div class="col-xl-2 col-md-6 mb-4">
             <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                 Status Sistem</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                <span class="badge badge-success">Aktif</span>
+                            <div>
+                                <span class="badge bg-success text-white">Aktif</span>
                             </div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                        <div>
+                            <i class="fas fa-check-circle fa-2x text-warning"></i>
                         </div>
                     </div>
+                    <div class="text-muted small mt-2">Sistem berjalan normal</div>
                 </div>
             </div>
         </div>
@@ -273,18 +287,15 @@
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="heading{{ $idSiswa }}">
                                         <button class="accordion-button {{ !$loop->first ? 'collapsed' : '' }}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $idSiswa }}" aria-expanded="{{ $loop->first ? 'true' : 'false' }}" aria-controls="collapse{{ $idSiswa }}">
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar-circle me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; font-weight: bold;">
-                                                    {{ strtoupper(substr($siswa->nama_siswa, 0, 1)) }}
+                                            <div class="d-flex align-items-center w-100 gap-3">
+                                                <div class="student-summary">
+                                                    <div class="student-title">{{ $siswa->nama_siswa }}</div>
+                                                    <div class="student-meta">{{ $siswa->kelas }} • {{ $siswa->jurusan_sekolah }}</div>
                                                 </div>
-                                                <div>
-                                                    <strong>{{ $siswa->nama_siswa }}</strong>
-                                                    <br>
-                                                    <small class="text-muted">{{ $siswa->kelas }} - {{ $siswa->jurusan_sekolah }}</small>
-                                                </div>
-                                                <div class="ms-auto me-3">
-                                                    <span class="badge badge-success">
-                                                        <i class="fas fa-star"></i> {{ $rekomendasiUtama->jurusan->nama_jurusan }}
+                                                <div class="ms-auto text-end">
+                                                    <div class="text-muted small">Rekomendasi Utama</div>
+                                                    <span class="badge bg-primary">
+                                                        <i class="fas fa-star me-1"></i> {{ $rekomendasiUtama->jurusan->nama_jurusan }}
                                                     </span>
                                                 </div>
                                             </div>
@@ -308,22 +319,22 @@
                                                             </thead>
                                                             <tbody>
                                                                 @foreach($hasil->sortBy('peringkat') as $h)
-                                                                <tr class="{{ $h->peringkat == 1 ? 'table-dark' : 'table-light' }}">
+                                                                <tr class="{{ $h->peringkat == 1 ? 'recommended' : 'standard' }}">
                                                                     <td>
-                                                                        <span class="badge badge-{{ $h->peringkat == 1 ? 'success' : 'secondary' }}">
+                                                                        <span class="badge bg-{{ $h->peringkat == 1 ? 'primary' : 'secondary' }}">
                                                                             #{{ $h->peringkat }}
                                                                         </span>
                                                                     </td>
-                                                                    <td><strong class="{{ $h->peringkat == 1 ? 'text-white' : 'text-dark' }}">{{ $h->jurusan->nama_jurusan }}</strong></td>
-                                                                    <td><span class="{{ $h->peringkat == 1 ? 'text-white-50' : 'text-secondary' }}">{{ $h->jurusan->fakultas }}</span></td>
-                                                                    <td><span class="{{ $h->peringkat == 1 ? 'text-white' : 'text-dark' }}">{{ number_format($h->nilai_preferensi, 4) }}</span></td>
+                                                                    <td><strong>{{ $h->jurusan->nama_jurusan }}</strong></td>
+                                                                    <td><span class="text-secondary">{{ $h->jurusan->fakultas }}</span></td>
+                                                                    <td>{{ number_format($h->nilai_preferensi, 4) }}</td>
                                                                     <td>
                                                                         @if($h->peringkat == 1)
-                                                                            <span class="badge badge-success">
-                                                                                <i class="fas fa-star"></i> Rekomendasi Utama
+                                                                            <span class="badge bg-primary">
+                                                                                <i class="fas fa-star me-1"></i> Rekomendasi Utama
                                                                             </span>
                                                                         @else
-                                                                            <span class="badge badge-secondary">
+                                                                            <span class="badge bg-secondary">
                                                                                 Alternatif {{ $h->peringkat }}
                                                                             </span>
                                                                         @endif
