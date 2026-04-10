@@ -5,39 +5,63 @@
 @section('styles')
 <style>
 .bg-gradient-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+}
+
+.dashboard-hero {
+  background: radial-gradient(circle at top left, rgba(255,255,255,0.24), transparent 35%), linear-gradient(135deg, #3730a3 0%, #7c3aed 100%);
+  color: #f8fafc;
+}
+
+.dashboard-hero .lead {
+  color: rgba(248, 250, 252, 0.9);
+}
+
+.dashboard-card {
+  border: none;
+  border-radius: 1.75rem;
+  background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(249,250,251,0.9) 100%);
+  overflow: hidden;
+}
+
+.dashboard-card .card-body {
+  padding: 1.6rem;
+}
+
+.dashboard-card .text-xs {
+  letter-spacing: 0.08em;
 }
 
 .border-left-primary {
-  border-left: 0.25rem solid #4e73df !important;
+  border-left: 0.35rem solid #2563eb !important;
 }
 
 .border-left-success {
-  border-left: 0.25rem solid #1cc88a !important;
+  border-left: 0.35rem solid #10b981 !important;
 }
 
 .border-left-info {
-  border-left: 0.25rem solid #36b9cc !important;
+  border-left: 0.35rem solid #0ea5e9 !important;
 }
 
 .border-left-warning {
-  border-left: 0.25rem solid #f6c23e !important;
+  border-left: 0.35rem solid #f59e0b !important;
 }
 
 .text-primary {
-  color: #5a5c69 !important;
+  color: #1d4ed8 !important;
 }
 
 .text-gray-800 {
-  color: #5a5c69 !important;
+  color: #1f2937 !important;
 }
 
 .card.shadow {
-  box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15) !important;
+  box-shadow: 0 0.75rem 2rem rgba(15, 23, 42, 0.08) !important;
 }
 
 .card.shadow-sm {
-  box-shadow: 0 0.125rem 0.25rem 0 rgba(58, 59, 69, 0.2) !important;
+  box-shadow: 0 0.4rem 0.9rem rgba(15, 23, 42, 0.08) !important;
 }
 
 .avatar {
@@ -45,7 +69,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .avatar-sm {
@@ -61,25 +85,35 @@
 }
 
 .table-hover tbody tr:hover {
-  background-color: rgba(0, 0, 0, 0.075);
+  background-color: rgba(59, 130, 246, 0.08);
 }
 
 .progress {
-  background-color: #eaecf4;
+  background-color: #e0f2fe;
 }
 
 .progress-bar {
-  background-color: #4e73df;
+  background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%);
 }
 
 .card-header {
-  background: linear-gradient(135deg, #f8f9fc 0%, #e9ecef 100%);
-  border-bottom: 1px solid #e3e6f0;
+  background: transparent;
+  border-bottom: none;
+}
+
+.card-header.bg-success {
+  background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%) !important;
+  color: #fff;
+}
+
+.card-header.bg-warning {
+  background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%) !important;
+  color: #1f2937;
 }
 
 .btn-outline-primary:hover {
-  background-color: #4e73df;
-  border-color: #4e73df;
+  background-color: #2563eb;
+  border-color: #2563eb;
 }
 
 .font-weight-bold {
@@ -87,14 +121,78 @@
 }
 
 .text-xs {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
 }
 
 .text-uppercase {
   text-transform: uppercase;
 }
 
-/* Timeline Styles */
+.stats-icon {
+  width: 56px;
+  height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  color: #fff;
+}
+
+.stats-icon.primary {
+  background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+}
+
+.stats-icon.success {
+  background: linear-gradient(135deg, #10b981 0%, #0f766e 100%);
+}
+
+.stats-icon.info {
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+}
+
+.stats-icon.warning {
+  background: linear-gradient(135deg, #f59e0b 0%, #dc2626 100%);
+}
+
+.dashboard-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.dashboard-total-value {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.04em;
+}
+
+.dashboard-total-note {
+  font-size: 0.84rem;
+  color: #6b7280;
+}
+
+.dashboard-card-compact {
+  background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.92));
+}
+
+.dashboard-card-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-card-glow::after {
+  content: '';
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 120px;
+  height: 120px;
+  background: rgba(59, 130, 246, 0.18);
+  border-radius: 50%;
+}
+
 .timeline {
   position: relative;
   padding-left: 30px;
@@ -107,7 +205,7 @@
   top: 0;
   bottom: 0;
   width: 2px;
-  background: #e9ecef;
+  background: #e2e8f0;
 }
 
 .timeline-item {
@@ -123,47 +221,42 @@
   height: 12px;
   border-radius: 50%;
   border: 2px solid #fff;
-  box-shadow: 0 0 0 2px #e9ecef;
+  box-shadow: 0 0 0 2px #e2e8f0;
 }
 
 .timeline-content {
-  background: #f8f9fa;
+  background: #f8fafc;
   padding: 10px 15px;
-  border-radius: 8px;
-  border-left: 3px solid #dee2e6;
+  border-radius: 1rem;
+  border-left: 3px solid #cbd5e1;
 }
 
 /* Quick Actions Hover Effects */
 .btn-outline-primary:hover, .btn-outline-success:hover, .btn-outline-info:hover, .btn-outline-warning:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
   transition: all 0.3s ease;
 }
 
 /* Card hover effects */
 .card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   transition: all 0.3s ease;
 }
 
 .compact-chart-card {
-  max-width: 320px;
+  max-width: 100%;
   margin: 0 auto;
+  border-radius: 1.5rem;
+  background: linear-gradient(180deg, #ffffff 0%, #eff6ff 100%);
 }
 
 .compact-chart-card .card-body {
-  padding: 0.7rem 0.8rem 0.6rem;
+  padding: 1rem;
 }
 
 .compact-chart-card canvas {
-  max-height: 150px !important;
-
-.card-header.bg-success {
-  background: linear-gradient(135deg, #1cc88a 0%, #17a673 100%) !important;
-}
-
-.card-header.bg-warning {
-  background: linear-gradient(135deg, #f6c23e 0%, #f4b619 100%) !important;
+  max-height: 160px !important;
 }
 </style>
 @endsection
@@ -172,7 +265,7 @@
 <!-- Welcome Section -->
 <div class="row mb-6">
   <div class="col-12">
-    <div class="card bg-gradient-primary text-white border-0 shadow-lg">
+    <div class="card bg-gradient-primary text-white border-0 shadow-lg dashboard-hero">
       <div class="card-body p-5">
         <div class="row align-items-center">
           <div class="col-lg-8">
@@ -191,17 +284,18 @@
 <!-- Statistics Cards -->
 <div class="row mb-6">
   <div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-primary shadow h-100 py-2">
+    <div class="card border-left-primary shadow h-100 py-2 dashboard-card dashboard-card-glow">
       <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
+        <div class="dashboard-total">
+          <div>
             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
               Total Siswa
             </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalSiswa }}</div>
+            <div class="dashboard-total-value">{{ $totalSiswa }}</div>
+            <div class="dashboard-total-note">Jumlah siswa aktif saat ini</div>
           </div>
-          <div class="col-auto">
-            <i class="ti ti-users text-primary" style="font-size: 2rem;"></i>
+          <div class="stats-icon primary">
+            <i class="ti ti-users" style="font-size: 1.25rem;"></i>
           </div>
         </div>
       </div>
@@ -209,17 +303,18 @@
   </div>
 
   <div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-success shadow h-100 py-2">
+    <div class="card border-left-success shadow h-100 py-2 dashboard-card dashboard-card-glow">
       <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
+        <div class="dashboard-total">
+          <div>
             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
               Total Kriteria
             </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalKriteria }}</div>
+            <div class="dashboard-total-value">{{ $totalKriteria }}</div>
+            <div class="dashboard-total-note">Jumlah kriteria penilaian yang tersedia</div>
           </div>
-          <div class="col-auto">
-            <i class="ti ti-settings text-success" style="font-size: 2rem;"></i>
+          <div class="stats-icon success">
+            <i class="ti ti-settings" style="font-size: 1.25rem;"></i>
           </div>
         </div>
       </div>
@@ -227,17 +322,18 @@
   </div>
 
   <div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-info shadow h-100 py-2">
+    <div class="card border-left-info shadow h-100 py-2 dashboard-card dashboard-card-glow">
       <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
+        <div class="dashboard-total">
+          <div>
             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
               Total Jurusan
             </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalJurusan }}</div>
+            <div class="dashboard-total-value">{{ $totalJurusan }}</div>
+            <div class="dashboard-total-note">Jurusan yang dapat dipilih oleh siswa</div>
           </div>
-          <div class="col-auto">
-            <i class="ti ti-building text-info" style="font-size: 2rem;"></i>
+          <div class="stats-icon info">
+            <i class="ti ti-building" style="font-size: 1.25rem;"></i>
           </div>
         </div>
       </div>
@@ -245,17 +341,18 @@
   </div>
 
   <div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-warning shadow h-100 py-2">
+    <div class="card border-left-warning shadow h-100 py-2 dashboard-card dashboard-card-glow">
       <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
+        <div class="dashboard-total">
+          <div>
             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
               Hasil SPK
             </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalHasilSAW }}</div>
+            <div class="dashboard-total-value">{{ $totalHasilSAW }}</div>
+            <div class="dashboard-total-note">Jumlah rekomendasi yang sudah dihitung</div>
           </div>
-          <div class="col-auto">
-            <i class="ti ti-chart-bar text-warning" style="font-size: 2rem;"></i>
+          <div class="stats-icon warning">
+            <i class="ti ti-chart-bar" style="font-size: 1.25rem;"></i>
           </div>
         </div>
       </div>
@@ -334,10 +431,7 @@
               <tr>
                 <td>
                   <div class="d-flex align-items-center">
-                    <div class="avatar avatar-sm me-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                      {{ substr($kriteria->nama_kriteria, 0, 1) }}
-                    </div>
-                    {{ $kriteria->nama_kriteria }}
+                    <span class="fw-semibold">{{ $kriteria->nama_kriteria }}</span>
                   </div>
                 </td>
                 <td><span class="badge bg-primary">{{ $kriteria->bobot }}</span></td>
@@ -373,10 +467,7 @@
       </div>
       <div class="card-body">
         @forelse($siswaTerbaru as $siswa)
-        <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
-          <div class="avatar avatar-md me-3" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-            {{ substr($siswa->nama_siswa, 0, 1) }}
-          </div>
+        <div class="mb-3 pb-3 border-bottom">
           <div class="flex-grow-1">
             <div class="font-weight-bold text-dark">{{ $siswa->nama_siswa }}</div>
             <div class="text-muted small">{{ $siswa->kelas }} • {{ $siswa->tahun_ajaran }}</div>
