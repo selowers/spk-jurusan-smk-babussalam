@@ -44,6 +44,46 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success', 'Anda berhasil logout.');
     }
 
+    public function showProfileForm()
+    {
+        return view('auth.edit-profile', ['user' => Auth::user()]);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        if ($request->hasFile('profile_photo')) {
+            $photo = $request->file('profile_photo');
+            $folder = public_path('uploads/profile');
+            if (!file_exists($folder)) {
+                mkdir($folder, 0755, true);
+            }
+
+            if ($user->profile_photo && file_exists(public_path($user->profile_photo))) {
+                @unlink(public_path($user->profile_photo));
+            }
+
+            $filename = 'profile_' . $user->id . '_' . time() . '.' . $photo->getClientOriginalExtension();
+            $photo->move($folder, $filename);
+            $user->profile_photo = 'uploads/profile/' . $filename;
+        }
+
+        $user->save();
+
+        return redirect()->route('dashboard.index')->with('success', 'Profil berhasil diperbarui.');
+    }
+
     public function showChangePasswordForm()
     {
         return view('auth.change-password');

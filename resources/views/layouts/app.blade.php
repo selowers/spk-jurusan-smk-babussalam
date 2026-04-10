@@ -184,13 +184,14 @@
           <div class="dropdown">
             <a class="d-flex align-items-center text-reset text-decoration-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <div class="avatar avatar-sm">
-                <img src="/assets/images/avatar/avatar-1.jpg" alt="Avatar" class="avatar-img rounded-circle">
+                <img src="{{ Auth::user()->profile_photo ? asset(Auth::user()->profile_photo) : asset('assets/images/avatar/avatar-1.jpg') }}" alt="Avatar" class="avatar-img rounded-circle">
               </div>
               <div class="ms-2 d-none d-lg-block">
                 <span class="text-body-secondary fw-medium fs-sm">{{ Auth::user()->name ?? 'Guru BK' }}</span>
               </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="ti ti-user me-2"></i>Edit Profil</a></li>
               <li><a class="dropdown-item" href="{{ route('password.change') }}"><i class="ti ti-lock me-2"></i>Ubah Kata Sandi</a></li>
               <li><hr class="dropdown-divider"></li>
               <li>

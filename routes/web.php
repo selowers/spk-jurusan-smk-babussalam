@@ -12,16 +12,19 @@ use App\Http\Controllers\AuthController;
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/password/change', [AuthController::class, 'showChangePasswordForm'])->name('password.change');
-Route::post('/password/change', [AuthController::class, 'changePassword'])->name('password.change.post');
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
-Route::resource('siswa', SiswaController::class);
-Route::resource('kriteria', KriteriaController::class);
-Route::resource('jurusan', JurusanController::class);
-Route::post('jurusan/add-fakultas', [JurusanController::class, 'addFakultas'])->name('jurusan.addFakultas');
-Route::post('jurusan/add-perguruan-tinggi', [JurusanController::class, 'addPerguruanTinggi'])->name('jurusan.addPerguruanTinggi');
+    Route::get('/password/change', [AuthController::class, 'showChangePasswordForm'])->name('password.change');
+    Route::post('/password/change', [AuthController::class, 'changePassword'])->name('password.change.post');
+    Route::get('/profile/edit', [AuthController::class, 'showProfileForm'])->name('profile.edit');
+    Route::put('/profile/update', [AuthController::class, 'updateProfile'])->name('profile.update');
+
+    Route::resource('siswa', SiswaController::class);
+    Route::resource('kriteria', KriteriaController::class);
+    Route::resource('jurusan', JurusanController::class);
+    Route::post('jurusan/add-fakultas', [JurusanController::class, 'addFakultas'])->name('jurusan.addFakultas');
+    Route::post('jurusan/add-perguruan-tinggi', [JurusanController::class, 'addPerguruanTinggi'])->name('jurusan.addPerguruanTinggi');
 
 // Routes untuk SAW
 Route::get('saw', [SAWController::class, 'index'])->name('saw.index');

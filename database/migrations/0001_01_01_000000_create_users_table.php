@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email', 255)->unique(); // Email pengguna
             $table->string('password', 255); // Kata sandi terenkripsi
             $table->enum('role', ['guru_bk'])->default('guru_bk'); // Peran pengguna (hanya guru BK)
+            $table->string('profile_photo')->nullable(); // Foto profil pengguna
             $table->timestamps(); // created_at & updated_at
         });
 
