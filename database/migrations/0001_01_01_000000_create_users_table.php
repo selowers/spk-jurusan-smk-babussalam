@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id(); // Primary Key, Auto Increment
+            $table->increments('id'); // Primary Key, Auto Increment INT
             $table->string('name', 255); // Nama pengguna
             $table->string('email', 255)->unique(); // Email pengguna
             $table->string('password', 255); // Kata sandi terenkripsi
@@ -29,7 +29,7 @@ return new class extends Migration
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
+            $table->unsignedInteger('user_id')->nullable()->index();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('kelas', 50); // Kelas siswa
             $table->string('jurusan_sekolah', 100); // Jurusan siswa di SMK
             $table->string('tahun_ajaran', 20); // Tahun ajaran aktif
-            $table->unsignedBigInteger('id_user'); // Foreign Key ke tabel users
+            $table->unsignedInteger('id_user'); // Foreign Key ke tabel users
             $table->timestamps(); // created_at & updated_at
 
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
