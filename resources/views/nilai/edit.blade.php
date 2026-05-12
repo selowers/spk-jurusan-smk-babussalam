@@ -13,6 +13,7 @@
                     <h5><i class="icon fas fa-ban"></i> Error!</h5>
                     {{ session('error') }}
                 </div>
+                
             @endif
 
             <!-- Informasi Siswa -->
