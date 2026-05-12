@@ -30,7 +30,7 @@
             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
               Aktif
             </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $siswa->count() }}</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $siswa->total() }}</div>
           </div>
           <div class="col-auto">
             <i class="ti ti-check-circle fa-2x text-gray-300"></i>
