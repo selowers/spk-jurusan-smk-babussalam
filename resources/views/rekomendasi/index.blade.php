@@ -157,6 +157,7 @@
                 <div class="row align-items-center">
                     <div class="col-lg-8">
                         <span class="badge mb-3">Ringkasan Rekomendasi</span>
+                        
                         <h1 class="h3 fw-bold">Rekomendasi Jurusan Terbaik untuk Siswa SMK Babussalam</h1>
                         <p class="mb-0 text-white-75">Lihat hasil pilihan jurusan dengan informasi prioritas, rekomendasi utama, dan jurusan terpopuler secara instan.</p>
                     </div>
