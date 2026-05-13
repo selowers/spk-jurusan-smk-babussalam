@@ -297,13 +297,15 @@
                     <div class="ttd-label">Malang, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</div>
                     <div class="ttd-label">Kepala Sekolah</div>
                     <div class="ttd-spasi"></div>
-                    <span class="ttd-garis">______________________</span>
+                    <span class="ttd-garis"></span>
+                    <div class="ttd-label">Muis Robil S.Kom</div>
                 </td>
                 <td style="width:25%;">
                     <div class="ttd-label">Malang, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</div>
                     <div class="ttd-label">Guru BK</div>
                     <div class="ttd-spasi"></div>
-                    <span class="ttd-garis">______________________</span>
+                    <span class="ttd-garis"></span>
+                    <div class="ttd-label">Muhammad Yusuf</div>
                 </td>
             </tr>
         </table>

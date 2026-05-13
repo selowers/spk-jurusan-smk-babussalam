@@ -148,12 +148,6 @@
             <p class="mb-0">Daftar rekomendasi jurusan untuk semua siswa</p>
         </div>
         <div>
-            <a href="{{ route('saw.hasil.exportPDF') }}" target="_blank" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mr-2" onclick="return confirm('Apakah kamu yakin ingin mencetak hasil ini?');">
-                <i class="fas fa-file-pdf fa-sm text-white-50"></i> Cetak PDF
-            </a>
-            <a href="{{ route('saw.index') }}" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
-                <i class="fas fa-arrow-left fa-sm text-white-50"></i> Kembali
-            </a>
         </div>
     </div>
 
