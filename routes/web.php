@@ -34,6 +34,7 @@ Route::get('saw/{id}', [SAWController::class, 'show'])->name('saw.show');
 Route::get('saw/{id}/edit', [SAWController::class, 'edit'])->name('saw.edit');
 Route::put('saw/{id}', [SAWController::class, 'update'])->name('saw.update');
 Route::get('saw-hasil', [SAWController::class, 'hasil'])->name('saw.hasil');
+Route::get('saw-hasil/{id}/export-pdf', [SAWController::class, 'exportPDFPerSiswa'])->name('saw.hasil.exportPDF.perSiswa');
 Route::get('saw-hasil/export-pdf', [SAWController::class, 'exportPDF'])->name('saw.hasil.exportPDF');
 Route::post('saw/proses', [SAWController::class, 'proses'])->name('saw.proses');
 Route::post('saw/simpan', [SAWController::class, 'simpan'])->name('saw.simpan');

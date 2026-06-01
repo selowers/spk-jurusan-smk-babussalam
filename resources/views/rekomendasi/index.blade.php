@@ -82,6 +82,31 @@
     .accordion-button .student-summary {
         flex: 1;
     }
+    .search-filter {
+        width: 100%;
+        max-width: 320px;
+    }
+    .search-filter label {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #3f6ad8;
+        margin-bottom: 0.35rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+    .search-filter input {
+        width: 100%;
+        border: 1px solid #cbd5e1;
+        border-radius: 0.75rem;
+        padding: 0.85rem 1rem;
+        font-size: 0.95rem;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
+    }
+    .search-filter input::placeholder {
+        color: #6c757d;
+        opacity: 1;
+    }
     .accordion-button .student-title {
         font-size: 1rem;
         font-weight: 700;
@@ -269,7 +294,13 @@
         <div class="col-12">
             <div class="card shadow card-glow">
                 <div class="card-header py-3 bg-transparent border-bottom-0">
-                    <h6 class="m-0 font-weight-bold text-primary">Rekomendasi Jurusan per Siswa</h6>
+                    <div class="d-flex align-items-center justify-content-between flex-column flex-md-row gap-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Rekomendasi Jurusan per Siswa</h6>
+                        <div class="search-filter">
+                            <label for="searchInput">Cari siswa atau jurusan</label>
+                            <input type="text" id="searchInput" class="form-control" placeholder="Contoh: Abdul Aziz, Teknik Elektro, Informatika">
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     @if($hasilSAW->count() > 0)
@@ -317,7 +348,7 @@
                                                                 <tr class="{{ $h->peringkat == 1 ? 'recommended' : 'standard' }}">
                                                                     <td>
                                                                         <span class="badge bg-{{ $h->peringkat == 1 ? 'primary' : 'secondary' }}">
-                                                                            #{{ $h->peringkat }}
+                                                                            {{ $h->peringkat }}
                                                                         </span>
                                                                     </td>
                                                                     <td><strong>{{ $h->jurusan->nama_jurusan }}</strong></td>
@@ -368,6 +399,9 @@
                                                             <a href="{{ route('saw.show', $siswa->id_siswa) }}" class="btn btn-success btn-sm me-2 mb-2">
                                                                 <i class="fas fa-eye"></i> Lihat Detail
                                                             </a>
+                                                            <a href="{{ route('saw.hasil.exportPDF.perSiswa', $siswa->id_siswa) }}" target="_blank" class="btn btn-info btn-sm me-2 mb-2">
+                                                                <i class="fas fa-print"></i> Cetak
+                                                            </a>
                                                             <a href="{{ route('saw.edit', $siswa->id_siswa) }}" class="btn btn-warning btn-sm mb-2">
                                                                 <i class="fas fa-edit"></i> Edit Nilai
                                                             </a>
@@ -395,4 +429,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        const searchTerm = this.value.toLowerCase();
+        const accordionItems = document.querySelectorAll('.accordion-item');
+        
+        accordionItems.forEach(item => {
+            const allText = item.textContent.toLowerCase();
+            
+            if (allText.includes(searchTerm)) {
+                item.style.display = '';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+</script>
+
 @endsection

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Surat Rekomendasi Pemilihan Jurusan - SMK Babussalam</title>
+    <title>Surat Rekomendasi Pemilihan Jurusan - {{ $hasilSAW->first()->siswa->nama_siswa ?? 'Siswa' }}</title>
     <style>
         * {
             margin: 0;
@@ -23,22 +23,6 @@
             margin: 0;
         }
 
-        /*
-         * SOLUSI MARGIN DOMPDF YANG PASTI BEKERJA:
-         * Karena DomPDF mengabaikan @page margin dan setOption,
-         * margin ditetapkan via padding di .halaman (wrapper per halaman).
-         *
-         * A4 landscape = 297mm x 210mm
-         * Konversi ke px @96dpi: 1mm = 3.7795px
-         *   top    3cm = 30mm = 113.39px
-         *   right  3cm = 30mm = 113.39px
-         *   bottom 3cm = 30mm = 113.39px
-         *   left   4cm = 40mm = 151.18px
-         *
-         * Total lebar konten = 297mm - 4cm - 3cm = 297mm - 70mm = 227mm
-         * Total tinggi konten = 210mm - 3cm - 3cm = 210mm - 60mm = 150mm
-         */
-
         .halaman {
             width: 210mm;
             padding-top: 10mm;
@@ -53,9 +37,6 @@
             page-break-after: avoid;
         }
 
-        /* =============================================
-           KOP SURAT
-        ============================================= */
         .kop-wrap table {
             width: 100%;
             border-collapse: collapse;
@@ -118,9 +99,6 @@
             margin-bottom: 5pt;
         }
 
-        /* =============================================
-           JUDUL
-        ============================================= */
         .judul {
             text-align: center;
             font-size: 10.5pt;
@@ -130,15 +108,27 @@
             letter-spacing: 0.2pt;
         }
 
-        /* =============================================
-           TABEL DATA
-           No.             :  4%
-           Nama Siswa      : 22%
-           Kelas           :  7%
-           Rekomendasi     : 43%
-           Peringkat       :  9%
-           Nilai Preferensi: 15%
-        ============================================= */
+        .detail-siswa {
+            margin-bottom: 10pt;
+            width: 100%;
+            font-size: 9pt;
+        }
+
+        .detail-siswa td {
+            padding: 2pt 4pt;
+            vertical-align: top;
+        }
+
+        .detail-label {
+            font-weight: bold;
+            width: 120pt;
+            padding-right: 8pt;
+        }
+
+        .detail-value {
+            color: #000;
+        }
+
         table.tbl {
             width: 100%;
             table-layout: fixed;
@@ -149,7 +139,7 @@
         table.tbl th,
         table.tbl td {
             border: 1px solid #000;
-            padding: 2.5pt 4pt;
+            padding: 3pt 5pt;
             vertical-align: middle;
             word-wrap: break-word;
             overflow: hidden;
@@ -166,13 +156,6 @@
         table.tbl td.c-pering { text-align: center; }
         table.tbl td.c-nilai  { text-align: right; padding-right: 5pt; }
 
-        table.tbl tr.baris-pertama td {
-            border-top: 1.5px solid #000;
-        }
-
-        /* =============================================
-           TANDA TANGAN
-        ============================================= */
         .ttd-wrap {
             margin-top: 10pt;
             width: 100%;
@@ -211,15 +194,10 @@
     if (file_exists($logoPath)) {
         $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
     }
-
-    $chunkOf4     = $hasilSAW->chunk(4);
-    $totalHalaman = $chunkOf4->count();
+    $siswa = $hasilSAW->first()->siswa;
 @endphp
 
-@foreach($chunkOf4 as $halamanIndex => $chunk)
 <div class="halaman">
-
-    {{-- ===== KOP SURAT ===== --}}
     <div class="kop-wrap">
         <table>
             <tr>
@@ -242,53 +220,53 @@
     </div>
     <hr class="garis-kop">
 
-    {{-- ===== JUDUL ===== --}}
     <div class="judul">SURAT REKOMENDASI PEMILIHAN JURUSAN PERGURUAN TINGGI SMK BABUSSALAM</div>
 
-    {{-- ===== TABEL ===== --}}
-    <table class="tbl">
+    <table class="detail-siswa">
+        <tr>
+            <td class="detail-label">Nama Siswa</td>
+            <td class="detail-value">{{ $siswa->nama_siswa ?? '-' }}</td>
+            <td class="detail-label">Tanggal Cetak</td>
+            <td class="detail-value">{{ $tanggalCetak->translatedFormat('d F Y') }}</td>
+        </tr>
+        <tr>
+            <td class="detail-label">Kelas</td>
+            <td class="detail-value">{{ $siswa->kelas ?? '-' }}</td>
+            <td class="detail-label">Jurusan Sekolah</td>
+            <td class="detail-value">{{ $siswa->jurusan_sekolah ?? '-' }}</td>
+        </tr>
+    </table>
+
+    <table class="tbl" style="margin-top: 10pt;">
         <colgroup>
-            <col style="width:4%;">
-            <col style="width:22%;">
-            <col style="width:7%;">
-            <col style="width:43%;">
-            <col style="width:9%;">
+            <col style="width:6%;">
+            <col style="width:44%;">
+            <col style="width:20%;">
+            <col style="width:15%;">
             <col style="width:15%;">
         </colgroup>
         <thead>
             <tr>
                 <th>No.</th>
-                <th>Nama Siswa</th>
-                <th>Kelas</th>
                 <th>Rekomendasi Jurusan</th>
+                <th>Fakultas</th>
                 <th>Peringkat</th>
                 <th>Nilai Preferensi</th>
             </tr>
         </thead>
         <tbody>
-            @php
-                $noCounter = $halamanIndex * 4 + 1;
-            @endphp
-            @foreach($chunk as $idSiswa => $hasil)
-                @foreach($hasil as $index => $h)
-                <tr class="{{ $index === 0 ? 'baris-pertama' : '' }}">
-                    @if($index === 0)
-                        <td class="c-no" rowspan="5">{{ $noCounter }}</td>
-                        <td rowspan="5">{{ $h->siswa->nama_siswa ?? '-' }}</td>
-                        <td class="c-kelas" rowspan="5">{{ $h->siswa->kelas ?? '-' }}</td>
-                    @endif
+            @foreach($hasilSAW as $index => $h)
+                <tr>
+                    <td class="c-no">{{ $index + 1 }}</td>
                     <td>{{ $h->jurusan->nama_jurusan ?? '-' }}</td>
+                    <td>{{ $h->jurusan->fakultas ?? '-' }}</td>
                     <td class="c-pering">{{ $h->peringkat }}</td>
                     <td class="c-nilai">{{ number_format($h->nilai_preferensi, 4) }}</td>
                 </tr>
-                @endforeach
-                @php $noCounter++; @endphp
             @endforeach
         </tbody>
     </table>
 
-    {{-- ===== TANDA TANGAN (halaman terakhir saja) ===== --}}
-    @if($halamanIndex === $totalHalaman - 1)
     <div class="ttd-wrap">
         <table class="ttd-table">
             <tr>
@@ -301,7 +279,7 @@
                     <div class="ttd-label">Muis Robil S.Kom</div>
                 </td>
                 <td style="width:25%;">
-                    <div class="ttd-label">Malang, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</div>
+                    <div class="ttd-label">Malang, {{ $tanggalCetak->translatedFormat('d F Y') }}</div>
                     <div class="ttd-label">Guru BK</div>
                     <div class="ttd-spasi"></div>
                     <span class="ttd-garis"></span>
@@ -310,10 +288,7 @@
             </tr>
         </table>
     </div>
-    @endif
-
-</div>{{-- .halaman --}}
-@endforeach
+</div>
 
 </body>
 </html>

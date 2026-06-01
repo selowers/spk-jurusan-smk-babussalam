@@ -10,6 +10,7 @@ use App\Models\HasilSAW;
 use App\Models\Jurusan;
 use App\Models\JurusanKriteria;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Str;
 
 class SAWController extends Controller
 {
@@ -335,35 +336,65 @@ $xij = 5 - $gap; // nilai antara 0-5
         return redirect()->route('nilai.index')->with('success', 'Nilai kuesioner berhasil disimpan!');
     }
 
-    // Ganti method exportPDF() di SAWController.php dengan kode berikut:
+    public function exportPDF()
+    {
+        $hasilSAW = HasilSAW::with(['siswa', 'jurusan'])
+                           ->orderBy('id_siswa')
+                           ->orderBy('peringkat')
+                           ->get()
+                           ->groupBy('id_siswa');
 
-public function exportPDF()
-{
-    $hasilSAW = HasilSAW::with(['siswa', 'jurusan'])
-                       ->orderBy('id_siswa')
-                       ->orderBy('peringkat')
-                       ->get()
-                       ->groupBy('id_siswa');
+        $data = [
+            'hasilSAW'     => $hasilSAW,
+            'tanggalCetak' => now()
+        ];
 
-    $data = [
-        'hasilSAW'     => $hasilSAW,
-        'tanggalCetak' => now()
-    ];
+        /*
+         * PENTING: margin diatur lewat padding di .halaman pada blade,
+         * bukan lewat setOption. Semua margin di sini dibuat 0.
+         */
+        $pdf = Pdf::loadView('rekomendasi.pdf', $data)
+                   ->setPaper('a4', 'landscape')
+                   ->setOption('margin-top',    0)
+                   ->setOption('margin-right',  0)
+                   ->setOption('margin-bottom', 0)
+                   ->setOption('margin-left',   0)
+                   ->setOption('dpi', 96)
+                   ->setOption('isHtml5ParserEnabled', true)
+                   ->setOption('isRemoteEnabled', true);
 
-    /*
-     * PENTING: margin diatur lewat padding di .halaman pada blade,
-     * bukan lewat setOption. Semua margin di sini dibuat 0.
-     */
-    $pdf = Pdf::loadView('rekomendasi.pdf', $data)
-               ->setPaper('a4', 'landscape')
-               ->setOption('margin-top',    0)
-               ->setOption('margin-right',  0)
-               ->setOption('margin-bottom', 0)
-               ->setOption('margin-left',   0)
-               ->setOption('dpi', 96)
-               ->setOption('isHtml5ParserEnabled', true)
-               ->setOption('isRemoteEnabled', true);
+        return $pdf->download('Hasil_Rekomendasi_SPK_Jurusan_' . date('Y-m-d_H-i-s') . '.pdf');
+    }
 
-    return $pdf->download('Hasil_Rekomendasi_SPK_Jurusan_' . date('Y-m-d_H-i-s') . '.pdf');
-}
+    public function exportPDFPerSiswa($id)
+    {
+        $hasilSAW = HasilSAW::with(['siswa', 'jurusan'])
+                           ->where('id_siswa', $id)
+                           ->orderBy('peringkat')
+                           ->get();
+
+        if ($hasilSAW->isEmpty()) {
+            return redirect()->route('saw.hasil')->with('error', 'Data hasil SAW untuk siswa ini tidak ditemukan.');
+        }
+
+        $data = [
+            'hasilSAW'     => $hasilSAW,
+            'tanggalCetak' => now()
+        ];
+
+        $namaSiswa = Str::slug($hasilSAW->first()->siswa->nama_siswa ?? 'siswa');
+        $filename = 'Hasil_Rekomendasi_' . $namaSiswa . '_' . date('Y-m-d_H-i-s') . '.pdf';
+
+        $pdf = Pdf::loadView('rekomendasi.pdf_per_siswa', $data)
+                   ->setPaper('a4', 'landscape')
+                   ->setOption('margin-top',    0)
+                   ->setOption('margin-right',  0)
+                   ->setOption('margin-bottom', 0)
+                   ->setOption('margin-left',   0)
+                   ->setOption('dpi', 96)
+                   ->setOption('isHtml5ParserEnabled', true)
+                   ->setOption('isRemoteEnabled', true);
+
+        return $pdf->download($filename);
+    }
 }
