@@ -2,24 +2,6 @@
 
 @section('content')
 <div class="content-wrapper">
-    <!-- Content Header -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Detail Perhitungan SAW</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('saw.index') }}">SAW</a></li>
-                        <li class="breadcrumb-item active">Detail Perhitungan</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
@@ -345,9 +327,6 @@
                     <a href="{{ route('saw.edit', $siswa->id_siswa) }}" class="btn btn-warning">
                         <i class="fas fa-edit"></i> Edit Nilai Siswa
                     </a>
-                    <button onclick="window.print()" class="btn btn-info">
-                        <i class="fas fa-print"></i> Print
-                    </button>
                 </div>
             </div>
         </div>

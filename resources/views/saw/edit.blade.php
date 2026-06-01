@@ -3,6 +3,45 @@
 @section('title', 'Edit Nilai SAW - SPK Jurusan SMK Babussalam')
 
 @section('content')
+<style>
+    .saw-result-table {
+        color: #1f2937;
+        font-size: 0.95rem;
+        border-collapse: collapse;
+    }
+    .saw-result-table th,
+    .saw-result-table td {
+        border: 1px solid #d1d5db;
+        vertical-align: middle;
+    }
+    .saw-result-table thead {
+        background: #e7f1ff;
+        color: #0f172a;
+    }
+    .saw-result-table thead th {
+        font-weight: 700;
+        padding: 0.85rem 0.75rem;
+    }
+    .saw-result-table tbody tr {
+        background: #ffffff;
+    }
+    .saw-result-table tbody tr:nth-child(even) {
+        background: #f8fafc;
+    }
+    .saw-result-table .highlight-row {
+        background: #dbeafe;
+    }
+    .saw-result-table .rank-badge {
+        background: #0d6efd;
+        color: #fff;
+        font-size: 0.98rem;
+        padding: 0.45rem 0.75rem;
+    }
+    .saw-result-table .recommendation-badge {
+        font-size: 0.88rem;
+        padding: 0.55rem 0.85rem;
+    }
+</style>
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -29,7 +68,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                             <table class="table table-borderless">
                                 <tr>
                                     <td width="150"><strong>Nama Siswa</strong></td>
@@ -48,14 +87,6 @@
                                     <td>: {{ $siswa->tahun_ajaran }}</td>
                                 </tr>
                             </table>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="text-center">
-                                <div class="avatar-circle mx-auto mb-3" style="width: 80px; height: 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: bold;">
-                                    {{ strtoupper(substr($siswa->nama_siswa, 0, 1)) }}
-                                </div>
-                                <p class="text-muted">Avatar Siswa</p>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -138,33 +169,34 @@
                     <h6 class="m-0 font-weight-bold text-info">Hasil SAW Saat Ini</h6>
                 </div>
                 <div class="card-body">
+                    <p class="text-dark small mb-3">Tabel di bawah menunjukkan hasil preferensi SAW yang saat ini tersimpan. Nilai peringkat dan rekomendasi ditampilkan secara jelas untuk membantu Anda memahami urutan jurusan terbaik.</p>
                     <div class="table-responsive">
-                        <table class="table table-bordered">
+                        <table class="table saw-result-table">
                             <thead>
                                 <tr>
-                                    <th>Peringkat</th>
+                                    <th class="text-center">Peringkat</th>
                                     <th>Jurusan</th>
-                                    <th>Nilai Preferensi</th>
-                                    <th>Rekomendasi</th>
+                                    <th class="text-center">Nilai Preferensi</th>
+                                    <th class="text-center">Rekomendasi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($hasilSAW->sortBy('peringkat') as $hasil)
-                                <tr class="{{ $hasil->peringkat == 1 ? 'table-success' : '' }}">
-                                    <td>
-                                        <span class="badge badge-{{ $hasil->peringkat == 1 ? 'success' : 'secondary' }}">
-                                            #{{ $hasil->peringkat }}
+                                <tr class="{{ $hasil->peringkat == 1 ? 'highlight-row' : '' }}">
+                                    <td class="text-center align-middle">
+                                        <span class="rank-badge">
+                                            {{ $hasil->peringkat }}
                                         </span>
                                     </td>
-                                    <td>{{ $hasil->jurusan->nama_jurusan }}</td>
-                                    <td>{{ number_format($hasil->nilai_preferensi, 4) }}</td>
-                                    <td>
+                                    <td class="align-middle" style="font-weight: 700; color: #0f172a;">{{ $hasil->jurusan->nama_jurusan }}</td>
+                                    <td class="text-center align-middle" style="font-weight: 700; color: #0d3b77;">{{ number_format($hasil->nilai_preferensi, 4) }}</td>
+                                    <td class="text-center align-middle">
                                         @if($hasil->peringkat == 1)
-                                            <span class="badge badge-success">
+                                            <span class="badge bg-primary text-white recommendation-badge">
                                                 <i class="fas fa-star"></i> Rekomendasi Utama
                                             </span>
                                         @else
-                                            <span class="badge badge-secondary">
+                                            <span class="badge bg-secondary text-white recommendation-badge">
                                                 Alternatif {{ $hasil->peringkat }}
                                             </span>
                                         @endif
