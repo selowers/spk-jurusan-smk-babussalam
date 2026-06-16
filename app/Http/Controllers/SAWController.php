@@ -70,7 +70,7 @@ class SAWController extends Controller
                 $nilaiSiswa[$k->id_kriteria] = $nilai ? $nilai->nilai : 0;
             }
 
-            // STEP 2: Matriks Keputusan X[i][j] = (nilai_siswa[j] + profil_jurusan[i][j]) / 2
+            // STEP 2: Matriks Keputusan X[i][j] = 5 - |profil_siswa - profil_jurusan|
             $matriksX = [];
             $maxPerKolom = array_fill_keys($kriteria->pluck('id_kriteria')->toArray(), 0);
 
@@ -83,11 +83,10 @@ class SAWController extends Controller
                                             ->first();
                     $nilaiProfil = $profil ? $profil->nilai : 0;
 
-                    // Hitung X[i][j] = (nilai_siswa + nilai_profil) / 2
-                    $nilaiSkala5 = ($nilaiSiswa[$k->id_kriteria] / 100) * 5;
-                    // Kecocokan = 5 - |selisih|, makin kecil gap makin cocok
-$gap = abs($nilaiSkala5 - $nilaiProfil);
-$xij = 5 - $gap; // nilai antara 0-5
+                    // Hitung X[i][j] menggunakan profil matching GAP
+                    $nilaiSkala5 = round(($nilaiSiswa[$k->id_kriteria] / 100) * 5, 4);
+                    $gap = abs($nilaiSkala5 - $nilaiProfil);
+                    $xij = round(5 - $gap, 4);
                     $matriksX[$j->id_jurusan][$k->id_kriteria] = $xij;
 
                     // Simpan max per kolom
@@ -103,8 +102,8 @@ $xij = 5 - $gap; // nilai antara 0-5
                 $matriksR[$j->id_jurusan] = [];
                 foreach ($kriteria as $k) {
                     $maxKolom = $maxPerKolom[$k->id_kriteria];
-                    $rij = $maxKolom > 0 ? $matriksX[$j->id_jurusan][$k->id_kriteria] / $maxKolom : 0;
-                    $matriksR[$j->id_jurusan][$k->id_kriteria] = round($rij, 4);
+                    $rij = $maxKolom > 0 ? round($matriksX[$j->id_jurusan][$k->id_kriteria] / $maxKolom, 4) : 0;
+                    $matriksR[$j->id_jurusan][$k->id_kriteria] = $rij;
                 }
             }
 

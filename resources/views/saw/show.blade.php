@@ -109,15 +109,15 @@
                 <div class="card-header bg-primary text-white">
                     <h3 class="card-title">STEP 1: Matriks Keputusan X[i][j]</h3>
                     <div class="card-tools">
-                        <small>X[i][j] = (nilai_siswa[j] + profil_jurusan[i][j]) / 2</small>
+                        <small>X[i][j] = 5 - |profil_siswa - profil_jurusan|</small>
                     </div>
                 </div>
                 <div class="card-body">
-                    <p class="text-muted">Tahap pertama membangun dasar perbandingan. Setiap skor siswa digabung dengan profil jurusan agar nilai menjadi lebih objektif.</p>
+                    <p class="text-muted">Tahap pertama mencocokkan profil siswa dengan profil jurusan untuk menghitung tingkat kecocokan.</p>
                     <ul class="small text-muted mb-3">
-                        <li>X[i][j] dihitung dengan rata-rata antara nilai siswa dan profil jurusan.</li>
-                        <li>Formula: <strong>X[i][j] = (nilai_siswa[j] + profil_jurusan[i][j]) / 2</strong>.</li>
-                        <li>Tujuannya adalah menyamakan skala awal sebelum normalisasi.</li>
+                        <li>Profil siswa dikonversi ke skala 0-5, lalu dibandingkan dengan profil jurusan.</li>
+                        <li>Gap dihitung sebagai selisih absolut antara profil siswa dan profil jurusan.</li>
+                        <li>Formula: <strong>X[i][j] = 5 - |profil_siswa - profil_jurusan|</strong>.</li>
                     </ul>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped">
