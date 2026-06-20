@@ -269,7 +269,7 @@
       <div class="card-body p-5">
         <div class="row align-items-center">
           <div class="col-lg-8">
-            <h1 class="h2 font-weight-bold">Selamat Datang di SPK Jurusan Perguruan Tinggi SMK Babussalam</h1>
+            <h1 class="h2 font-weight-bold">Selamat Datang di SPK Pemilihan Jurusan Perguruan Tinggi SMK Babussalam</h1>
             <p class="lead">Sistem Pendukung Keputusan untuk membantu memilih jurusan terbaik di SMK Babussalam.</p>
           </div>
           <div class="col-lg-4 text-center">

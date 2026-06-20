@@ -467,23 +467,13 @@
           @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
         </div>
 
-        <div class="form-check">
-          <input
-            type="checkbox"
-            name="remember"
-            class="form-check-input"
-            id="remember"
-            {{ old('remember') ? 'checked' : '' }}>
-          <label class="form-check-label" for="remember">Ingat saya</label>
-        </div>
-
         <button type="submit" class="btn-login" id="loginBtn">
           <span class="spinner"></span>
           <span>Login</span>
         </button>
 
         <div class="login-footer">
-          <a href="{{ route('password.change') }}">Lupa Kata Sandi?</a>
+          <a href="{{ route('password.request') }}">Lupa Kata Sandi?</a>
         </div>
       </form>
     </div>

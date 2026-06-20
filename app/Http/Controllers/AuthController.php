@@ -21,11 +21,7 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
-            if (Auth::user()->role !== 'guru_bk') {
-                Auth::logout();
-                return back()->withErrors(['email' => 'Hanya Guru BK yang dapat login ke sistem ini.']);
-            }
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             return redirect()->intended(route('dashboard.index'));
         }
@@ -42,6 +38,24 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('login')->with('success', 'Anda berhasil logout.');
+    }
+
+    public function showForgotPasswordForm()
+    {
+        return view('auth.forgot-password');
+    }
+
+    public function sendResetLink(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+        $user->password = Hash::make('password');
+        $user->save();
+
+        return redirect()->route('login')->with('success', 'Kata sandi berhasil direset. Silakan login dengan kata sandi: password');
     }
 
     public function showProfileForm()
