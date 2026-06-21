@@ -399,11 +399,8 @@
                                                             <a href="{{ route('saw.show', $siswa->id_siswa) }}" class="btn btn-success btn-sm me-2 mb-2">
                                                                 <i class="fas fa-eye"></i> Lihat Detail
                                                             </a>
-                                                            <a href="{{ route('saw.hasil.exportPDF.perSiswa', $siswa->id_siswa) }}" target="_blank" class="btn btn-info btn-sm me-2 mb-2">
+                                                            <a href="{{ route('saw.hasil.exportPDF.perSiswa', $siswa->id_siswa) }}" target="_blank" class="btn btn-info btn-sm mb-2">
                                                                 <i class="fas fa-print"></i> Cetak
-                                                            </a>
-                                                            <a href="{{ route('saw.edit', $siswa->id_siswa) }}" class="btn btn-warning btn-sm mb-2">
-                                                                <i class="fas fa-edit"></i> Edit Nilai
                                                             </a>
                                                         </div>
                                                     </div>
