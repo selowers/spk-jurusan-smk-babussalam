@@ -48,49 +48,44 @@
 <!-- Header Section -->
 <div class="row mb-4">
   <div class="col-12">
-    <div class="d-flex align-items-center">
-      <a href="{{ route('jurusan.index') }}" class="btn btn-outline-secondary me-3">
-        <i class="ti ti-arrow-left"></i>
-      </a>
-      <div>
-        <h1 class="h3 mb-0 text-gray-800">
-          <i class="ti ti-building text-primary me-2"></i>Detail Jurusan
-        </h1>
-        <p class="text-muted mt-1">Informasi lengkap jurusan: <strong>{{ $jurusan->nama_jurusan }}</strong></p>
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+      <div class="d-flex align-items-center">
+        <a href="{{ route('jurusan.index') }}" class="btn btn-outline-secondary me-3">
+          <i class="ti ti-arrow-left"></i>
+        </a>
+        <div>
+          <h1 class="h3 mb-0 text-gray-800">
+            <i class="ti ti-building text-primary me-2"></i>Detail Jurusan
+          </h1>
+          <p class="text-muted mt-1 mb-0">Informasi lengkap jurusan: <strong>{{ $jurusan->nama_jurusan }}</strong></p>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- Action Buttons -->
-<div class="row mb-4">
-  <div class="col-12">
-    <div class="d-flex gap-2 justify-content-end">
-      <a href="{{ route('jurusan.edit', $jurusan->id_jurusan) }}" class="btn btn-outline-warning">
-        <i class="ti ti-edit me-1"></i>Edit Jurusan
-      </a>
-      <form action="{{ route('jurusan.destroy', $jurusan->id_jurusan) }}" method="POST" class="d-inline">
-        @csrf
-        @method('DELETE')
-        <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus jurusan ini?')">
-          <i class="ti ti-trash me-1"></i>Hapus Jurusan
-        </button>
-      </form>
+      <div class="d-flex gap-2">
+        <a href="{{ route('jurusan.edit', $jurusan->id_jurusan) }}" class="btn btn-outline-warning">
+          <i class="ti ti-edit me-1"></i>Edit Jurusan
+        </a>
+        <form action="{{ route('jurusan.destroy', $jurusan->id_jurusan) }}" method="POST" class="d-inline">
+          @csrf
+          @method('DELETE')
+          <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus jurusan ini?')">
+            <i class="ti ti-trash me-1"></i>Hapus Jurusan
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- Main Content -->
-<div class="row">
-  <!-- Jurusan Information -->
-  <div class="col-xl-8 mb-4">
-    <div class="card shadow">
-      <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">
+<div class="row justify-content-center">
+  <div class="col-12 col-xl-10 mb-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-header py-3 bg-light">
+        <h6 class="m-0 font-weight-bold text-primary mb-0">
           <i class="ti ti-info-circle me-2"></i>Informasi Jurusan
         </h6>
       </div>
-      <div class="card-body">
+      <div class="card-body p-4">
         <div class="row g-4">
           <!-- Nama Jurusan -->
           <div class="col-md-6">
@@ -156,67 +151,6 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Statistics & Usage -->
-  <div class="col-xl-4 mb-4">
-    <!-- Usage Statistics -->
-    <div class="card shadow mb-4">
-      <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-success">
-          <i class="ti ti-chart-bar me-2"></i>Statistik Penggunaan
-        </h6>
-      </div>
-      <div class="card-body">
-        <div class="d-flex align-items-center mb-3">
-          <div class="bg-success text-white rounded-circle p-2 me-3">
-            <i class="ti ti-users" style="font-size: 1.2rem;"></i>
-          </div>
-          <div>
-            <div class="font-weight-bold">{{ $jurusan->hasilSAW()->count() }}</div>
-            <small class="text-muted">Siswa direkomendasikan</small>
-          </div>
-        </div>
-
-        <div class="d-flex align-items-center">
-          <div class="bg-info text-white rounded-circle p-2 me-3">
-            <i class="ti ti-trophy" style="font-size: 1.2rem;"></i>
-          </div>
-          <div>
-            <div class="font-weight-bold">
-              @if($jurusan->hasilSAW()->count() > 0)
-                {{ number_format(($jurusan->hasilSAW()->avg('nilai_preferensi') ?? 0) * 100, 1) }}%
-              @else
-                0%
-              @endif
-            </div>
-            <small class="text-muted">Rata-rata nilai preferensi</small>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Quick Actions -->
-    <div class="card shadow">
-      <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-info">
-          <i class="ti ti-settings me-2"></i>Aksi Cepat
-        </h6>
-      </div>
-      <div class="card-body">
-        <div class="d-grid gap-2">
-          <a href="{{ route('jurusan.edit', $jurusan->id_jurusan) }}" class="btn btn-outline-primary">
-            <i class="ti ti-edit me-2"></i>Edit Data
-          </a>
-          <a href="{{ route('jurusan.index') }}" class="btn btn-outline-secondary">
-            <i class="ti ti-list me-2"></i>Kembali ke List
-          </a>
-          <button type="button" class="btn btn-outline-info" onclick="window.print()">
-            <i class="ti ti-printer me-2"></i>Cetak Info
-          </button>
         </div>
       </div>
     </div>

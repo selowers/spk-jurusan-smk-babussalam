@@ -12,9 +12,6 @@
         <p class="text-muted">Informasi lengkap kriteria penilaian</p>
     </div>
     <div>
-        <a href="{{ route('kriteria.edit', $kriteria) }}" class="btn btn-warning me-2">
-            <i class="bi bi-pencil me-2"></i>Edit
-        </a>
         <a href="{{ route('kriteria.index') }}" class="btn btn-secondary">
             <i class="bi bi-arrow-left me-2"></i>Kembali
         </a>
