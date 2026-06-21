@@ -83,13 +83,17 @@ class SAWController extends Controller
                                             ->first();
                     $nilaiProfil = $profil ? $profil->nilai : 0;
 
-                    // Hitung X[i][j] menggunakan profil matching GAP
-                    $nilaiSkala5 = round(($nilaiSiswa[$k->id_kriteria] / 100) * 5, 4);
-                    $gap = abs($nilaiSkala5 - $nilaiProfil);
-                    $xij = round(5 - $gap, 4);
+                    // Hitung X[i][j] menggunakan rumus Excel yang sama:
+                    // 5 - ABS(nilai_siswa_skala_5 - profil_jurusan)
+                    // Nilai siswa bisa sudah 0-5, atau masih 0-100 yang perlu dikonversi.
+                    $nilaiMentah = $nilaiSiswa[$k->id_kriteria];
+                    $nilaiSkala5 = $nilaiMentah > 5
+                        ? ($nilaiMentah / 100) * 5
+                        : $nilaiMentah;
+                    $xij = 5 - abs($nilaiSkala5 - $nilaiProfil);
                     $matriksX[$j->id_jurusan][$k->id_kriteria] = $xij;
 
-                    // Simpan max per kolom
+                    // Simpan max per kolom tanpa pembulatan sementara
                     if ($xij > $maxPerKolom[$k->id_kriteria]) {
                         $maxPerKolom[$k->id_kriteria] = $xij;
                     }
@@ -102,7 +106,9 @@ class SAWController extends Controller
                 $matriksR[$j->id_jurusan] = [];
                 foreach ($kriteria as $k) {
                     $maxKolom = $maxPerKolom[$k->id_kriteria];
-                    $rij = $maxKolom > 0 ? round($matriksX[$j->id_jurusan][$k->id_kriteria] / $maxKolom, 4) : 0;
+                    $rij = $maxKolom > 0
+                        ? $matriksX[$j->id_jurusan][$k->id_kriteria] / $maxKolom
+                        : 0;
                     $matriksR[$j->id_jurusan][$k->id_kriteria] = $rij;
                 }
             }
@@ -114,7 +120,7 @@ class SAWController extends Controller
                 foreach ($kriteria as $k) {
                     $vi += $k->bobot * $matriksR[$j->id_jurusan][$k->id_kriteria];
                 }
-                $nilaiPreferensi[$j->id_jurusan] = round($vi, 4);
+                $nilaiPreferensi[$j->id_jurusan] = $vi;
             }
 
             // STEP 5: Ranking berdasarkan V tertinggi
@@ -313,9 +319,10 @@ class SAWController extends Controller
         ]);
 
         // Konversi skor kuesioner ke nilai 0-100
-        $nilai_c1 = round(($request->skor_c1 / 60) * 100, 2);
-        $nilai_c2 = round(($request->skor_c2 / 35) * 100, 2);
-        $nilai_c3 = round(($request->skor_c3 / 45) * 100, 2);
+        // Jangan pembulatan di sini agar hasil perhitungan SAW sesuai Excel.
+        $nilai_c1 = ($request->skor_c1 / 60) * 100;
+        $nilai_c2 = ($request->skor_c2 / 35) * 100;
+        $nilai_c3 = ($request->skor_c3 / 45) * 100;
 
         // Simpan nilai ke database
         $kriteria = Kriteria::all();

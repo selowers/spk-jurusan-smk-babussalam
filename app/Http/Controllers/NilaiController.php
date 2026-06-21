@@ -184,13 +184,13 @@ class NilaiController extends Controller
         switch ($namaKriteria) {
             case 'Pengetahuan Kognitif':
                 // C1: 12 soal × 5 = 60 skor maksimal
-                return round(($skorMentah / 60) * 100, 2);
+                return ($skorMentah / 60) * 100;
             case 'Minat dan Bakat':
                 // C2: 7 soal × 5 = 35 skor maksimal
-                return round(($skorMentah / 35) * 100, 2);
+                return ($skorMentah / 35) * 100;
             case 'Psikotes':
                 // C3: 9 soal × 5 = 45 skor maksimal
-                return round(($skorMentah / 45) * 100, 2);
+                return ($skorMentah / 45) * 100;
             default:
                 return 0;
         }
