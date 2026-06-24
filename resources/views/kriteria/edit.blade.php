@@ -66,33 +66,16 @@
                         <label class="form-label">
                             <i class="bi bi-graph-up me-2"></i>Tipe Kriteria <span class="text-danger">*</span>
                         </label>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-check">
-                                    <input class="form-check-input @error('tipe') is-invalid @enderror"
-                                           type="radio" name="tipe" id="benefit" value="benefit"
-                                           {{ old('tipe', $kriteria->tipe) == 'benefit' ? 'checked' : '' }} required>
-                                    <label class="form-check-label" for="benefit">
-                                        <span class="badge bg-success me-2">
-                                            <i class="bi bi-graph-up-arrow"></i>
-                                        </span>
-                                        Benefit (Semakin tinggi semakin baik)
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-check">
-                                    <input class="form-check-input @error('tipe') is-invalid @enderror"
-                                           type="radio" name="tipe" id="cost" value="cost"
-                                           {{ old('tipe', $kriteria->tipe) == 'cost' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="cost">
-                                        <span class="badge bg-info me-2">
-                                            <i class="bi bi-graph-down-arrow"></i>
-                                        </span>
-                                        Cost (Semakin rendah semakin baik)
-                                    </label>
-                                </div>
-                            </div>
+                        <div class="form-check">
+                            <input class="form-check-input @error('tipe') is-invalid @enderror"
+                                   type="radio" name="tipe" id="benefit" value="benefit"
+                                   {{ old('tipe', $kriteria->tipe) == 'benefit' ? 'checked' : '' }} required>
+                            <label class="form-check-label" for="benefit">
+                                <span class="badge bg-success me-2">
+                                    <i class="bi bi-graph-up-arrow"></i>
+                                </span>
+                                Benefit (Semakin tinggi semakin baik)
+                            </label>
                         </div>
                         @error('tipe')
                             <div class="invalid-feedback d-block">{{ $message }}</div>

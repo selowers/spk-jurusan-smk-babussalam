@@ -144,26 +144,6 @@
                 </div>
 
                 <hr>
-
-                <div class="alert alert-warning">
-                    <h6><i class="bi bi-exclamation-triangle me-2"></i>Peringatan</h6>
-                    <small>Menghapus kriteria akan mempengaruhi data nilai siswa yang terkait. Pastikan tidak ada data nilai yang menggunakan kriteria ini sebelum menghapus.</small>
-                </div>
-
-                @if($kriteria->nilai()->count() == 0)
-                <form action="{{ route('kriteria.destroy', $kriteria) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kriteria ini?')">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger w-100">
-                        <i class="bi bi-trash me-2"></i>Hapus Kriteria
-                    </button>
-                </form>
-                @else
-                <button class="btn btn-danger w-100" disabled>
-                    <i class="bi bi-trash me-2"></i>Hapus Kriteria
-                </button>
-                <small class="text-muted mt-2 d-block">Kriteria tidak dapat dihapus karena masih memiliki {{ $kriteria->nilai()->count() }} data nilai terkait.</small>
-                @endif
             </div>
         </div>
 
