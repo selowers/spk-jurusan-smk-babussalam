@@ -114,7 +114,7 @@
             <h5 class="mb-0">Step 1 - Matriks Keputusan</h5>
         </div>
         <div class="card-body">
-            <p class="text-muted mb-3">X[i][j] = 5 - ABS(((nilai siswa / 100) × 5) - profil jurusan)</p>
+            <p class="text-muted mb-3">X[i][j] = 5 - ABS(nilai siswa - profil jurusan)</p>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped mb-0">
                     <thead>
@@ -171,7 +171,7 @@
             <h5 class="mb-0">Step 3 - Matriks Normalisasi</h5>
         </div>
         <div class="card-body">
-            <p class="text-muted mb-3">R[i][j] = X[i][j] / max(X[*][j])</p>
+            <p class="text-muted mb-3">R[i][j] = nilai Matriks Keputusan/skor max matriks keputusan</p>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped mb-0">
                     <thead>
@@ -202,7 +202,7 @@
             <h5 class="mb-0">Step 4 - Nilai Preferensi</h5>
         </div>
         <div class="card-body">
-            <p class="text-muted mb-3">V[i] = Σ(W[j] × R[i][j])</p>
+            <p class="text-muted mb-3">V[i] = nilai normalisasi matriks*bobot kriteria</p>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped mb-0">
                     <thead>

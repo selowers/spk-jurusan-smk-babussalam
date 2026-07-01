@@ -14,27 +14,27 @@ class JurusanSeeder extends Seeder
             [
                 'nama_jurusan' => 'Teknik Informatika',
                 'fakultas' => 'Sains dan Teknologi',
-                'perguruan_tinggi' => 'Universitas Indonesia'
+                'perguruan_tinggi' => 'Universitas Islam Raden Rahmat Malang'
             ],
             [
                 'nama_jurusan' => 'Teknik Mesin',
                 'fakultas' => 'Sains dan Teknologi',
-                'perguruan_tinggi' => 'Universitas Gadjah Mada'
+                'perguruan_tinggi' => 'Universitas Islam Raden Rahmat Malang'
             ],
             [
                 'nama_jurusan' => 'Teknik Elektro',
                 'fakultas' => 'Sains dan Teknologi',
-                'perguruan_tinggi' => 'Institut Teknologi Bandung'
-            ],
-            [
-                'nama_jurusan' => 'Agroteknologi',
-                'fakultas' => 'Sains dan Teknologi',
-                'perguruan_tinggi' => 'Institut Pertanian Bogor'
+                'perguruan_tinggi' => 'Universitas Islam Raden Rahmat Malang'
             ],
             [
                 'nama_jurusan' => 'Sistem Informasi',
                 'fakultas' => 'Sains dan Teknologi',
-                'perguruan_tinggi' => 'Universitas Indonesia'
+                'perguruan_tinggi' => 'Universitas Islam Raden Rahmat Malang'
+            ],
+            [
+                'nama_jurusan' => 'Agroteknologi',
+                'fakultas' => 'Sains dan Teknologi',
+                'perguruan_tinggi' => 'Universitas Islam Raden Rahmat Malang'
             ],
         ];
 

@@ -50,7 +50,7 @@
                         <div class="alert alert-info">
                             <i class="fas fa-info-circle"></i>
                             <strong>Petunjuk:</strong> Masukkan total skor mentah dari kuesioner siswa untuk setiap kriteria.
-                            Sistem akan otomatis mengkonversi ke skala 0-100.
+                            Sistem akan otomatis mengkonversi ke skala 5.
                         </div>
 
                         <div class="row">
@@ -98,7 +98,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label>Nilai Konversi (0-100):</label>
+                                                <label>Nilai Konversi (0-5):</label>
                                                 <div class="input-group">
                                                     <input type="text"
                                                            class="form-control nilai-konversi"
