@@ -14,29 +14,29 @@ class JurusanKriteriaSeeder extends Seeder
     {
         $data = [
             // Teknik Informatika
-            ['nama_jurusan' => 'Teknik Informatika', 'nama_kriteria' => 'Pengetahuan Kognitif', 'nilai' => 4.33],
-            ['nama_jurusan' => 'Teknik Informatika', 'nama_kriteria' => 'Minat dan Bakat', 'nilai' => 4.33],
-            ['nama_jurusan' => 'Teknik Informatika', 'nama_kriteria' => 'Psikotes', 'nilai' => 4.33],
+            ['nama_jurusan' => 'Teknik Informatika', 'nama_kriteria' => 'Pengetahuan Kognitif', 'nilai' => 5.00],
+            ['nama_jurusan' => 'Teknik Informatika', 'nama_kriteria' => 'Minat dan Bakat', 'nilai' => 4.00],
+            ['nama_jurusan' => 'Teknik Informatika', 'nama_kriteria' => 'Psikotes', 'nilai' => 4.00],
 
             // Teknik Mesin
-            ['nama_jurusan' => 'Teknik Mesin', 'nama_kriteria' => 'Pengetahuan Kognitif', 'nilai' => 4.33],
-            ['nama_jurusan' => 'Teknik Mesin', 'nama_kriteria' => 'Minat dan Bakat', 'nilai' => 4.00],
-            ['nama_jurusan' => 'Teknik Mesin', 'nama_kriteria' => 'Psikotes', 'nilai' => 3.33],
+            ['nama_jurusan' => 'Teknik Mesin', 'nama_kriteria' => 'Pengetahuan Kognitif', 'nilai' => 4.00],
+            ['nama_jurusan' => 'Teknik Mesin', 'nama_kriteria' => 'Minat dan Bakat', 'nilai' => 2.50],
+            ['nama_jurusan' => 'Teknik Mesin', 'nama_kriteria' => 'Psikotes', 'nilai' => 4.50],
 
             // Teknik Elektro
-            ['nama_jurusan' => 'Teknik Elektro', 'nama_kriteria' => 'Pengetahuan Kognitif', 'nilai' => 4.33],
-            ['nama_jurusan' => 'Teknik Elektro', 'nama_kriteria' => 'Minat dan Bakat', 'nilai' => 4.00],
-            ['nama_jurusan' => 'Teknik Elektro', 'nama_kriteria' => 'Psikotes', 'nilai' => 4.33],
+            ['nama_jurusan' => 'Teknik Elektro', 'nama_kriteria' => 'Pengetahuan Kognitif', 'nilai' => 4.00],
+            ['nama_jurusan' => 'Teknik Elektro', 'nama_kriteria' => 'Minat dan Bakat', 'nilai' => 5.00],
+            ['nama_jurusan' => 'Teknik Elektro', 'nama_kriteria' => 'Psikotes', 'nilai' => 4.00],
 
             // Sistem Informasi
-            ['nama_jurusan' => 'Sistem Informasi', 'nama_kriteria' => 'Pengetahuan Kognitif', 'nilai' => 4.33],
-            ['nama_jurusan' => 'Sistem Informasi', 'nama_kriteria' => 'Minat dan Bakat', 'nilai' => 4.33],
-            ['nama_jurusan' => 'Sistem Informasi', 'nama_kriteria' => 'Psikotes', 'nilai' => 4.33],
+            ['nama_jurusan' => 'Sistem Informasi', 'nama_kriteria' => 'Pengetahuan Kognitif', 'nilai' => 4.80],
+            ['nama_jurusan' => 'Sistem Informasi', 'nama_kriteria' => 'Minat dan Bakat', 'nilai' => 4.50],
+            ['nama_jurusan' => 'Sistem Informasi', 'nama_kriteria' => 'Psikotes', 'nilai' => 4.50],
 
             // Agroteknologi
-            ['nama_jurusan' => 'Agroteknologi', 'nama_kriteria' => 'Pengetahuan Kognitif', 'nilai' => 3.33],
+            ['nama_jurusan' => 'Agroteknologi', 'nama_kriteria' => 'Pengetahuan Kognitif', 'nilai' => 4.00],
             ['nama_jurusan' => 'Agroteknologi', 'nama_kriteria' => 'Minat dan Bakat', 'nilai' => 4.00],
-            ['nama_jurusan' => 'Agroteknologi', 'nama_kriteria' => 'Psikotes', 'nilai' => 3.33],
+            ['nama_jurusan' => 'Agroteknologi', 'nama_kriteria' => 'Psikotes', 'nilai' => 3.00],
         ];
 
         foreach ($data as $item) {
