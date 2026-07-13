@@ -114,11 +114,15 @@ class SAWController extends Controller
             }
 
             // STEP 4: Nilai Preferensi V[i] = Σ(Wj × R[i][j])
+            // Sesuaikan dengan rumus Excel manual: bobot dihitung dari proporsi total bobot
+            // dan nilai preferensi dihitung dari perkalian bobot hasil normalisasi.
+            $bobotKriteria = $this->getBobotKriteria($kriteria);
+
             $nilaiPreferensi = [];
             foreach ($jurusan as $j) {
                 $vi = 0;
                 foreach ($kriteria as $k) {
-                    $vi += $k->bobot * $matriksR[$j->id_jurusan][$k->id_kriteria];
+                    $vi += $bobotKriteria[$k->id_kriteria] * $matriksR[$j->id_jurusan][$k->id_kriteria];
                 }
                 $nilaiPreferensi[$j->id_jurusan] = $vi;
             }
@@ -150,6 +154,20 @@ class SAWController extends Controller
         }
 
         return $hasil;
+    }
+
+    public function getBobotKriteria($kriteria)
+    {
+        $kriteriaCollection = $kriteria instanceof \Illuminate\Support\Collection ? $kriteria : collect($kriteria);
+        $totalBobot = $kriteriaCollection->sum('bobot');
+
+        $bobot = [];
+        foreach ($kriteriaCollection as $item) {
+            $idKriteria = $item->id_kriteria ?? $item['id_kriteria'] ?? null;
+            $bobot[$idKriteria] = $totalBobot > 0 ? ($item->bobot ?? $item['bobot'] ?? 0) / $totalBobot : 0;
+        }
+
+        return $bobot;
     }
 
     private function simpanHasil($hasil)

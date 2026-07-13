@@ -16,23 +16,26 @@ class KriteriaSeeder extends Seeder
         $kriterias = [
             [
                 'nama_kriteria' => 'Pengetahuan Kognitif',
-                'bobot' => 0.417,
+                'bobot' => 5 / 12,
                 'tipe' => 'benefit',
             ],
             [
                 'nama_kriteria' => 'Minat dan Bakat',
-                'bobot' => 0.333,
+                'bobot' => 4 / 12,
                 'tipe' => 'benefit',
             ],
             [
                 'nama_kriteria' => 'Psikotes',
-                'bobot' => 0.250,
+                'bobot' => 3 / 12,
                 'tipe' => 'benefit',
             ],
         ];
 
         foreach ($kriterias as $kriteria) {
-            Kriteria::create($kriteria);
+            Kriteria::updateOrCreate(
+                ['nama_kriteria' => $kriteria['nama_kriteria']],
+                ['bobot' => $kriteria['bobot'], 'tipe' => $kriteria['tipe']]
+            );
         }
     }
 }
