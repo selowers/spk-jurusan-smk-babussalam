@@ -117,7 +117,7 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $k->nama_kriteria }}</td>
-                                    <td>{{ $k->bobot }}</td>
+                                    <td>{{ number_format($k->bobot, 3) }}</td>
                                     <td>
                                         <span class="badge bg-{{ $k->tipe == 'benefit' ? 'success' : 'warning' }}">
                                             {{ ucfirst($k->tipe) }}

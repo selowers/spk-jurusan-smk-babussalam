@@ -30,6 +30,11 @@
                     <h6 class="text-primary mb-1">Rekomendasi Utama</h6>
                     <h4 class="mb-1">{{ $topRekom['nama_jurusan'] ?? '-' }}</h4>
                     <small class="text-muted">Nilai preferensi: {{ number_format($topRekom['nilai_preferensi'] ?? 0, 4) }}</small>
+                    @if(!empty($langkahPerhitungan['penjelasan_tie']))
+                    <div class="mt-3 alert alert-info py-2">
+                        <strong>Catatan Tie:</strong> {{ $langkahPerhitungan['penjelasan_tie'] }}
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -87,6 +92,13 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
+                @php
+                    $labelMap = [
+                        'Pengetahuan Kognitif' => 'C1',
+                        'Minat dan Bakat' => 'C2',
+                        'Psikotes' => 'C3',
+                    ];
+                @endphp
                 <table class="table table-bordered table-striped mb-0">
                     <thead>
                         <tr>
@@ -98,7 +110,7 @@
                     <tbody>
                         @foreach($kriteria as $k)
                         <tr>
-                            <td>{{ $k->nama_kriteria }}</td>
+                            <td>{{ $labelMap[$k->nama_kriteria] ?? $k->nama_kriteria }} - {{ $k->nama_kriteria }}</td>
                             <td>{{ $k->bobot }}</td>
                             <td>{{ number_format($langkahPerhitungan['nilai_siswa'][$k->id_kriteria] ?? 0, 2) }}</td>
                         </tr>
@@ -236,6 +248,7 @@
                             <th>Peringkat</th>
                             <th>Jurusan</th>
                             <th>Nilai Preferensi</th>
+                            <th>Alasan</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -244,6 +257,49 @@
                             <td>{{ $rek['peringkat'] }}</td>
                             <td>{{ $rek['nama_jurusan'] }}</td>
                             <td>{{ number_format($rek['nilai_preferensi'], 4) }}</td>
+                            <td>{{ $rek['alasan'] ?? '-' }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kesimpulan & Alasan Rekomendasi -->
+    <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">Kesimpulan & Alasan Rekomendasi</h5>
+        </div>
+        <div class="card-body">
+            @php
+                $top = $langkahPerhitungan['rekomendasi'][0] ?? null;
+            @endphp
+            <p>
+                <strong>Kesimpulan:</strong> Rekomendasi utama untuk <strong>{{ $siswa->nama_siswa }}</strong> adalah
+                <strong>{{ $top['nama_jurusan'] ?? '-' }}</strong> dengan nilai preferensi
+                <strong>{{ number_format($top['nilai_preferensi'] ?? 0, 4) }}</strong>.
+                @if(!empty($top['alasan']))
+                    Alasan singkat: {{ $top['alasan'] }}
+                @endif
+                @if(!empty($langkahPerhitungan['penjelasan_tie']))
+                    <br><em>{{ $langkahPerhitungan['penjelasan_tie'] }}</em>
+                @endif
+            </p>
+
+            <div class="table-responsive">
+                <table class="table table-bordered mb-0">
+                    <thead>
+                        <tr>
+                            <th>Alasan Rekomendasi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($langkahPerhitungan['rekomendasi'] as $rek)
+                        <tr>
+                            <td>
+                                <strong>{{ $rek['nama_jurusan'] }}</strong>: {{ $rek['alasan'] ?? '-' }}
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

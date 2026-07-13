@@ -77,23 +77,16 @@ class SAWController extends Controller
             foreach ($jurusan as $j) {
                 $matriksX[$j->id_jurusan] = [];
                 foreach ($kriteria as $k) {
-                    // Ambil profil nilai jurusan untuk kriteria ini
                     $profil = JurusanKriteria::where('id_jurusan', $j->id_jurusan)
                                             ->where('id_kriteria', $k->id_kriteria)
                                             ->first();
                     $nilaiProfil = $profil ? $profil->nilai : 0;
 
-                    // Hitung X[i][j] menggunakan rumus Excel yang sama:
-                    // 5 - ABS(nilai_siswa_skala_5 - profil_jurusan)
-                    // Nilai siswa bisa sudah 0-5, atau masih 0-100 yang perlu dikonversi.
                     $nilaiMentah = $nilaiSiswa[$k->id_kriteria];
-                    $nilaiSkala5 = $nilaiMentah > 5
-                        ? ($nilaiMentah / 100) * 5
-                        : $nilaiMentah;
+                    $nilaiSkala5 = $nilaiMentah > 5 ? ($nilaiMentah / 100) * 5 : $nilaiMentah;
                     $xij = 5 - abs($nilaiSkala5 - $nilaiProfil);
                     $matriksX[$j->id_jurusan][$k->id_kriteria] = $xij;
 
-                    // Simpan max per kolom tanpa pembulatan sementara
                     if ($xij > $maxPerKolom[$k->id_kriteria]) {
                         $maxPerKolom[$k->id_kriteria] = $xij;
                     }
@@ -106,40 +99,154 @@ class SAWController extends Controller
                 $matriksR[$j->id_jurusan] = [];
                 foreach ($kriteria as $k) {
                     $maxKolom = $maxPerKolom[$k->id_kriteria];
-                    $rij = $maxKolom > 0
-                        ? $matriksX[$j->id_jurusan][$k->id_kriteria] / $maxKolom
-                        : 0;
+                    $rij = $maxKolom > 0 ? $matriksX[$j->id_jurusan][$k->id_kriteria] / $maxKolom : 0;
                     $matriksR[$j->id_jurusan][$k->id_kriteria] = $rij;
                 }
             }
 
             // STEP 4: Nilai Preferensi V[i] = Σ(Wj × R[i][j])
-            // Sesuaikan dengan rumus Excel manual: bobot dihitung dari proporsi total bobot
-            // dan nilai preferensi dihitung dari perkalian bobot hasil normalisasi.
             $bobotKriteria = $this->getBobotKriteria($kriteria);
 
+            // Hitung kontribusi per jurusan per kriteria dan total preferensi
+            $kontribusi = []; // [id_jurusan][id_kriteria] = w * r
             $nilaiPreferensi = [];
             foreach ($jurusan as $j) {
-                $vi = 0;
+                $sum = 0;
                 foreach ($kriteria as $k) {
-                    $vi += $bobotKriteria[$k->id_kriteria] * $matriksR[$j->id_jurusan][$k->id_kriteria];
+                    $idK = $k->id_kriteria;
+                    $r = $matriksR[$j->id_jurusan][$idK] ?? 0;
+                    $w = $bobotKriteria[$idK] ?? 0;
+                    $c = $w * $r;
+                    $kontribusi[$j->id_jurusan][$idK] = $c;
+                    $sum += $c;
                 }
-                $nilaiPreferensi[$j->id_jurusan] = $vi;
+                $nilaiPreferensi[$j->id_jurusan] = $sum;
             }
 
-            // STEP 5: Ranking berdasarkan V tertinggi
+            // STEP 5: Ranking berdasarkan V tertinggi, dengan tie-breaker berdasarkan kontribusi per-kriteria
             arsort($nilaiPreferensi);
+            $idsSorted = array_keys($nilaiPreferensi);
             $peringkat = 1;
             $rekomendasi = [];
-            foreach ($nilaiPreferensi as $id_jurusan => $vi) {
-                $jurusanData = $jurusan->where('id_jurusan', $id_jurusan)->first();
-                $rekomendasi[] = [
-                    'id_jurusan' => $id_jurusan,
-                    'nama_jurusan' => $jurusanData->nama_jurusan,
-                    'nilai_preferensi' => $vi,
-                    'peringkat' => $peringkat
+
+            // Urutkan kriteria berdasarkan bobot descending untuk tie-breaker
+            $kriteriaOrder = collect($bobotKriteria)->sortDesc()->keys()->toArray();
+
+            $i = 0;
+            $penjelasanTie = null;
+            while ($i < count($idsSorted)) {
+                $currentId = $idsSorted[$i];
+                $currentValue = $nilaiPreferensi[$currentId];
+                $tieGroup = [$currentId];
+                $j = $i + 1;
+                while ($j < count($idsSorted) && abs($nilaiPreferensi[$idsSorted[$j]] - $currentValue) < 0.0000001) {
+                    $tieGroup[] = $idsSorted[$j];
+                    $j++;
+                }
+
+                if (count($tieGroup) > 1) {
+                    // Terapkan tie-breaker: bandingkan kontribusi per kriteria sesuai urutan bobot
+                    usort($tieGroup, function ($a, $b) use ($kontribusi, $kriteriaOrder) {
+                        foreach ($kriteriaOrder as $kid) {
+                            $ca = $kontribusi[$a][$kid] ?? 0;
+                            $cb = $kontribusi[$b][$kid] ?? 0;
+                            if (abs($ca - $cb) > 0.0000001) {
+                                return ($ca > $cb) ? -1 : 1;
+                            }
+                        }
+                        return $a <=> $b;
+                    });
+
+                    // Bangun penjelasan tie untuk ditampilkan ke pengguna
+                    $topId = $tieGroup[0];
+                    $secondId = $tieGroup[1];
+                    $maxDiff = 0;
+                    $selKid = null;
+                    foreach ($kriteriaOrder as $kid) {
+                        $diff = abs(($kontribusi[$topId][$kid] ?? 0) - ($kontribusi[$secondId][$kid] ?? 0));
+                        if ($diff > $maxDiff) {
+                            $maxDiff = $diff;
+                            $selKid = $kid;
+                        }
+                    }
+
+                    if ($selKid !== null) {
+                        $kObj = $kriteria->where('id_kriteria', $selKid)->first();
+                        $namaK = $kObj->nama_kriteria ?? $selKid;
+                        $penjelasanTie = 'Nilai preferensi sama untuk beberapa jurusan. Tie-breaker: membandingkan kontribusi per-kriteria (berdasarkan bobot). Terpilih ' .
+                            ($jurusan->where('id_jurusan', $topId)->first()->nama_jurusan ?? $topId) .
+                            ' karena kontribusi pada kriteria "' . $namaK . '" lebih besar (' . number_format($kontribusi[$topId][$selKid], 4) . ' vs ' . number_format($kontribusi[$secondId][$selKid], 4) . ').';
+                    } else {
+                        $penjelasanTie = 'Nilai preferensi sama, namun kontribusi per-kriteria juga identik; urutan ditentukan oleh ID/judul alternatif.';
+                    }
+                }
+
+                // Buat penjelasan dominan berdasarkan nilai C1/C2/C3
+                $nilaiPerKriteria = collect($nilaiSiswa);
+                $sortedNilai = $nilaiPerKriteria->sortDesc();
+                $topKriteriaId = $sortedNilai->keys()->first();
+                $secondKriteriaId = $sortedNilai->keys()->slice(1, 1)->first();
+                $thirdKriteriaId = $sortedNilai->keys()->slice(2, 1)->first();
+
+                $keteranganDominan = '';
+                $nilaiRingkas = [];
+                $labelMap = [
+                    'Pengetahuan Kognitif' => 'C1',
+                    'Minat dan Bakat' => 'C2',
+                    'Psikotes' => 'C3',
                 ];
-                $peringkat++;
+
+                foreach ($nilaiSiswa as $kId => $nilaiRaw) {
+                    $kObj = $kriteria->where('id_kriteria', $kId)->first();
+                    $label = $labelMap[$kObj->nama_kriteria] ?? $kObj->nama_kriteria;
+                    $nilaiRingkas[$label] = number_format($nilaiRaw, 2);
+                }
+
+                if ($topKriteriaId !== null) {
+                    $topKriteria = $kriteria->where('id_kriteria', $topKriteriaId)->first();
+                    $secondKriteria = $kriteria->where('id_kriteria', $secondKriteriaId)->first();
+                    $thirdKriteria = $kriteria->where('id_kriteria', $thirdKriteriaId)->first();
+
+                    $topLabel = $labelMap[$topKriteria->nama_kriteria] ?? $topKriteria->nama_kriteria;
+                    $secondLabel = $labelMap[$secondKriteria->nama_kriteria] ?? $secondKriteria->nama_kriteria;
+                    $thirdLabel = $labelMap[$thirdKriteria->nama_kriteria] ?? $thirdKriteria->nama_kriteria;
+
+                    $topValue = $sortedNilai->first();
+                    $secondValue = $sortedNilai->values()->get(1) ?? 0;
+                    $thirdValue = $sortedNilai->values()->get(2) ?? 0;
+
+                    if ($topValue > $secondValue && $topValue > $thirdValue) {
+                        $keteranganDominan = 'Nilai ' . $topLabel . ' paling tinggi, jadi rekomendasi didukung oleh indikator tersebut.';
+                    } elseif ($topValue === $secondValue && $topValue > $thirdValue) {
+                        $keteranganDominan = 'Nilai ' . $topLabel . ' dan ' . $secondLabel . ' sama tinggi, jadi kedua indikator ini mendukung rekomendasi.';
+                    } else {
+                        $keteranganDominan = 'Nilai C1, C2, dan C3 seimbang; rekomendasi berdasarkan total preferensi.';
+                    }
+                }
+
+                // Masukkan setiap jurusan di group (sudah diurutkan jika tie)
+                foreach ($tieGroup as $idj) {
+                    $jur = $jurusan->where('id_jurusan', $idj)->first();
+
+                    $alasan = 'Nilai siswa: ' . implode(', ', array_map(function ($label, $value) {
+                        return $label . ' = ' . $value;
+                    }, array_keys($nilaiRingkas), $nilaiRingkas)) . '. ' . $keteranganDominan;
+
+                    if (!empty($penjelasanTie) && $idj === $tieGroup[0]) {
+                        $alasan .= ' ' . $penjelasanTie;
+                    }
+
+                    $rekomendasi[] = [
+                        'peringkat' => $peringkat,
+                        'id_jurusan' => $idj,
+                        'nama_jurusan' => $jur->nama_jurusan ?? '-',
+                        'nilai_preferensi' => $nilaiPreferensi[$idj] ?? 0,
+                        'alasan' => $alasan,
+                    ];
+                    $peringkat++;
+                }
+
+                $i = $j;
             }
 
             $hasil[] = [
@@ -149,13 +256,13 @@ class SAWController extends Controller
                 'max_per_kolom' => $maxPerKolom,
                 'matriks_normalisasi' => $matriksR,
                 'nilai_preferensi' => $nilaiPreferensi,
-                'rekomendasi' => $rekomendasi
+                'rekomendasi' => $rekomendasi,
+                'penjelasan_tie' => $penjelasanTie,
             ];
         }
 
         return $hasil;
     }
-
     public function getBobotKriteria($kriteria)
     {
         $kriteriaCollection = $kriteria instanceof \Illuminate\Support\Collection ? $kriteria : collect($kriteria);
